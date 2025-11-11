@@ -1,9 +1,8 @@
 package org.vovgoo.userservice.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.vovgoo.userservice.entity.enums.RoleType;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,10 +21,9 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Название роли не может быть пустым")
-    @Size(max = 50, message = "Название роли слишком длинное")
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, unique = true)
-    private String name;
+    private RoleType name;
 
     @ManyToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
