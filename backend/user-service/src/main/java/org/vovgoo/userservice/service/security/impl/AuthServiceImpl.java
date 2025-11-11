@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.userservice.dto.auth.request.LoginRequest;
 import org.vovgoo.userservice.dto.auth.request.RegisterRequest;
 import org.vovgoo.userservice.dto.internal.JwtPair;
@@ -23,6 +24,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
@@ -49,6 +51,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public JwtPair register(RegisterRequest registerRequest) {
         userRepository.findByEmail(registerRequest.email())
                 .ifPresent(u -> { throw new EmailAlreadyExistsException(registerRequest.email()); });
