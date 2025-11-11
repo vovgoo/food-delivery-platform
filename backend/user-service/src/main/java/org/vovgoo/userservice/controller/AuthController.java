@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.vovgoo.userservice.dto.auth.request.LoginRequest;
 import org.vovgoo.userservice.dto.auth.request.RegisterRequest;
 import org.vovgoo.userservice.dto.auth.response.JwtResponse;
-import org.vovgoo.userservice.dto.internal.JwtPair;
+import org.vovgoo.userservice.dto.common.JwtPair;
 import org.vovgoo.userservice.service.security.AuthService;
 import org.vovgoo.userservice.utils.CookieUtils;
 

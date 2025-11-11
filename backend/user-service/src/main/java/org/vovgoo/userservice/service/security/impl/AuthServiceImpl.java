@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.userservice.dto.auth.request.LoginRequest;
 import org.vovgoo.userservice.dto.auth.request.RegisterRequest;
-import org.vovgoo.userservice.dto.internal.JwtPair;
+import org.vovgoo.userservice.dto.common.JwtPair;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.enums.RoleType;
