@@ -12,6 +12,13 @@ import java.util.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleAllExceptions(Exception ex) {
+        Map<String, String> body = new LinkedHashMap<>();
+        body.put("message", "Внутренняя ошибка сервера");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleEntityNotFound(EntityNotFoundException ex) {
         Map<String, String> body = new LinkedHashMap<>();

@@ -44,4 +44,11 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.badRequest().body(fieldErrors);
     }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleAllExceptions(Exception ex) {
+        Map<String, String> body = new LinkedHashMap<>();
+        body.put("message", "Внутренняя ошибка сервера");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    }
 }
