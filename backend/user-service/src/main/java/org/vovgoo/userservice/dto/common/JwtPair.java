@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.dto.internal;
+package org.vovgoo.userservice.dto.common;
 
 public record JwtPair(
         String accessToken,
