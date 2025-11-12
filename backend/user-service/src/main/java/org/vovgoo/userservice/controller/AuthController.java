@@ -28,7 +28,9 @@ public class AuthController {
     public ResponseEntity<JwtResponse> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletResponse response) {
         JwtPair jwtPair = authService.register(registerRequest);
         CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
-        return ResponseEntity.ok(new JwtResponse(jwtPair.accessToken()));
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new JwtResponse(jwtPair.accessToken()));
     }
 
     @PostMapping("/login")
