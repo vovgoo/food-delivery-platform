@@ -77,12 +77,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtPair refreshAccessToken(String refreshToken) {
         String email = jwtService.getEmailFromToken(refreshToken);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
 
         String newAccessToken = jwtService.refreshAccessToken(refreshToken, user);
-        String newRefreshToken = jwtService.generateRefreshToken(user);
 
-        return new JwtPair(newAccessToken, newRefreshToken);
+        return new JwtPair(newAccessToken, refreshToken);
     }
 }
