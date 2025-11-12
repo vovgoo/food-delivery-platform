@@ -29,6 +29,7 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
                 .claim("roles", user.getRoles().stream().map(Role::getName).toList())
+                .claim("type", "access")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperty.getAccessExpirationMs()))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -39,6 +40,7 @@ public class JwtServiceImpl implements JwtService {
     public String generateRefreshToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
+                .claim("type", "refresh")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperty.getRefreshExpirationMs()))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -71,14 +73,32 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String refreshAccessToken(String refreshToken, User user) {
         if (!validateToken(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token");
+            throw new IllegalArgumentException("Refresh токен недействителен или истёк");
+        }
+
+        if (!isRefreshToken(refreshToken)) {
+            throw new IllegalArgumentException("Переданный токен не является refresh-токеном");
         }
 
         String email = getEmailFromToken(refreshToken);
         if (!email.equals(user.getEmail())) {
-            throw new RuntimeException("Refresh token does not match user");
+            throw new SecurityException("Refresh-токен не принадлежит этому пользователю");
         }
 
         return generateAccessToken(user);
+    }
+
+    private boolean isRefreshToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            return "refresh".equals(claims.get("type"));
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 }
