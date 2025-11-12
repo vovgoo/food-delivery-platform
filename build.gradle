@@ -1,18 +1,28 @@
 allprojects {
-    group = 'com.example.fooddelivery'
-    version = '1.0.0'
+    group = 'org.vovgoo'
+    version = '0.0.1-SNAPSHOT'
+}
+
+description = 'food-delivery-platform'
+
+repositories {
+    mavenCentral()
 }
 
 subprojects {
     apply plugin: 'java'
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(21)
+        }
+    }
 
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
     }
 }
