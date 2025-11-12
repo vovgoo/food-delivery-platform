@@ -54,6 +54,20 @@ public class UserController {
                                     """)
                     )
             ),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ExceptionResponse.class),
+                            examples = @ExampleObject(value = """
+                        {
+                          "timestamp": "2025-11-12T16:30:12.345",
+                          "statusCode": 401,
+                          "error": "Unauthorized",
+                          "body": "Требуется аутентификация",
+                          "path": "/api/v1/users/me"
+                        }
+                        """)
+                    )
+            ),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ExceptionResponse.class),
@@ -135,6 +149,20 @@ public class UserController {
                                       "path": "/api/v1/users/me"
                                     }
                                     """)
+                    )
+            ),
+            @ApiResponse(responseCode = "401", description = "Пользователь не аутентифицирован",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ExceptionResponse.class),
+                            examples = @ExampleObject(value = """
+                        {
+                          "timestamp": "2025-11-12T16:30:12.345",
+                          "statusCode": 401,
+                          "error": "Unauthorized",
+                          "body": "Требуется аутентификация",
+                          "path": "/api/v1/users/me"
+                        }
+                        """)
                     )
             ),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден",

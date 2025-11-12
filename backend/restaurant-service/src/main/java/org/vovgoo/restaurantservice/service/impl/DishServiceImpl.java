@@ -33,6 +33,7 @@ public class DishServiceImpl implements DishService {
     public PageResponse<DishResponse> listByRestaurant(Long restaurantId, PageParams pageParams) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
+
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
         Page<Dish> page = dishRepository.findByRestaurant(restaurant, pageRequest);
 
