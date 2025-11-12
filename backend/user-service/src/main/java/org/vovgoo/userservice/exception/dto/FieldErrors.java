@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
-@Builder(builderMethodName = "hiddenBuilder")
 public class FieldErrors {
 
     private final List<FieldErrorDetail> errors;
