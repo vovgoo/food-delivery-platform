@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.vovgoo.userservice.config.property.JwtProperty;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
+import org.vovgoo.userservice.exception.custom.InvalidRefreshTokenException;
 import org.vovgoo.userservice.service.security.JwtService;
 
 import java.nio.charset.StandardCharsets;
@@ -73,16 +74,16 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String refreshAccessToken(String refreshToken, User user) {
         if (!validateToken(refreshToken)) {
-            throw new IllegalArgumentException("Refresh токен недействителен или истёк");
+            throw new InvalidRefreshTokenException("Refresh токен недействителен или истёк");
         }
 
         if (!isRefreshToken(refreshToken)) {
-            throw new IllegalArgumentException("Переданный токен не является refresh-токеном");
+            throw new InvalidRefreshTokenException("Переданный токен не является refresh-токеном");
         }
 
         String email = getEmailFromToken(refreshToken);
         if (!email.equals(user.getEmail())) {
-            throw new SecurityException("Refresh-токен не принадлежит этому пользователю");
+            throw new InvalidRefreshTokenException("Refresh-токен не принадлежит этому пользователю");
         }
 
         return generateAccessToken(user);

@@ -1,6 +1,5 @@
 package org.vovgoo.userservice.service.user.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -11,7 +10,8 @@ import org.vovgoo.userservice.dto.user.request.UserUpdateRequest;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.exception.EmailAlreadyExistsException;
+import org.vovgoo.userservice.exception.custom.EmailAlreadyExistsException;
+import org.vovgoo.userservice.exception.custom.UserNotFoundException;
 import org.vovgoo.userservice.mapper.UserMapper;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.user.UserService;
@@ -100,6 +100,6 @@ public class UserServiceImpl implements UserService {
                 .filter(User.class::isInstance)
                 .map(User.class::cast)
                 .flatMap(user -> userRepository.findByIdWithRolesAndAddresses(user.getId()))
-                .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден."));
+                .orElseThrow(UserNotFoundException::new);
     }
 }
