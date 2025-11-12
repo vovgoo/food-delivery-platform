@@ -3,6 +3,7 @@ package org.vovgoo.restaurantservice.exception.handler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -11,6 +12,8 @@ import org.vovgoo.restaurantservice.exception.custom.DishNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.exception.dto.ExceptionResponse;
 import org.vovgoo.restaurantservice.exception.dto.FieldErrors;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -33,8 +36,20 @@ public class GlobalExceptionHandler {
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
 
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionResponse.of("Требуется аутентификация", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAccessDeniedException(AccessDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponse.of("Доступ запрещён", HttpStatus.FORBIDDEN, request.getRequestURI()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse<FieldErrors>>  handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse<FieldErrors>> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
         FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -42,7 +57,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse<String>>  handleRuntimeExceptions(RuntimeException ex, HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse<String>> handleRuntimeExceptions(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of("Внутренняя ошибка сервера", HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
     }
