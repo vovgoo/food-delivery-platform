@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception;
+package org.vovgoo.userservice.exception.custom;
 
 public class EmailAlreadyExistsException extends RuntimeException {
     public EmailAlreadyExistsException(String email) {

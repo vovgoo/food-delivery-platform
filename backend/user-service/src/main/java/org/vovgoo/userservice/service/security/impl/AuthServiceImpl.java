@@ -14,7 +14,8 @@ import org.vovgoo.userservice.dto.auth.internal.JwtPair;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.enums.RoleType;
-import org.vovgoo.userservice.exception.EmailAlreadyExistsException;
+import org.vovgoo.userservice.exception.custom.EmailAlreadyExistsException;
+import org.vovgoo.userservice.exception.custom.RoleNotFoundException;
 import org.vovgoo.userservice.repository.RoleRepository;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.security.AuthService;
@@ -57,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
                 .ifPresent(u -> { throw new EmailAlreadyExistsException(registerRequest.email()); });
 
         Role defaultRole = roleRepository.findByName(RoleType.USER)
-                .orElseThrow(() -> new EntityNotFoundException("Роль пользователя не найдена."));
+                .orElseThrow(RoleNotFoundException::new);
 
         User user = User.builder()
                 .email(registerRequest.email())
