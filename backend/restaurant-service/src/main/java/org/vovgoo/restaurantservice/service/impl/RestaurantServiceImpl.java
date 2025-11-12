@@ -1,6 +1,5 @@
 package org.vovgoo.restaurantservice.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +12,7 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
 import org.vovgoo.restaurantservice.entity.Restaurant;
+import org.vovgoo.restaurantservice.exception.custom.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.RestaurantMapper;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
 import org.vovgoo.restaurantservice.service.RestaurantService;
@@ -42,7 +42,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public RestaurantResponse getById(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ресторан не найден"));
+                .orElseThrow(RestaurantNotFoundException::new);
 
         return restaurantMapper.toResponse(restaurant);
     }
@@ -65,7 +65,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     public RestaurantResponse update(Long id, RestaurantUpdateRequest restaurantUpdateRequest) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Ресторан не найден"));
+                .orElseThrow(RestaurantNotFoundException::new);
 
         restaurant.setName(restaurantUpdateRequest.name());
         restaurant.setCuisine(restaurantUpdateRequest.cuisine());
@@ -79,9 +79,6 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     @Transactional
     public void delete(Long id) {
-        if (!restaurantRepository.existsById(id)) {
-            throw new EntityNotFoundException("Ресторан не найден");
-        }
         restaurantRepository.deleteById(id);
     }
 }

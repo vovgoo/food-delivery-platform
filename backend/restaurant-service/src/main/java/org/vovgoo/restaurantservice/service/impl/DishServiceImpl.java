@@ -1,6 +1,5 @@
 package org.vovgoo.restaurantservice.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +12,9 @@ import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 import org.vovgoo.restaurantservice.entity.Restaurant;
+import org.vovgoo.restaurantservice.exception.custom.DishNotBelongsToRestaurantException;
+import org.vovgoo.restaurantservice.exception.custom.DishNotFoundException;
+import org.vovgoo.restaurantservice.exception.custom.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.DishMapper;
 import org.vovgoo.restaurantservice.repository.DishRepository;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
@@ -27,11 +29,10 @@ public class DishServiceImpl implements DishService {
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
 
-
     @Override
     public PageResponse<DishResponse> listByRestaurant(Long restaurantId, PageParams pageParams) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("Ресторан не найден"));
+                .orElseThrow(RestaurantNotFoundException::new);
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
         Page<Dish> page = dishRepository.findByRestaurant(restaurant, pageRequest);
 
@@ -42,7 +43,7 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public DishResponse create(Long restaurantId, DishCreateRequest request) {
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
-                .orElseThrow(() -> new EntityNotFoundException("Ресторан не найден"));
+                .orElseThrow(RestaurantNotFoundException::new);
 
         Dish dish = Dish.builder()
                 .name(request.name())
@@ -61,10 +62,10 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public DishResponse update(Long restaurantId, Long dishId, DishUpdateRequest request) {
         Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new EntityNotFoundException("Блюдо не найдено"));
+                .orElseThrow(DishNotFoundException::new);
 
         if (!dish.getRestaurant().getId().equals(restaurantId)) {
-            throw new IllegalArgumentException("Блюдо не принадлежит этому ресторану");
+            throw new DishNotBelongsToRestaurantException(dishId, restaurantId);
         }
 
         dish.setName(request.name());
@@ -81,10 +82,10 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public void delete(Long restaurantId, Long dishId) {
         Dish dish = dishRepository.findById(dishId)
-                .orElseThrow(() -> new EntityNotFoundException("Блюдо не найдено"));
+                .orElseThrow(DishNotFoundException::new);
 
         if (!dish.getRestaurant().getId().equals(restaurantId)) {
-            throw new IllegalArgumentException("Блюдо не принадлежит этому ресторану");
+            throw new DishNotBelongsToRestaurantException(dishId, restaurantId);
         }
 
         dishRepository.delete(dish);
