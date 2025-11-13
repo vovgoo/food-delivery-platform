@@ -1,0 +1,23 @@
+server:
+  port: 8081
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/userdb
+    username: user
+    password: password
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+jwt:
+  secret: supersecuresecretkeythatisatleast32bytes!
+  access-expiration-ms: 900000
+  refresh-expiration-ms: 604800000
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
