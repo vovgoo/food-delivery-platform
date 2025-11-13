@@ -6,7 +6,7 @@ plugins {
 
 group = 'org.vovgoo'
 version = '0.0.1-SNAPSHOT'
-description = 'payment-sercice'
+description = 'payment-service'
 
 java {
     toolchain {

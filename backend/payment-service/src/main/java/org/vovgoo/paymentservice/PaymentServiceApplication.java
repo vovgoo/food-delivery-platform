@@ -1,13 +1,13 @@
-package org.vovgoo.paymentsercice;
+package org.vovgoo.paymentservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PaymentSerciceApplication {
+public class PaymentServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PaymentSerciceApplication.class, args);
+        SpringApplication.run(PaymentServiceApplication.class, args);
     }
 
 }

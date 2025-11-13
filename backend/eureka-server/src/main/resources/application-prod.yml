@@ -1,0 +1,6 @@
+spring:
+  profiles: prod
+
+eureka:
+  server:
+    wait-time-in-ms-when-sync-empty: ${EUREKA_WAIT:0}

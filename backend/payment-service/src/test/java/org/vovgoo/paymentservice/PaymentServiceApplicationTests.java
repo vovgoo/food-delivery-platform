@@ -1,10 +1,10 @@
-package org.vovgoo.paymentsercice;
+package org.vovgoo.paymentservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PaymentSerciceApplicationTests {
+class PaymentServiceApplicationTests {
 
     @Test
     void contextLoads() {
