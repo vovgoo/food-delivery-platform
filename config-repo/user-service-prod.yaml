@@ -1,0 +1,26 @@
+server:
+  port: ${SERVER_PORT}
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+jwt:
+  keys:
+    private-key-path: ${JWT_PRIVATE_KEY}
+    public-key-path: ${JWT_PUBLIC_KEY}
+  expiration:
+    access-ms: ${JWT_ACCESS_EXPIRATION_MS}
+    refresh-ms: ${JWT_REFRESH_EXPIRATION_MS}
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
