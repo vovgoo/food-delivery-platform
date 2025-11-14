@@ -1,27 +1,42 @@
 package org.vovgoo.userservice.service.security.impl;
 
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.jwk.RSAKey;
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.userservice.config.property.JwtProperty;
+import org.vovgoo.userservice.config.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.InvalidRefreshTokenException;
 import org.vovgoo.userservice.service.security.JwtService;
+import org.vovgoo.userservice.service.security.enums.JwtTokenType;
 
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
+import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
-    private final JwtProperty jwtProperty;
+    private final RSAKey rsaKey;
+    private final JwtExpirationProperty jwtExpirationProperty;
 
-    private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(jwtProperty.getSecret().getBytes(StandardCharsets.UTF_8));
+    private RSAPrivateKey getPrivateKey() {
+        try {
+            return rsaKey.toRSAPrivateKey();
+        } catch (JOSEException e) {
+            throw new IllegalStateException("Не удалось получить приватный ключ RSA для подписи JWT", e);
+        }
+    }
+
+    private RSAPublicKey getPublicKey() {
+        try {
+            return rsaKey.toRSAPublicKey();
+        } catch (JOSEException e) {
+            throw new IllegalStateException("Не удалось получить приватный ключ RSA для подписи JWT", e);
+        }
     }
 
     @Override
@@ -30,10 +45,10 @@ public class JwtServiceImpl implements JwtService {
                 .setSubject(user.getEmail())
                 .claim("userId", user.getId())
                 .claim("roles", user.getRoles().stream().map(Role::getName).toList())
-                .claim("type", "access")
+                .claim("type", JwtTokenType.ACCESS)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperty.getAccessExpirationMs()))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationProperty.getAccessMs()))
+                .signWith(getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
 
@@ -41,10 +56,10 @@ public class JwtServiceImpl implements JwtService {
     public String generateRefreshToken(User user) {
         return Jwts.builder()
                 .setSubject(user.getEmail())
-                .claim("type", "refresh")
+                .claim("type", JwtTokenType.REFRESH)
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperty.getRefreshExpirationMs()))
-                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationProperty.getRefreshMs()))
+                .signWith(getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
     }
 
@@ -52,7 +67,7 @@ public class JwtServiceImpl implements JwtService {
     public boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+                    .setSigningKey(getPublicKey())
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -64,7 +79,7 @@ public class JwtServiceImpl implements JwtService {
     @Override
     public String getEmailFromToken(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
+                .setSigningKey(getPublicKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
@@ -92,12 +107,12 @@ public class JwtServiceImpl implements JwtService {
     private boolean isRefreshToken(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
+                    .setSigningKey(getPublicKey())
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
 
-            return "refresh".equals(claims.get("type"));
+            return JwtTokenType.REFRESH.equals(claims.get("type"));
         } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
