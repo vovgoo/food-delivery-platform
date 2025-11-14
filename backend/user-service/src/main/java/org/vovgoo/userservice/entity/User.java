@@ -1,15 +1,15 @@
 package org.vovgoo.userservice.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.vovgoo.userservice.entity.enums.UserStatus;
+import org.vovgoo.userservice.validators.allowedEmailDomain.AllowedEmailDomain;
+import org.vovgoo.userservice.validators.phone.Phone;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -21,24 +21,38 @@ import java.util.*;
 @Builder
 @ToString(exclude = {"addresses", "roles", "passwordHash"})
 @EqualsAndHashCode(exclude = {"addresses", "roles"})
-public class User implements UserDetails {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Email(message = "Email должен быть корректным")
-    @NotBlank(message = "Email не может быть пустым")
-    @Size(max = 255, message = "Email слишком длинный")
-    @Column(nullable = false, unique = true)
+    @AllowedEmailDomain
+    @Email(message = "Почта должна быть корректной")
+    @NotBlank(message = "Почта не может быть пустой")
+    @Size(max = 255, message = "Почта слишком длинная")
+    @Column(unique = true)
     private String email;
 
-    @NotBlank
-    private String passwordHash;
+    @Phone
+    @NotBlank(message = "Телефон не может быть пустым")
+    @Column(unique = true)
+    private String phone;
 
     @NotBlank(message = "Полное имя не может быть пустым")
-    @Size(min = 2, max = 100, message = "Имя должно быть от 2 до 255 символов")
+    @Size(min = 2, max = 100, message = "Полное имя должно быть от 2 до 100 символов")
     private String fullName;
+
+    @NotNull(message = "День рождения не может быть пустым")
+    @Past(message = "Дата рождения должна быть в прошлом")
+    private LocalDate birthDate;
+
+    @NotNull(message = "Статус пользователя не может быть пустым")
+    @Enumerated(EnumType.STRING)
+    private UserStatus status = UserStatus.ACTIVE;
+
+    @NotBlank(message = "Пароль не может быть пустым")
+    private String passwordHash;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -47,6 +61,7 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Address> addresses = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -55,22 +70,6 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public String getPassword() {
-        return passwordHash;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles.stream()
-                .map(role -> (GrantedAuthority) () -> role.getName().getAuthority())
-                .toList();
-    }
 }
