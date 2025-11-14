@@ -95,11 +95,29 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getAuthenticatedUser() {
+<<<<<<< Updated upstream
         return Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
                 .map(Authentication::getPrincipal)
                 .filter(User.class::isInstance)
                 .map(User.class::cast)
                 .flatMap(user -> userRepository.findByIdWithRolesAndAddresses(user.getId()))
                 .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден."));
+=======
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        if (auth == null || auth.getPrincipal() == null) {
+            throw new UserNotFoundException();
+        }
+
+        Long userId;
+        try {
+            userId = Long.valueOf(auth.getPrincipal().toString());
+        } catch (NumberFormatException e) {
+            throw new UserNotFoundException();
+        }
+
+        return userRepository.findByIdWithRolesAndAddresses(userId)
+                .orElseThrow(UserNotFoundException::new);
+>>>>>>> Stashed changes
     }
 }

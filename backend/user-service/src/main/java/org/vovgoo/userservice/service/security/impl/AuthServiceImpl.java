@@ -2,9 +2,7 @@ package org.vovgoo.userservice.service.security.impl;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,19 +28,16 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final JwtService jwtService;
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
 
     @Override
     public JwtPair login(LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.email(),
-                        loginRequest.password()
-                )
-        );
+        User user = userRepository.findByEmail(loginRequest.email())
+                .orElseThrow(() -> new BadCredentialsException("Неправильный логин или пароль"));
 
-        User user = (User) authentication.getPrincipal();
+        if (!passwordEncoder.matches(loginRequest.password(), user.getPasswordHash())) {
+            throw new BadCredentialsException("Неправильный логин или пароль");
+        }
 
         return new JwtPair(
                 jwtService.generateAccessToken(user),
