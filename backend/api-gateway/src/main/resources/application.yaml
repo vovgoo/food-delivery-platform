@@ -31,15 +31,11 @@ eureka:
     fetch-registry: true
 
 springdoc:
-  api-docs:
-    enabled: true
   swagger-ui:
-    enabled: true
     path: /swagger-ui.html
     urls:
-      - url: user-service/v3/api-docs
+      - url: /user-service/v3/api-docs
         name: User Service
-
 
 management:
   endpoints:
