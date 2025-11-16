@@ -19,3 +19,7 @@ databaseChangeLog:
       file: db/changelog/009_add_indexes.sql
   - include:
       file: db/changelog/010_insert_roles.sql
+  - include:
+      file: db/changelog/011_create_table_email_domains.sql
+  - include:
+      file: db/changelog/012_insert_default_email_domains.sql
