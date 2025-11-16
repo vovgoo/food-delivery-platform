@@ -15,7 +15,7 @@ import java.util.Base64;
 
 @Configuration
 @RequiredArgsConstructor
-public class KeyConfig {
+public class RSAKeyConfig {
 
     private final JwtKeysProperty jwtKeysProperty;
 
