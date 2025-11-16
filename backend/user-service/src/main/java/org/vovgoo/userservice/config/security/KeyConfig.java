@@ -4,7 +4,7 @@ import com.nimbusds.jose.jwk.RSAKey;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.vovgoo.userservice.config.property.JwtKeysProperty;
+import org.vovgoo.userservice.config.security.property.JwtKeysProperty;
 
 import java.security.KeyFactory;
 import java.security.interfaces.RSAPrivateKey;
