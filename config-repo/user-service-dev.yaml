@@ -49,7 +49,10 @@ app:
         ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_RATE_LIMIT:60000}
       phone-verification-attempts:
         key: ${REDIS_KEY_PHONE_VERIFICATION_ATTEMPTS:phone:verification:attempts}
-        ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_ATTEMPTS:3600000}
+        ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_ATTEMPTS:300000}
+      refresh-token:
+        key: ${REDIS_KEY_REFRESH_TOKEN:refresh:token}
+        ttl-ms: ${REDIS_TTL_REFRESH_TOKEN:1296000000}
 
   jwt:
     keys:

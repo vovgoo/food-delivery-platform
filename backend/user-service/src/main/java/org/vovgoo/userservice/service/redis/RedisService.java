@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.service.common.redis;
+package org.vovgoo.userservice.service.redis;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +21,14 @@ public class RedisService {
     private final ObjectMapper objectMapper;
 
     public <T> void set(RedisKey redisKey, String id, T value) {
+        if (!redisKey.getType().isAssignableFrom(value.getClass())) {
+            throw new IllegalArgumentException(
+                    "Неверный тип значения для ключа " + redisKey +
+                            ". Ожидался: " + redisKey.getType().getSimpleName() +
+                            ", передан: " + value.getClass().getSimpleName()
+            );
+        }
+
         try {
             String json = objectMapper.writeValueAsString(value);
             String key = formatKey(redisKey, id);
@@ -31,10 +39,20 @@ public class RedisService {
         }
     }
 
+
     public <T> Optional<T> get(RedisKey redisKey, String id, Class<T> clazz) {
+        if (!redisKey.getType().isAssignableFrom(clazz)) {
+            throw new IllegalArgumentException(
+                    "Неверный тип для чтения ключа " + redisKey +
+                            ". Ожидался: " + redisKey.getType().getSimpleName() +
+                            ", запрошен: " + clazz.getSimpleName()
+            );
+        }
+
         String key = formatKey(redisKey, id);
         String json = redisTemplate.opsForValue().get(key);
         if (json == null) return Optional.empty();
+
         try {
             return Optional.of(objectMapper.readValue(json, clazz));
         } catch (IOException e) {
