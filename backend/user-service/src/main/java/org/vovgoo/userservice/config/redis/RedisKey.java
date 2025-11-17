@@ -2,6 +2,8 @@ package org.vovgoo.userservice.config.redis;
 
 import lombok.Getter;
 import org.vovgoo.userservice.dto.security.auth.request.SignUpRequest;
+import org.vovgoo.userservice.dto.user.request.ChangeEmailRequest;
+import org.vovgoo.userservice.dto.user.request.ChangePhoneRequest;
 
 import java.time.Duration;
 
@@ -16,7 +18,10 @@ public enum RedisKey {
     EMAIL_VERIFICATION_LINK("email:verification:%s:link:%s", Duration.ofHours(1), String.class),
     EMAIL_VERIFICATION_ATTEMPTS("email:verification:%s:attempts:%s", Duration.ofMinutes(1), Integer.class),
 
-    REFRESH_TOKEN("refresh:token:%s", Duration.ofDays(15), String.class);
+    REFRESH_TOKEN("refresh:token:%s", Duration.ofDays(15), String.class),
+
+    PHONE_CHANGE_REQUEST("phone:change:%s:%s", Duration.ofHours(1), ChangePhoneRequest.class),
+    EMAIL_CHANGE_REQUEST("email:change:%s:%s", Duration.ofHours(1), ChangeEmailRequest.class);
 
     private final String pattern;
 
