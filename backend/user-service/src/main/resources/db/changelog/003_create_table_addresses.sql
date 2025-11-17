@@ -1,5 +1,5 @@
 CREATE TABLE addresses (
-    id BIGSERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     street VARCHAR(255) NOT NULL,
     city VARCHAR(100) NOT NULL,
     zip VARCHAR(20) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE addresses (
     delivery_instructions VARCHAR(500),
     address_status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     is_default BOOLEAN NOT NULL DEFAULT FALSE,
-    user_id BIGINT NOT NULL,
+    user_id UUID NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

@@ -11,6 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.vovgoo.userservice.entity.enums.AddressStatus;
 
+import java.util.UUID;
+
 @Entity
 @Table(name = "addresses")
 @Data
@@ -20,8 +22,8 @@ import org.vovgoo.userservice.entity.enums.AddressStatus;
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @NotBlank(message = "Страна не может быть пустой")
     @Size(max = 100, message = "Слишком длинная страна")
