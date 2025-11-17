@@ -68,6 +68,7 @@ public class Address {
 
     @NotNull(message = "Статус адреса не может быть пустым")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private AddressStatus addressStatus = AddressStatus.ACTIVE;
 
     @NotNull(message = "Значение по умолчанию не может быть пустым")

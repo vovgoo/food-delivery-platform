@@ -48,6 +48,7 @@ public class User {
 
     @NotNull(message = "Статус пользователя не может быть пустым")
     @Enumerated(EnumType.STRING)
+    @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
     @NotBlank(message = "Пароль не может быть пустым")
