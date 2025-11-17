@@ -9,6 +9,7 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
 import org.vovgoo.userservice.exception.custom.messaging.RedisKeyTypeMismatchException;
@@ -27,6 +28,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             UserNotFoundException.class,
+            AddressNotFound.class,
             RoleNotFoundException.class,
             EntityNotFoundException.class,
             EmailVerificationNotFoundException.class,
