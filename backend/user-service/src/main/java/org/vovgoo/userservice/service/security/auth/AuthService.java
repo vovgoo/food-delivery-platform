@@ -2,7 +2,7 @@ package org.vovgoo.userservice.service.security.auth;
 
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
-import org.vovgoo.userservice.dto.security.auth.response.PhoneVerificationResponse;
+import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 
 public interface AuthService {

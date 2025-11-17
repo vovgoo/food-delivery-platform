@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
-import org.vovgoo.userservice.dto.security.auth.response.PhoneVerificationResponse;
+import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
