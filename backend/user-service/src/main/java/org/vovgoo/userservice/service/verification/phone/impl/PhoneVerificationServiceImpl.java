@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.vovgoo.userservice.config.rabbitmq.enums.RabbitExchange;
 import org.vovgoo.userservice.config.rabbitmq.enums.RabbitRoutingKey;
 import org.vovgoo.userservice.config.redis.RedisKey;
-import org.vovgoo.userservice.config.security.property.VerificationProperty;
+import org.vovgoo.userservice.config.security.property.verification.VerificationProperty;
 import org.vovgoo.userservice.exception.custom.InvalidOtpException;
 import org.vovgoo.userservice.exception.custom.OtpAttemptsExceededException;
 import org.vovgoo.userservice.exception.custom.OtpNotFoundException;

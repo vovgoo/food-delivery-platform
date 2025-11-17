@@ -4,7 +4,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 import org.vovgoo.userservice.config.redis.RedisKey;
-import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
+import org.vovgoo.userservice.config.security.property.jwt.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
 
 import com.nimbusds.jose.jwk.RSAKey;

@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.config.security.property;
+package org.vovgoo.userservice.config.security.property.jwt;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
