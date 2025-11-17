@@ -26,7 +26,7 @@ public class EventPublisher {
 
         try {
             String json = objectMapper.writeValueAsString(payload);
-            rabbitTemplate.convertAndSend(rabbitProperty.getExchangeName(exchange), rabbitProperty.getRoutingKey(routingKey), json);
+            rabbitTemplate.convertAndSend(rabbitProperty.getExchangeName(exchange), routingKey.getName(), json);
         } catch (JsonProcessingException e) {
             throw new RabbitEventSerializationException("Ошибка сериализации события для RabbitMQ", e);
         }

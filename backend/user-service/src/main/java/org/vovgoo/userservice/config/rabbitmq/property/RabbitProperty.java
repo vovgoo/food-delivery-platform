@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.vovgoo.userservice.config.rabbitmq.enums.RabbitExchange;
-import org.vovgoo.userservice.config.rabbitmq.enums.RabbitRoutingKey;
+import org.vovgoo.userservice.config.rabbitmq.enums.RabbitQueue;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,19 +20,11 @@ public class RabbitProperty {
     @Data
     public static class ExchangeConfig {
         private String name;
-        private String type;
     }
 
     @Data
     public static class QueueConfig {
         private String name;
-        private Map<String, BindingConfig> bindings = new HashMap<>();
-    }
-
-    @Data
-    public static class BindingConfig {
-        private String exchange;
-        private String routingKey;
     }
 
     public String getExchangeName(RabbitExchange exchange) {
@@ -43,13 +35,11 @@ public class RabbitProperty {
         return config.getName();
     }
 
-    public String getRoutingKey(RabbitRoutingKey routingKey) {
-        for (QueueConfig queueConfig : queues.values()) {
-            BindingConfig binding = queueConfig.getBindings().get(routingKey.getName());
-            if (binding != null) {
-                return binding.getRoutingKey();
-            }
+    public String getQueueName(RabbitQueue queue) {
+        QueueConfig config = queues.get(queue.getName());
+        if (config == null) {
+            throw new IllegalArgumentException("Queue not found: " + queue.getName());
         }
-        throw new IllegalArgumentException("RoutingKey not found: " + routingKey.getName());
+        return config.getName();
     }
 }

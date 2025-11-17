@@ -27,20 +27,11 @@ app:
     exchanges:
       user-events:
         name: ${USER_EVENTS_EXCHANGE:user.events.exchange}
-        type: direct
     queues:
       phone-verification:
         name: ${PHONE_VERIFICATION_QUEUE:phone.verification.queue}
-        bindings:
-          phone-verification-requested:
-            exchange: user-events
-            routing-key: ${PHONE_VERIFICATION_ROUTING_KEY:phone-verification-requested}
       email-verification:
         name: ${EMAIL_VERIFICATION_QUEUE:email.verification.queue}
-        bindings:
-          email-verification-requested:
-            exchange: user-events
-            routing-key: ${EMAIL_VERIFICATION_ROUTING_KEY:email-verification-requested}
 
   verification:
     phone:

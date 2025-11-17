@@ -42,7 +42,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtPair signIn(SignInRequest signInRequest) {
         User user = userRepository.findByPhone(signInRequest.phone())
-                .orElseThrow(() -> new PhoneAlreadyExistsException(signInRequest.phone()));
+                .orElseThrow(() -> new BadCredentialsException("Неверный номер или телефон"));
 
         if (!passwordEncoder.matches(signInRequest.password(), user.getPasswordHash())) {
             throw new BadCredentialsException("Неверный номер или телефон");
