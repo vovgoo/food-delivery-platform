@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum RabbitQueue {
-    PHONE_VERIFICATION("phone-verification");
+    PHONE_VERIFICATION("phone-verification"),
+    EMAIL_VERIFICATION("email-verification");
 
     private final String name;
 
