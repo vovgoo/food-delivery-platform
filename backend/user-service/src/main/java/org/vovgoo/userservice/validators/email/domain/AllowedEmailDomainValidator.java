@@ -2,15 +2,19 @@ package org.vovgoo.userservice.validators.email.domain;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.vovgoo.userservice.repository.EmailDomainRepository;
 
 @Component
-@RequiredArgsConstructor
 public class AllowedEmailDomainValidator implements ConstraintValidator<AllowedEmailDomain, String> {
 
-    private final EmailDomainRepository emailDomainRepository;
+    private EmailDomainRepository emailDomainRepository;
+
+    @Autowired
+    public void setEmailDomainRepository(EmailDomainRepository emailDomainRepository) {
+        this.emailDomainRepository = emailDomainRepository;
+    }
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
