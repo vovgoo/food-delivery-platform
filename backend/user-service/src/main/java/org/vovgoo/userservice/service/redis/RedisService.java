@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.vovgoo.userservice.config.redis.RedisKey;
-import org.vovgoo.userservice.exception.custom.RedisKeyTypeMismatchException;
-import org.vovgoo.userservice.exception.custom.RedisSerializationException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisKeyTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisSerializationException;
 
 import java.io.IOException;
 import java.util.Optional;

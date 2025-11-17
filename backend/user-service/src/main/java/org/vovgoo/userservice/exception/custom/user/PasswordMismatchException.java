@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom;
+package org.vovgoo.userservice.exception.custom.user;
 
 public class PasswordMismatchException extends RuntimeException {
     public PasswordMismatchException() {

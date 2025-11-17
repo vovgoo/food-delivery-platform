@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom;
+package org.vovgoo.userservice.exception.custom.verification;
 
 public class ChangeEmailRequestNotFoundException extends RuntimeException {
     public ChangeEmailRequestNotFoundException() {

@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom;
+package org.vovgoo.userservice.exception.custom.messaging;
 
 public class RabbitEventTypeMismatchException extends RuntimeException {
   public RabbitEventTypeMismatchException(String message) {

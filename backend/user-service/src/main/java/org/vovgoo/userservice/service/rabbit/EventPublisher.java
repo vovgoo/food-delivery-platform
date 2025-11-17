@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.vovgoo.userservice.config.rabbitmq.enums.RabbitExchange;
 import org.vovgoo.userservice.config.rabbitmq.enums.RabbitRoutingKey;
 import org.vovgoo.userservice.config.rabbitmq.property.RabbitProperty;
-import org.vovgoo.userservice.exception.custom.RabbitEventSerializationException;
-import org.vovgoo.userservice.exception.custom.RabbitEventTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
 
 @Service
 @RequiredArgsConstructor

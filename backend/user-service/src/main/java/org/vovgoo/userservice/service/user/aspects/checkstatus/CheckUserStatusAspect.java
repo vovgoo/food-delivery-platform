@@ -8,9 +8,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.enums.UserStatus;
-import org.vovgoo.userservice.exception.custom.UserBlockedException;
-import org.vovgoo.userservice.exception.custom.UserDeactivatedException;
-import org.vovgoo.userservice.exception.custom.UserNotFoundException;
+import org.vovgoo.userservice.exception.custom.user.UserBlockedException;
+import org.vovgoo.userservice.exception.custom.user.UserDeactivatedException;
+import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.utils.CurrentUserUtils;
 

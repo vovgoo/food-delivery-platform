@@ -9,7 +9,16 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.userservice.exception.custom.*;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisKeyTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisSerializationException;
+import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
+import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
+import org.vovgoo.userservice.exception.custom.security.TokenStrategyNotFoundException;
+import org.vovgoo.userservice.exception.custom.user.*;
+import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.exception.dto.ExceptionResponse;
 import org.vovgoo.userservice.exception.dto.FieldErrors;
 
