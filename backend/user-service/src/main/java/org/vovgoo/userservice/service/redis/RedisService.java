@@ -3,86 +3,63 @@ package org.vovgoo.userservice.service.redis;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
-import org.vovgoo.userservice.config.redis.enums.RedisKey;
-import org.vovgoo.userservice.config.redis.property.RedisProperty;
+import org.vovgoo.userservice.config.redis.RedisKey;
+import org.vovgoo.userservice.exception.custom.RedisKeyTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.RedisSerializationException;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class RedisService {
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private final RedisProperty redisProperty;
+    private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
 
-    public <T> void set(RedisKey redisKey, String id, T value) {
-        if (!redisKey.getType().isAssignableFrom(value.getClass())) {
-            throw new IllegalArgumentException(
-                    "Неверный тип значения для ключа " + redisKey +
-                            ". Ожидался: " + redisKey.getType().getSimpleName() +
-                            ", передан: " + value.getClass().getSimpleName()
+    public void set(RedisKey key, Object value, String... args) {
+        if (!key.getValueType().isInstance(value)) {
+            throw new RedisKeyTypeMismatchException(
+                    "Несоответствие типа для ключа " + key.name() +
+                            ". Ожидалось " + key.getValueType().getSimpleName() +
+                            ", получили " + value.getClass().getSimpleName()
             );
         }
 
         try {
             String json = objectMapper.writeValueAsString(value);
-            String key = formatKey(redisKey, id);
-            Duration ttl = getTtl(redisKey);
-            redisTemplate.opsForValue().set(key, json, ttl);
+            String redisKey = key.buildKey(args);
+            redisTemplate.opsForValue().set(redisKey, json, key.getTtl());
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Ошибка сериализации объекта для Redis", e);
+            throw new RedisSerializationException("Ошибка сериализации объекта для Redis", e);
         }
     }
 
-
-    public <T> Optional<T> get(RedisKey redisKey, String id, Class<T> clazz) {
-        if (!redisKey.getType().isAssignableFrom(clazz)) {
-            throw new IllegalArgumentException(
-                    "Неверный тип для чтения ключа " + redisKey +
-                            ". Ожидался: " + redisKey.getType().getSimpleName() +
-                            ", запрошен: " + clazz.getSimpleName()
+    public <T> Optional<T> get(RedisKey key, Class<T> clazz, String... args) {
+        if (!key.getValueType().equals(clazz)) {
+            throw new RedisKeyTypeMismatchException(
+                    "Несоответствие типа при чтении ключа " + key.name() +
+                            ". Ожидалось " + key.getValueType().getSimpleName() +
+                            ", запросили " + clazz.getSimpleName()
             );
         }
 
-        String key = formatKey(redisKey, id);
-        String json = redisTemplate.opsForValue().get(key);
+        String redisKey = key.buildKey(args);
+        String json = redisTemplate.opsForValue().get(redisKey);
+
         if (json == null) return Optional.empty();
 
         try {
             return Optional.of(objectMapper.readValue(json, clazz));
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка десериализации объекта из Redis", e);
+            throw new RedisSerializationException("Ошибка десериализации объекта из Redis", e);
         }
     }
 
-    public void delete(RedisKey redisKey, String id) {
-        String key = formatKey(redisKey, id);
-        redisTemplate.delete(key);
-    }
-
-    private String formatKey(RedisKey redisKey, String id) {
-        if (id == null || id.isBlank()) {
-            throw new IllegalArgumentException("ID для RedisKey не может быть пустым");
-        }
-
-        RedisProperty.RedisKeyConfig config = redisProperty.getKeyConfig(redisKey);
-        if (config == null || config.getKey() == null || config.getKey().isBlank()) {
-            throw new IllegalStateException("Ключ для " + redisKey.getKey() + " не задан в конфигурации");
-        }
-
-        return config.getKey() + ":" + id;
-    }
-
-    private Duration getTtl(RedisKey redisKey) {
-        RedisProperty.RedisKeyConfig config = redisProperty.getKeyConfig(redisKey);
-        if (config == null || config.getTtlMs() == null) {
-            throw new IllegalStateException("TTL для ключа " + redisKey.getKey() + " не задан в конфигурации");
-        }
-        return Duration.ofMillis(config.getTtlMs());
+    public void delete(RedisKey key, String... args) {
+        String redisKey = key.buildKey(args);
+        redisTemplate.delete(redisKey);
     }
 }

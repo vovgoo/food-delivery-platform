@@ -35,24 +35,18 @@ app:
           phone-verification-requested:
             exchange: user-events
             routing-key: ${PHONE_VERIFICATION_ROUTING_KEY:phone-verification-requested}
+      email-verification:
+        name: ${EMAIL_VERIFICATION_QUEUE:email.verification.queue}
+        bindings:
+          email-verification-requested:
+            exchange: user-events
+            routing-key: ${EMAIL_VERIFICATION_ROUTING_KEY:email-verification-requested}
 
-  redis:
-    keys:
-      signup-request:
-        key: ${REDIS_KEY_SIGNUP_REQUEST:signup:request}
-        ttl-ms: ${REDIS_TTL_SIGNUP_REQUEST:300000}
-      phone-verification-code:
-        key: ${REDIS_KEY_PHONE_VERIFICATION_CODE:phone:verification:code}
-        ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_CODE:300000}
-      phone-verification-rate-limit:
-        key: ${REDIS_KEY_PHONE_VERIFICATION_RATE_LIMIT:phone:verification:rate-limit}
-        ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_RATE_LIMIT:60000}
-      phone-verification-attempts:
-        key: ${REDIS_KEY_PHONE_VERIFICATION_ATTEMPTS:phone:verification:attempts}
-        ttl-ms: ${REDIS_TTL_PHONE_VERIFICATION_ATTEMPTS:300000}
-      refresh-token:
-        key: ${REDIS_KEY_REFRESH_TOKEN:refresh:token}
-        ttl-ms: ${REDIS_TTL_REFRESH_TOKEN:1296000000}
+  verification:
+    phone:
+      max-attempts: ${PHONE_VERIFICATION_MAX_ATTEMPTS:10}
+    email:
+      max-attempts: ${EMAIL_VERIFICATION_MAX_ATTEMPTS:10}
 
   jwt:
     keys:
