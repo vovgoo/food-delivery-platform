@@ -88,8 +88,6 @@ public class GlobalExceptionHandler {
             RuntimeException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
-
-        ex.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
     }
