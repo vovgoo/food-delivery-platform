@@ -22,7 +22,9 @@ public class GlobalExceptionHandler {
             EntityNotFoundException.class,
             EmailVerificationNotFoundException.class,
             OtpNotFoundException.class,
-            SignUpRequestNotFoundException.class
+            SignUpRequestNotFoundException.class,
+            ChangePhoneRequestNotFoundException.class,
+            ChangeEmailRequestNotFoundException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -64,6 +66,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             InvalidOtpException.class,
+            PasswordMismatchException.class,
             MethodArgumentNotValidException.class
     })
     public ResponseEntity<ExceptionResponse<?>> handleBadRequest(Exception ex, HttpServletRequest request) {
@@ -90,5 +93,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
+    }
+
+    @ExceptionHandler({
+            UserBlockedException.class,
+            UserDeactivatedException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleUserStatus(RuntimeException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.FORBIDDEN, request.getRequestURI()));
     }
 }
