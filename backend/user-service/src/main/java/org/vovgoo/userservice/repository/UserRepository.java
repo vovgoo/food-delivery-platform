@@ -5,10 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.vovgoo.userservice.entity.User;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByPhone(String phone);
 
     @Query("select u from User u left join fetch u.roles r where u.email = :email")
     Optional<User> findByEmailWithRoles(String email);
