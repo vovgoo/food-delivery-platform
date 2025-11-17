@@ -5,10 +5,12 @@ import com.nimbusds.jose.jwk.RSAKey;
 import io.jsonwebtoken.*;
 import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
+import org.vovgoo.userservice.exception.custom.InvalidJwtTokenException;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.UUID;
 
 public abstract class TokenStrategy {
 
@@ -57,11 +59,11 @@ public abstract class TokenStrategy {
                     .parseClaimsJws(token)
                     .getBody();
         } catch (JwtException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid JWT token", e);
+            throw new InvalidJwtTokenException();
         }
     }
 
-    public Long extractUserId(String token) {
-        return parseClaims(token).get("userId", Long.class);
+    public UUID extractUserId(String token) {
+        return parseClaims(token).get("userId", UUID.class);
     }
 }

@@ -3,7 +3,7 @@ package org.vovgoo.userservice.service.security.jwt.strategy;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
-import org.vovgoo.userservice.config.redis.enums.RedisKey;
+import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
 
@@ -12,6 +12,7 @@ import org.vovgoo.userservice.service.redis.RedisService;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class RefreshTokenStrategy extends TokenStrategy {
@@ -39,7 +40,7 @@ public class RefreshTokenStrategy extends TokenStrategy {
                 .signWith(getPrivateKey(), SignatureAlgorithm.RS256)
                 .compact();
 
-        redisService.set(RedisKey.REFRESH_TOKEN, user.getId().toString(), token);
+        redisService.set(RedisKey.REFRESH_TOKEN, token, String.valueOf(user.getId()));
 
         return token;
     }
@@ -48,9 +49,9 @@ public class RefreshTokenStrategy extends TokenStrategy {
     public boolean validateToken(String token) {
         if (!super.validateToken(token)) return false;
 
-        Long userId = extractUserId(token);
+        UUID userId = extractUserId(token);
 
-        return redisService.get(RedisKey.REFRESH_TOKEN, userId.toString(), String.class)
+        return redisService.get(RedisKey.REFRESH_TOKEN, String.class, String.valueOf(userId))
                 .map(storedToken -> storedToken.equals(token))
                 .orElse(false);
     }
