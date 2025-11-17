@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.dto.security.auth.response;
+package org.vovgoo.userservice.dto.verification.response;
 
 import lombok.Builder;
 
