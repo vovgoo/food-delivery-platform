@@ -3,7 +3,7 @@ package org.vovgoo.userservice.dto.security.auth.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import org.vovgoo.userservice.validators.phone.Phone;
+import org.vovgoo.validators.phone.Phone;
 
 @Schema(description = "Request for user sign-in")
 public record SignInRequest(

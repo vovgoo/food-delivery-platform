@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.validators.phone;
+package org.vovgoo.validators.phone;
 
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;

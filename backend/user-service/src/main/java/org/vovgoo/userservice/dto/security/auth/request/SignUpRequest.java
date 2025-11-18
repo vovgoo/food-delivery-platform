@@ -2,7 +2,7 @@ package org.vovgoo.userservice.dto.security.auth.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import org.vovgoo.userservice.validators.phone.Phone;
+import org.vovgoo.validators.phone.Phone;
 
 import java.time.LocalDate;
 
