@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @CheckUserStatus
     public UserResponse getProfile() {
         User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
@@ -179,7 +180,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CheckUserStatus
+    @CheckUserStatus(forbidden = {UserStatus.BLOCKED, UserStatus.ACTIVE})
     public void reactivateAccount() {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);

@@ -8,9 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.enums.UserStatus;
-import org.vovgoo.userservice.exception.custom.user.UserBlockedException;
-import org.vovgoo.userservice.exception.custom.user.UserDeactivatedException;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.utils.CurrentUserUtils;
 
@@ -23,21 +21,30 @@ public class CheckUserStatusAspect {
 
     private final UserRepository userRepository;
 
-    @Around("@annotation(org.vovgoo.userservice.service.user.aspects.checkstatus.CheckUserStatus)")
-    public Object checkStatus(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(check)")
+    public Object checkStatus(ProceedingJoinPoint joinPoint, CheckUserStatus check) throws Throwable {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        if (user.getStatus() == UserStatus.BLOCKED) {
-            throw new UserBlockedException();
-        }
+        UserStatus status = user.getStatus();
 
-        if (user.getStatus() == UserStatus.DEACTIVATED) {
-            throw new UserDeactivatedException();
+        for (UserStatus forbidden : check.forbidden()) {
+            if (status == forbidden) {
+                throw exceptionForStatus(status);
+            }
         }
 
         return joinPoint.proceed();
+    }
+
+    private RuntimeException exceptionForStatus(UserStatus status) {
+        return switch (status) {
+            case BLOCKED -> new UserBlockedException();
+            case DEACTIVATED -> new UserDeactivatedException();
+            case ACTIVE -> new UserActiveException();
+            default -> new UnsupportedUserStatusException(status);
+        };
     }
 }

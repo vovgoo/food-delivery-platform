@@ -46,8 +46,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    @CheckUserStatus
     @Transactional
+    @CheckUserStatus
     public AddressResponse create(CreateAddressRequest createAddressRequest) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -77,8 +77,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    @CheckUserStatus
     @Transactional
+    @CheckUserStatus
     public void remove(UUID id) {
         Address address = addressRepository.findById(id)
                 .orElseThrow(AddressNotFound::new);
@@ -90,8 +90,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    @CheckUserStatus
     @Transactional
+    @CheckUserStatus
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 

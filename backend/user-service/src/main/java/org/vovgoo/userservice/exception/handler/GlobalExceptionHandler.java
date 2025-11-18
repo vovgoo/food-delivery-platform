@@ -59,7 +59,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             EmailAlreadyExistsException.class,
-            PhoneAlreadyExistsException.class
+            PhoneAlreadyExistsException.class,
+            UserActiveException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -98,6 +99,7 @@ public class GlobalExceptionHandler {
             RedisKeyTypeMismatchException.class,
             RedisSerializationException.class,
             TokenStrategyNotFoundException.class,
+            UnsupportedUserStatusException.class,
             InvalidJwtTokenException.class,
             RuntimeException.class
     })
