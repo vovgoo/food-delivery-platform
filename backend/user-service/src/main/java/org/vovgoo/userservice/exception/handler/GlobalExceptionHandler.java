@@ -9,6 +9,8 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.vovgoo.dto.exception.ExceptionResponse;
+import org.vovgoo.dto.exception.FieldErrors;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
@@ -20,8 +22,6 @@ import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenExcep
 import org.vovgoo.userservice.exception.custom.security.TokenStrategyNotFoundException;
 import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.exception.custom.verification.*;
-import org.vovgoo.userservice.exception.dto.ExceptionResponse;
-import org.vovgoo.userservice.exception.dto.FieldErrors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

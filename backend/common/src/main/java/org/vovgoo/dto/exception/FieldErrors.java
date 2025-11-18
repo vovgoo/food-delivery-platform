@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.exception.dto;
+package org.vovgoo.dto.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

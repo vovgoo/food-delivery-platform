@@ -13,11 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
-import org.vovgoo.userservice.exception.dto.ExceptionResponse;
 import org.vovgoo.userservice.service.address.AddressService;
 
 import java.util.UUID;

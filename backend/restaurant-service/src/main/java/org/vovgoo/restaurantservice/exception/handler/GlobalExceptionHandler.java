@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.vovgoo.restaurantservice.exception.custom.DishNotBelongsToRestaurantException;
 import org.vovgoo.restaurantservice.exception.custom.DishNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.RestaurantNotFoundException;
-import org.vovgoo.restaurantservice.exception.dto.ExceptionResponse;
-import org.vovgoo.restaurantservice.exception.dto.FieldErrors;
+import org.vovgoo.dto.exception.ExceptionResponse;
+import org.vovgoo.dto.exception.FieldErrors;
 
 import java.nio.file.AccessDeniedException;
 
