@@ -18,6 +18,4 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query("select u from User u left join fetch u.roles r where u.id = :id")
     Optional<User> findByIdWithRoles(UUID id);
-
-    boolean existsByEmail(String email);
 }
