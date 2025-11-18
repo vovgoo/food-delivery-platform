@@ -4,9 +4,9 @@ databaseChangeLog:
   - include:
       file: db/changelog/002_create_table_dishes.sql
   - include:
-      file: db/changelog/003_add_constraints_restaurants.sql
+      file: db/changelog/003_create_table_restaurant_images.sql
   - include:
-      file: db/changelog/004_add_constraints_dishes.sql
+      file: db/changelog/004_create_table_dish_images.sql
   - include:
       file: db/changelog/005_add_foreign_keys.sql
   - include:
