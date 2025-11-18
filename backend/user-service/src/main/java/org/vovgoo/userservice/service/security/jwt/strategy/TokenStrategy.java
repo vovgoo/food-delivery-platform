@@ -64,6 +64,6 @@ public abstract class TokenStrategy {
     }
 
     public UUID extractUserId(String token) {
-        return parseClaims(token).get("userId", UUID.class);
+        return UUID.fromString(parseClaims(token).get("userId", String.class));
     }
 }
