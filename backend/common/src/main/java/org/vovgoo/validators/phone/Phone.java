@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.validators.phone;
+package org.vovgoo.validators.phone;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

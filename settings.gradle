@@ -1,5 +1,6 @@
 rootProject.name = 'food-delivery-platform'
 
+include 'backend:common'
 include 'backend:user-service'
 include 'backend:restaurant-service'
 include 'backend:order-service'
@@ -7,3 +8,4 @@ include 'backend:notification-service'
 include 'backend:api-gateway'
 include 'backend:eureka-server'
 include 'backend:config-server'
+include 'backend:common'
