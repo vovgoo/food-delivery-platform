@@ -39,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
 
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
 
-        Page<AddressResponse> addresses = addressRepository.findAllByUserIdAndAddressStatus(pageRequest, userId, AddressStatus.ACTIVE)
+        Page<AddressResponse> addresses = addressRepository.findAllByUserIdAndAddressStatus(pageRequest, userId)
                 .map(addressMapper::toResponse);
 
         return PageResponse.of(addresses);
@@ -54,7 +54,7 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        addressRepository.findByUserIdAndIsDefault(userId, true)
+        addressRepository.findDefaultByUserId(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address address = Address.builder()
@@ -96,7 +96,7 @@ public class AddressServiceImpl implements AddressService {
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        addressRepository.findByUserIdAndIsDefault(userId, true)
+        addressRepository.findDefaultByUserId(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address newDefault = addressRepository.findByIdAndUserId(id, userId)

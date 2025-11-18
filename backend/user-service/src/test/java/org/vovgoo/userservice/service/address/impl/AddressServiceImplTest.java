@@ -57,7 +57,7 @@ class AddressServiceImplTest {
         AddressResponse response = new AddressResponse(UUID.randomUUID(), "test", "test", "test", "test","test", "test", "test", "test", "test", true);
         Page<Address> page = new PageImpl<>(List.of(address));
 
-        when(addressRepository.findAllByUserIdAndAddressStatus(any(Pageable.class), eq(currentUserId), eq(AddressStatus.ACTIVE)))
+        when(addressRepository.findAllByUserIdAndAddressStatus(any(Pageable.class), eq(currentUserId)))
                 .thenReturn(page);
         when(addressMapper.toResponse(address)).thenReturn(response);
 
@@ -72,7 +72,7 @@ class AddressServiceImplTest {
         PageParams pageParams = new PageParams(0, 10);
         Page<Address> page = Page.empty();
 
-        when(addressRepository.findAllByUserIdAndAddressStatus(any(Pageable.class), eq(currentUserId), eq(AddressStatus.ACTIVE)))
+        when(addressRepository.findAllByUserIdAndAddressStatus(any(Pageable.class), eq(currentUserId)))
                 .thenReturn(page);
 
         PageResponse<AddressResponse> result = addressService.getAll(pageParams);
@@ -93,7 +93,7 @@ class AddressServiceImplTest {
         );
 
         when(userRepository.findById(currentUserId)).thenReturn(Optional.of(user));
-        when(addressRepository.findByUserIdAndIsDefault(currentUserId, true)).thenReturn(Optional.of(currentDefault));
+        when(addressRepository.findDefaultByUserId(currentUserId)).thenReturn(Optional.of(currentDefault));
         when(addressRepository.save(any(Address.class))).thenAnswer(invocation -> invocation.getArgument(0));
         when(addressMapper.toResponse(any(Address.class))).thenReturn(response);
 
@@ -141,7 +141,7 @@ class AddressServiceImplTest {
         Address currentDefault = Address.builder().isDefault(true).build();
         Address newDefault = Address.builder().isDefault(false).build();
 
-        when(addressRepository.findByUserIdAndIsDefault(currentUserId, true)).thenReturn(Optional.of(currentDefault));
+        when(addressRepository.findDefaultByUserId(currentUserId)).thenReturn(Optional.of(currentDefault));
         when(addressRepository.findByIdAndUserId(newDefaultId, currentUserId)).thenReturn(Optional.of(newDefault));
 
         addressService.setDefault(newDefaultId);

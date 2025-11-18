@@ -75,7 +75,7 @@ class UserServiceImplTest {
         );
 
         when(userRepository.findByIdWithRoles(currentUserId)).thenReturn(Optional.of(user));
-        when(addressRepository.findByUserIdAndIsDefault(currentUserId, true)).thenReturn(Optional.of(address));
+        when(addressRepository.findDefaultByUserId(currentUserId)).thenReturn(Optional.of(address));
         when(userMapper.toResponse(user, address)).thenReturn(response);
 
         UserResponse result = userService.getProfile();
@@ -115,7 +115,7 @@ class UserServiceImplTest {
 
         when(userRepository.findByIdWithRoles(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
-        when(addressRepository.findByUserIdAndIsDefault(userId, true)).thenReturn(Optional.of(address));
+        when(addressRepository.findDefaultByUserId(userId)).thenReturn(Optional.of(address));
         when(userMapper.toResponse(user, address)).thenReturn(response);
 
         UserResponse result = userService.updateUserProfile(request);

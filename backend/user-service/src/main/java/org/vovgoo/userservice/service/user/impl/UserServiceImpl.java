@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Address address = addressRepository.findByUserIdAndIsDefault(user.getId(), true)
+        Address address = addressRepository.findDefaultByUserId(user.getId())
                 .orElse(null);
 
         return userMapper.toResponse(user, address);
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        Address address = addressRepository.findByUserIdAndIsDefault(user.getId(), true)
+        Address address = addressRepository.findDefaultByUserId(user.getId())
                 .orElse(null);
 
         return userMapper.toResponse(user, address);
