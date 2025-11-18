@@ -5,16 +5,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.vovgoo.userservice.entity.User;
 
 import java.util.Optional;
+import java.util.UUID;
 
-public interface UserRepository extends JpaRepository<User,Long> {
+public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
 
-    @Query("select u from User u left join fetch u.roles r where u.email = :email")
-    Optional<User> findByEmailWithRoles(String email);
+    Optional<User> findByPhone(String phone);
 
-    @Query("select u from User u left join fetch u.roles left join fetch u.addresses where u.id = :id")
-    Optional<User> findByIdWithRolesAndAddresses(Long id);
+    @Query("select u from User u left join fetch u.roles r where u.phone = :phone")
+    Optional<User> findByPhoneWithRoles(String phone);
 
-    boolean existsByEmail(String email);
+    @Query("select u from User u left join fetch u.roles r where u.id = :id")
+    Optional<User> findByIdWithRoles(UUID id);
 }

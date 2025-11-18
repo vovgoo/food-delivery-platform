@@ -9,69 +9,111 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.userservice.exception.custom.EmailAlreadyExistsException;
-import org.vovgoo.userservice.exception.custom.InvalidRefreshTokenException;
-import org.vovgoo.userservice.exception.custom.RoleNotFoundException;
-import org.vovgoo.userservice.exception.custom.UserNotFoundException;
+import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisKeyTypeMismatchException;
+import org.vovgoo.userservice.exception.custom.messaging.RedisSerializationException;
+import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
+import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
+import org.vovgoo.userservice.exception.custom.security.TokenStrategyNotFoundException;
+import org.vovgoo.userservice.exception.custom.user.*;
+import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.exception.dto.ExceptionResponse;
 import org.vovgoo.userservice.exception.dto.FieldErrors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleUserNotFoundException(UserNotFoundException ex, HttpServletRequest request) {
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            AddressNotFound.class,
+            RoleNotFoundException.class,
+            EntityNotFoundException.class,
+            EmailVerificationNotFoundException.class,
+            OtpNotFoundException.class,
+            SignUpRequestNotFoundException.class,
+            ChangePhoneRequestNotFoundException.class,
+            ChangeEmailRequestNotFoundException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
     }
 
-    @ExceptionHandler(RoleNotFoundException.class)
-    public ResponseEntity<ExceptionResponse<String>>  handleRoleNotFoundException(RoleNotFoundException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
-    }
-
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleEntityNotFoundException(EntityNotFoundException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
-    }
-
-    @ExceptionHandler(InvalidRefreshTokenException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleInvalidRefreshTokenException(InvalidRefreshTokenException ex, HttpServletRequest request) {
+    @ExceptionHandler({
+            BadCredentialsException.class,
+            InvalidRefreshTokenException.class,
+            AuthorizationDeniedException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleUnauthorized(RuntimeException ex, HttpServletRequest request) {
+        String message = ex instanceof BadCredentialsException ?
+                "Неверный телефон или пароль" : ex.getMessage();
+        if (ex instanceof AuthorizationDeniedException) {
+            message = "Требуется аутентификация";
+        }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+                .body(ExceptionResponse.of(message, HttpStatus.UNAUTHORIZED, request.getRequestURI()));
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.of("Неверный email или пароль", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
-    }
-
-    @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleEmailAlreadyExistsException(EmailAlreadyExistsException ex, HttpServletRequest request) {
+    @ExceptionHandler({
+            EmailAlreadyExistsException.class,
+            PhoneAlreadyExistsException.class,
+            UserActiveException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.CONFLICT, request.getRequestURI()));
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ExceptionResponse<FieldErrors>>  handleMethodArgumentNotValidException(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
+    @ExceptionHandler({
+            EmailVerificationAttemptsExceededException.class,
+            OtpAttemptsExceededException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleTooManyRequests(RuntimeException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.TOO_MANY_REQUESTS, request.getRequestURI()));
+    }
+
+    @ExceptionHandler({
+            InvalidOtpException.class,
+            PasswordMismatchException.class,
+            MethodArgumentNotValidException.class
+    })
+    public ResponseEntity<ExceptionResponse<?>> handleBadRequest(Exception ex, HttpServletRequest request) {
+
+        if (ex instanceof MethodArgumentNotValidException manv) {
+            FieldErrors fieldErrors = new FieldErrors(manv.getBindingResult().getFieldErrors());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
+        }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
 
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<ExceptionResponse<String>> handleAuthorizationDeniedException(AuthorizationDeniedException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.of("Требуется аутентификация", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
-    }
-
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ExceptionResponse<String>>  handleRuntimeExceptions(RuntimeException ex, HttpServletRequest request) {
+    @ExceptionHandler({
+            RabbitEventSerializationException.class,
+            RabbitEventTypeMismatchException.class,
+            RedisKeyTypeMismatchException.class,
+            RedisSerializationException.class,
+            TokenStrategyNotFoundException.class,
+            UnsupportedUserStatusException.class,
+            InvalidJwtTokenException.class,
+            RuntimeException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ExceptionResponse.of("Внутренняя ошибка сервера", HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
+    }
+
+    @ExceptionHandler({
+            UserBlockedException.class,
+            UserDeactivatedException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleUserStatus(RuntimeException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.FORBIDDEN, request.getRequestURI()));
     }
 }

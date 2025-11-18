@@ -1,6 +1,22 @@
 version: '3.8'
 
 services:
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+
+  redis-user:
+    image: redis:7-alpine
+    container_name: redis-user
+    ports:
+      - "6379:6379"
+
   postgres-user:
     image: postgres:15-alpine
     container_name: postgres-user
