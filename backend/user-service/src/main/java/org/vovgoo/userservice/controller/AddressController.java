@@ -1,5 +1,6 @@
 package org.vovgoo.userservice.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/address")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class AddressController {
 
     private final AddressService addressService;
