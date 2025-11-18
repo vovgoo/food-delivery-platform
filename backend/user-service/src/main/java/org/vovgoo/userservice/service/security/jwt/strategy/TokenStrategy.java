@@ -46,7 +46,7 @@ public abstract class TokenStrategy {
         try {
             Claims claims = parseClaims(token);
             return getType().name().equals(claims.get("type", String.class));
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (InvalidJwtTokenException e) {
             return false;
         }
     }
