@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtPair signIn(SignInRequest signInRequest) {
-        User user = userRepository.findByPhone(signInRequest.phone())
+        User user = userRepository.findByPhoneWithRoles(signInRequest.phone())
                 .orElseThrow(() -> new BadCredentialsException("Неверный номер или телефон"));
 
         if (!passwordEncoder.matches(signInRequest.password(), user.getPasswordHash())) {
@@ -121,7 +121,7 @@ public class AuthServiceImpl implements AuthService {
 
         UUID userId = jwtTokenProvider.extractUserId(JwtTokenType.REFRESH, refreshToken);
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdWithRoles(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         String newAccessToken = jwtTokenProvider.generateToken(JwtTokenType.ACCESS, user);
