@@ -13,11 +13,8 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByPhone(String phone);
 
-    @Query("select u from User u left join fetch u.roles r where u.email = :email")
-    Optional<User> findByEmailWithRoles(String email);
-
-    @Query("select u from User u left join fetch u.roles left join fetch u.addresses where u.id = :id")
-    Optional<User> findByIdWithRolesAndAddresses(Long id);
+    @Query("select u from User u left join fetch u.roles r where u.id = :id")
+    Optional<User> findByIdWithRoles(UUID id);
 
     boolean existsByEmail(String email);
 }

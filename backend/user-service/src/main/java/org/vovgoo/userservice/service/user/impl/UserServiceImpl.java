@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getProfile() {
-        User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
+        User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         Address address = addressRepository.findByUserIdAndIsDefault(user.getId(), true)
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @CheckUserStatus
     public UserResponse updateUserProfile(UpdateUserProfileRequest updateUserProfileRequest) {
-        User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
+        User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         user.setFullName(updateUserProfileRequest.fullName());
