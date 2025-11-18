@@ -54,7 +54,8 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        addressRepository.resetDefaultForUser(userId);
+        addressRepository.findByUserIdAndIsDefault(userId, true)
+                .ifPresent(current -> current.setDefault(false));
 
         Address address = Address.builder()
                 .country(createAddressRequest.country())
@@ -80,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
     @Transactional
     @CheckUserStatus
     public void remove(UUID id) {
-        Address address = addressRepository.findById(id)
+        Address address = addressRepository.findByIdAndUserId(id, CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(AddressNotFound::new);
 
         address.setDefault(false);
@@ -95,13 +96,14 @@ public class AddressServiceImpl implements AddressService {
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        Address address = addressRepository.findById(id)
+        addressRepository.findByUserIdAndIsDefault(userId, true)
+                .ifPresent(current -> current.setDefault(false));
+
+        Address newDefault = addressRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(AddressNotFound::new);
 
-        addressRepository.resetDefaultForUser(userId);
+        newDefault.setDefault(true);
 
-        address.setDefault(true);
-
-        addressRepository.save(address);
+        addressRepository.save(newDefault);
     }
 }
