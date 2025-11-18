@@ -2,7 +2,7 @@ package org.vovgoo.userservice.dto.user.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
-import org.vovgoo.userservice.validators.phone.Phone;
+import org.vovgoo.validators.phone.Phone;
 
 @Schema(description = "Request to change user's phone number")
 public record ChangePhoneRequest(

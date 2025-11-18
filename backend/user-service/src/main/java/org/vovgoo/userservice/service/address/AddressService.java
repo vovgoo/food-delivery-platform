@@ -1,9 +1,9 @@
 package org.vovgoo.userservice.service.address;
 
+import org.vovgoo.dto.pageable.PageParams;
+import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
-import org.vovgoo.userservice.dto.common.PageParams;
-import org.vovgoo.userservice.dto.common.PageResponse;
 
 import java.util.UUID;
 
