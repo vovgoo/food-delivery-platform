@@ -23,7 +23,7 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("User Service API")
                         .version("v1.0")
-                        .description("API для работы с пользователями, регистрацией, профилем и адресами.")
+                        .description("API for managing users, registration, profiles, and addresses.")
                         .contact(new Contact()
                                 .name("vovgoo")
                                 .email("vov.gonchar05@gmail.com")))
