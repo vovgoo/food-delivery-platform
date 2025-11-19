@@ -2,6 +2,7 @@ package org.vovgoo.restaurantservice.service.image.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.client.MultipartBodyBuilder;
@@ -22,9 +23,14 @@ public class ImageServiceImpl implements ImageService {
     private final ImgbbProperties imgbbProperties;
     private final ObjectMapper objectMapper;
 
-    private final WebClient webClient = WebClient.builder()
-            .baseUrl(imgbbProperties.getEndpoint())
-            .build();
+    private WebClient webClient;
+
+    @PostConstruct
+    private void init() {
+        this.webClient = WebClient.builder()
+                .baseUrl(imgbbProperties.getEndpoint())
+                .build();
+    }
 
     public String uploadImage(MultipartFile file) {
 
