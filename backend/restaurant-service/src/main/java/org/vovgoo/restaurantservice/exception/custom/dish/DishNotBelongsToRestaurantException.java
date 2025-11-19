@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.exception.custom;
+package org.vovgoo.restaurantservice.exception.custom.dish;
 
 public class DishNotBelongsToRestaurantException extends RuntimeException {
     public DishNotBelongsToRestaurantException(Long dishId, Long restaurantId) {

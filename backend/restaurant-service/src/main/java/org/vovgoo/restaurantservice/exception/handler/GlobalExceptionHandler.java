@@ -7,9 +7,9 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.restaurantservice.exception.custom.DishNotBelongsToRestaurantException;
-import org.vovgoo.restaurantservice.exception.custom.DishNotFoundException;
-import org.vovgoo.restaurantservice.exception.custom.RestaurantNotFoundException;
+import org.vovgoo.restaurantservice.exception.custom.dish.DishNotBelongsToRestaurantException;
+import org.vovgoo.restaurantservice.exception.custom.dish.DishNotFoundException;
+import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.exception.FieldErrors;
 
