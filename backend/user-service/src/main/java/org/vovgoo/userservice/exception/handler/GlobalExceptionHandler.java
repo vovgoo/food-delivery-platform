@@ -98,8 +98,7 @@ public class GlobalExceptionHandler {
             RedisKeyTypeMismatchException.class,
             RedisSerializationException.class,
             TokenStrategyNotFoundException.class,
-            InvalidJwtTokenException.class,
-            RuntimeException.class
+            InvalidJwtTokenException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
