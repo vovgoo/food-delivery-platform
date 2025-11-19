@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.URL;
 
 import java.util.UUID;
 
@@ -23,9 +24,10 @@ public class RestaurantImage {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotBlank(message = "Имя файла не может быть пустым")
-    @Size(max = 255, message = "Имя файла не должно превышать 255 символов")
-    private String filename;
+    @NotBlank(message = "URL не может быть пустым")
+    @Size(max = 255, message = "URL не должно превышать 255 символов")
+    @URL(message = "URL должен быть корректным")
+    private String url;
 
     @NotNull
     private Boolean isProfile = false;
