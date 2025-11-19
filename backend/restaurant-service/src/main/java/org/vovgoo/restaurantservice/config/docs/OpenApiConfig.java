@@ -4,10 +4,13 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springdoc.core.customizers.OpenApiCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
@@ -15,16 +18,15 @@ public class OpenApiConfig {
     private static final String SECURITY_SCHEME_NAME = "bearerAuth";
 
     @Bean
-    public OpenAPI restaurantServiceOpenAPI() {
+    public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
                         .title("Restaurant Service API")
-                        .version("1.0.0")
-                        .description("API сервиса для управления ресторанами и блюдами.")
+                        .version("v1.0")
+                        .description("API for managing restaurants and dishes.")
                         .contact(new Contact()
                                 .name("vovgoo")
-                                .email("vov.gonchar05@gmail.com"))
-                )
+                                .email("vov.gonchar05@gmail.com")))
                 .components(new Components()
                         .addSecuritySchemes(SECURITY_SCHEME_NAME,
                                 new SecurityScheme()
@@ -32,8 +34,11 @@ public class OpenApiConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                        )
-                )
-                .addSecurityItem(new SecurityRequirement().addList(SECURITY_SCHEME_NAME));
+                        ));
+    }
+
+    @Bean
+    public OpenApiCustomizer serversCustomizer() {
+        return openApi -> openApi.setServers(List.of(new Server().url("/")));
     }
 }
