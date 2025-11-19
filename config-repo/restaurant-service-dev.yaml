@@ -11,6 +11,11 @@ spring:
     hibernate:
       ddl-auto: validate
 
+app:
+  imgbb:
+    api-key: ${IMGBB_API_KEY:b597b3ceaef618dbae0551fe2fb90a86}
+    endpoint: ${IMGBB_ENDPOINT:https://api.imgbb.com/1/upload}
+
 springdoc:
   swagger-ui:
     enabled: true
