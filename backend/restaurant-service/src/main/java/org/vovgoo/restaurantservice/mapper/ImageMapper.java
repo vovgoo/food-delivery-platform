@@ -10,8 +10,10 @@ import org.vovgoo.restaurantservice.entity.RestaurantImage;
 public interface ImageMapper {
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "url", source = "url")
     ImageResponse toResponse(DishImage dishImage);
 
     @Mapping(target = "id", source = "id")
+    @Mapping(target = "url", source = "url")
     ImageResponse toResponse(RestaurantImage restaurantImage);
 }
