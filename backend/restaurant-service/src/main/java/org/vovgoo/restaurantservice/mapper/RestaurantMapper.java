@@ -21,6 +21,6 @@ public interface RestaurantMapper {
     @Mapping(target = "deliveryAvailable", source = "deliveryAvailable")
     @Mapping(target = "parkingAvailable", source = "parkingAvailable")
     @Mapping(target = "status", source = "status")
-    @Mapping(target = "images", source = "images")
+    @Mapping(target = "images", expression = "java(restaurant.getImages().stream().filter(i -> !i.getIsProfile()).map(ImageMapper.INSTANCE::toResponse).toList())")
     RestaurantResponse toResponse(Restaurant restaurant);
 }
