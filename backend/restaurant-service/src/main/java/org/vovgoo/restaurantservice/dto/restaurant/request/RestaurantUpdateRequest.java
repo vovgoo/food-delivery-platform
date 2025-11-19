@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
 import org.vovgoo.restaurantservice.entity.enums.RestaurantStatus;
+import org.vovgoo.restaurantservice.validation.restaurant.status.AllowedRestaurantStatus;
 import org.vovgoo.validators.phone.Phone;
 
 import java.time.LocalTime;
@@ -47,5 +48,7 @@ public record RestaurantUpdateRequest(
         Boolean parkingAvailable,
 
         @NotNull(message = "Статус ресторана не может быть пустым")
+        @AllowedRestaurantStatus(anyOf = {RestaurantStatus.ACTIVE, RestaurantStatus.INACTIVE},
+                message = "Статус ресторана должен быть ACTIVE или INACTIVE")
         RestaurantStatus status
 ) {}
