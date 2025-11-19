@@ -51,7 +51,6 @@ public class Restaurant {
 
     @Phone
     @NotBlank(message = "Телефон не может быть пустым")
-    @Column(unique = true)
     private String phone;
 
     @NotNull(message = "Время открытия должно быть указано")

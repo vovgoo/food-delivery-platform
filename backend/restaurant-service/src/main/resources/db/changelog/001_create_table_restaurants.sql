@@ -6,7 +6,7 @@ CREATE TABLE restaurants (
     address VARCHAR(200) NOT NULL,
     website VARCHAR(200),
     profile_image_id UUID,
-    phone VARCHAR(20) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
     opening_time TIME NOT NULL,
     closing_time TIME NOT NULL,
     delivery_available BOOLEAN NOT NULL,
