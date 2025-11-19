@@ -27,6 +27,17 @@ spring:
           filters:
             - RewritePath=/user-service/v3/api-docs, /v3/api-docs
 
+        - id: restaurant-service-restaurants
+          uri: lb://restaurant-service
+          predicates:
+            - Path=/api/v1/restaurants/**
+        - id: restaurant-service-docs
+          uri: lb://restaurant-service
+          predicates:
+            - Path=/restaurant-service/v3/api-docs
+          filters:
+            - RewritePath=/restaurant-service/v3/api-docs, /v3/api-docs
+
 eureka:
   client:
     service-url:
@@ -40,6 +51,8 @@ springdoc:
     urls:
       - url: /user-service/v3/api-docs
         name: User Service
+      - url: /restaurant-service/v3/api-docs
+        name: Restaurant Service
 
 management:
   endpoints:
