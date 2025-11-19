@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.entity.enums;
+package org.vovgoo.user.enums;
 
 public enum UserStatus {
     ACTIVE,

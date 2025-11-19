@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom.user;
+package org.vovgoo.user.exception;
 
 public class UserActiveException extends RuntimeException {
     public UserActiveException() {

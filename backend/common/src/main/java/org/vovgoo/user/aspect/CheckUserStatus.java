@@ -1,7 +1,6 @@
-package org.vovgoo.userservice.service.user.aspects.checkstatus;
+package org.vovgoo.user.aspect;
 
-import org.vovgoo.userservice.entity.enums.UserStatus;
-
+import org.vovgoo.user.enums.UserStatus;
 import java.lang.annotation.*;
 
 @Target(ElementType.METHOD)
