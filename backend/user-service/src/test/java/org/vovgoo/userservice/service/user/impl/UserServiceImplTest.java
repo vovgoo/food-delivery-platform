@@ -8,7 +8,6 @@ import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.Address;
-import org.vovgoo.userservice.entity.enums.UserStatus;
 import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.mapper.UserMapper;

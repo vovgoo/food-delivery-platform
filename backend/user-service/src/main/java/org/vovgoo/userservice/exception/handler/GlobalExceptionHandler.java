@@ -59,8 +59,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             EmailAlreadyExistsException.class,
-            PhoneAlreadyExistsException.class,
-            UserActiveException.class
+            PhoneAlreadyExistsException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -99,21 +98,11 @@ public class GlobalExceptionHandler {
             RedisKeyTypeMismatchException.class,
             RedisSerializationException.class,
             TokenStrategyNotFoundException.class,
-            UnsupportedUserStatusException.class,
             InvalidJwtTokenException.class,
             RuntimeException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
-    }
-
-    @ExceptionHandler({
-            UserBlockedException.class,
-            UserDeactivatedException.class
-    })
-    public ResponseEntity<ExceptionResponse<String>> handleUserStatus(RuntimeException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.FORBIDDEN, request.getRequestURI()));
     }
 }

@@ -1,9 +1,9 @@
 package org.vovgoo.userservice.dto.user.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.vovgoo.user.enums.UserStatus;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.dto.role.response.RoleResponse;
-import org.vovgoo.userservice.entity.enums.UserStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

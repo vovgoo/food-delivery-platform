@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.vovgoo.userservice.entity.enums.UserStatus;
+import org.vovgoo.user.enums.UserStatus;
 import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
 import org.vovgoo.validators.phone.Phone;
 
