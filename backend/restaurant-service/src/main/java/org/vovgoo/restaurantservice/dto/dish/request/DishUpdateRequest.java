@@ -2,6 +2,7 @@ package org.vovgoo.restaurantservice.dto.dish.request;
 
 import jakarta.validation.constraints.*;
 import org.vovgoo.restaurantservice.entity.enums.DishStatus;
+import org.vovgoo.restaurantservice.validation.dish.status.AllowedDishStatus;
 
 import java.math.BigDecimal;
 
@@ -40,6 +41,8 @@ public record DishUpdateRequest(
         @Digits(integer = 6, fraction = 2, message = "Цена должна быть числом с максимум 2 знаками после запятой")
         BigDecimal price,
 
-        @NotNull(message = "Статус ресторана не может быть пустым")
+        @NotNull(message = "Статус блюда не может быть пустым")
+        @AllowedDishStatus(anyOf = {DishStatus.AVAILABLE, DishStatus.TEMPORARY_UNAVAILABLE},
+                message = "Статус блюда должен быть AVAILABLE или TEMPORARY_UNAVAILABLE")
         DishStatus status
 ) {}
