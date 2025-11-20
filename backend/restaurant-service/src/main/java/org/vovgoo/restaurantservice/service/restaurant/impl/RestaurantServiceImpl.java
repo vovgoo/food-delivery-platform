@@ -36,9 +36,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     public PageResponse<RestaurantResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams) {
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
 
-        Page<Restaurant> page = restaurantRepository.findByCuisineContainingIgnoreCase(searchRequest.cuisine(), pageRequest);
+        Page<RestaurantResponse> page = restaurantRepository.findByCuisineContainingIgnoreCase(searchRequest.cuisine(), pageRequest)
+                .map(restaurantMapper::toResponse);
 
-        return PageResponse.of(page.map(restaurantMapper::toResponse));
+        return PageResponse.of(page);
     }
 
     @Override
