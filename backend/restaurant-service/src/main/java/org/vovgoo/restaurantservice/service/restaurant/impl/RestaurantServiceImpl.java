@@ -112,7 +112,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @CheckUserStatus
     public void uploadImage(UUID restaurantId, MultipartFile file) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
         restaurantImageService.upload(restaurant, file, false);
     }
@@ -121,7 +121,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @CheckUserStatus
     public void deleteImage(UUID restaurantId, UUID imageId) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
         restaurantImageService.remove(restaurant, imageId, false);
     }
@@ -130,7 +130,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @CheckUserStatus
     public void setProfileImage(UUID restaurantId, MultipartFile file) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
         restaurantImageService.upload(restaurant, file, true);
     }
@@ -139,7 +139,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @CheckUserStatus
     public void removeProfileImage(UUID restaurantId) {
-        Restaurant restaurant = restaurantRepository.findById(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
         restaurantImageService.remove(restaurant, null, true);
     }
