@@ -2,6 +2,7 @@ package org.vovgoo.restaurantservice.service.restaurant.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vovgoo.restaurantservice.entity.Restaurant;
 import org.vovgoo.restaurantservice.entity.RestaurantImage;
@@ -20,7 +21,8 @@ public class RestaurantImageServiceImpl implements RestaurantImageService {
     private final ImageService imageService;
 
     @Override
-    public RestaurantImage upload(Restaurant restaurant, MultipartFile file, boolean isProfile) {
+    @Transactional
+    public void upload(Restaurant restaurant, MultipartFile file, boolean isProfile) {
         String imageUrl = imageService.uploadImage(file);
 
         if (isProfile && restaurant.getProfileImage() != null) {
@@ -38,11 +40,10 @@ public class RestaurantImageServiceImpl implements RestaurantImageService {
         if (isProfile) {
             restaurant.setProfileImage(image);
         }
-
-        return image;
     }
 
     @Override
+    @Transactional
     public void remove(Restaurant restaurant, UUID imageId, boolean isProfile) {
         if (isProfile) {
             RestaurantImage profileImage = restaurant.getProfileImage();
