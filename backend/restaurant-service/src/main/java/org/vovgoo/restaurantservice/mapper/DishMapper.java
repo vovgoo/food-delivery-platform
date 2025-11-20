@@ -21,6 +21,6 @@ public interface DishMapper {
     @Mapping(target = "vegetarian", source = "vegetarian")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "status", source = "status")
-    @Mapping(target = "images", source = "images")
+    @Mapping(target = "images", expression = "java(dish.getImages().stream().filter(i -> !i.getIsProfile()).map(ImageMapper.INSTANCE::toResponse).toList())")
     DishResponse toResponse(Dish dish);
 }
