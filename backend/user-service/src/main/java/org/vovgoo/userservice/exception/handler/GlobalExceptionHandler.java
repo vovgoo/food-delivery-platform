@@ -48,11 +48,11 @@ public class GlobalExceptionHandler {
             AuthorizationDeniedException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleUnauthorized(RuntimeException ex, HttpServletRequest request) {
-        String message = ex instanceof BadCredentialsException ?
-                "Неверный телефон или пароль" : ex.getMessage();
-        if (ex instanceof AuthorizationDeniedException) {
-            message = "Требуется аутентификация";
-        }
+        String message = switch (ex.getClass().getSimpleName()) {
+            case "BadCredentialsException" -> "Неверный телефон или пароль";
+            case "AuthorizationDeniedException" -> "Требуется аутентификация";
+            default -> ex.getMessage();
+        };
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(ExceptionResponse.of(message, HttpStatus.UNAUTHORIZED, request.getRequestURI()));
     }
@@ -81,13 +81,11 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException.class
     })
     public ResponseEntity<ExceptionResponse<?>> handleBadRequest(Exception ex, HttpServletRequest request) {
-
         if (ex instanceof MethodArgumentNotValidException manv) {
             FieldErrors fieldErrors = new FieldErrors(manv.getBindingResult().getFieldErrors());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
         }
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
