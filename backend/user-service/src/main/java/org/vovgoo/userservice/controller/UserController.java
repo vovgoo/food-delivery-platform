@@ -12,10 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
-import org.vovgoo.userservice.exception.dto.ExceptionResponse;
 import org.vovgoo.userservice.service.user.UserService;
 
 @RestController

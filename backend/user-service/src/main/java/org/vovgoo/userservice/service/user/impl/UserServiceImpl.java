@@ -4,13 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.vovgoo.security.utils.CurrentUserUtils;
+import org.vovgoo.user.aspect.CheckUserStatus;
+import org.vovgoo.user.enums.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.UserStatus;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
 import org.vovgoo.userservice.exception.custom.user.PasswordMismatchException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;
@@ -22,12 +24,12 @@ import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.redis.RedisService;
 import org.vovgoo.userservice.service.user.UserService;
-import org.vovgoo.userservice.service.user.aspects.checkstatus.CheckUserStatus;
 import org.vovgoo.userservice.service.verification.email.EmailVerificationService;
 import org.vovgoo.userservice.service.verification.email.enums.EmailVerificationType;
 import org.vovgoo.userservice.service.verification.phone.PhoneVerificationService;
 import org.vovgoo.userservice.service.verification.phone.enums.PhoneVerificationType;
-import org.vovgoo.userservice.utils.CurrentUserUtils;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +50,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        Address address = addressRepository.findByUserIdAndIsDefault(user.getId(), true)
+        Address address = addressRepository.findDefaultByUserId(user.getId())
                 .orElse(null);
 
         return userMapper.toResponse(user, address);
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        Address address = addressRepository.findByUserIdAndIsDefault(user.getId(), true)
+        Address address = addressRepository.findDefaultByUserId(user.getId())
                 .orElse(null);
 
         return userMapper.toResponse(user, address);
@@ -188,5 +190,13 @@ public class UserServiceImpl implements UserService {
         user.setStatus(UserStatus.ACTIVE);
 
         userRepository.save(user);
+    }
+
+    @Override
+    public UserStatus getUserStatus(UUID userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        return user.getStatus();
     }
 }

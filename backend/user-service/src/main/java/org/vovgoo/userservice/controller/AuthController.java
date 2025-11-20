@@ -13,11 +13,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
-import org.vovgoo.userservice.exception.dto.ExceptionResponse;
 import org.vovgoo.userservice.service.security.auth.AuthService;
 import org.vovgoo.userservice.utils.CookieUtils;
 

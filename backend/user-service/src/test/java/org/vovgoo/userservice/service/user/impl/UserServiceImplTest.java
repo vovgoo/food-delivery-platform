@@ -8,7 +8,6 @@ import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.entity.Address;
-import org.vovgoo.userservice.entity.enums.UserStatus;
 import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.mapper.UserMapper;
@@ -75,7 +74,7 @@ class UserServiceImplTest {
         );
 
         when(userRepository.findByIdWithRoles(currentUserId)).thenReturn(Optional.of(user));
-        when(addressRepository.findByUserIdAndIsDefault(currentUserId, true)).thenReturn(Optional.of(address));
+        when(addressRepository.findDefaultByUserId(currentUserId)).thenReturn(Optional.of(address));
         when(userMapper.toResponse(user, address)).thenReturn(response);
 
         UserResponse result = userService.getProfile();
@@ -115,7 +114,7 @@ class UserServiceImplTest {
 
         when(userRepository.findByIdWithRoles(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(user)).thenReturn(user);
-        when(addressRepository.findByUserIdAndIsDefault(userId, true)).thenReturn(Optional.of(address));
+        when(addressRepository.findDefaultByUserId(userId)).thenReturn(Optional.of(address));
         when(userMapper.toResponse(user, address)).thenReturn(response);
 
         UserResponse result = userService.updateUserProfile(request);

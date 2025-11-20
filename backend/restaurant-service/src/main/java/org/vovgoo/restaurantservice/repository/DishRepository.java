@@ -3,10 +3,21 @@ package org.vovgoo.restaurantservice.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.vovgoo.restaurantservice.entity.Dish;
-import org.vovgoo.restaurantservice.entity.Restaurant;
 
-public interface DishRepository extends JpaRepository<Dish, Long> {
+import java.util.Optional;
+import java.util.UUID;
 
-    Page<Dish> findByRestaurant(Restaurant restaurant, Pageable pageable);
+public interface DishRepository extends JpaRepository<Dish, UUID> {
+
+    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.status <> 'REMOVED'")
+    Page<Dish> findAllByRestaurantId(@Param("restaurantId") UUID restaurantId, Pageable pageable);
+
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
+    Optional<Dish> findByRestaurantIdAndDishIdAndStatusNotRemoved(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
+
+    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
+    Optional<Dish> findByRestaurantIdAndDishIdWithImages(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
 }

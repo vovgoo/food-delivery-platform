@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
+import org.vovgoo.security.utils.CurrentUserUtils;
+import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.entity.Address;
@@ -18,8 +20,6 @@ import org.vovgoo.userservice.mapper.AddressMapper;
 import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.address.AddressService;
-import org.vovgoo.userservice.service.user.aspects.checkstatus.CheckUserStatus;
-import org.vovgoo.userservice.utils.CurrentUserUtils;
 
 import java.util.UUID;
 
@@ -39,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
 
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
 
-        Page<AddressResponse> addresses = addressRepository.findAllByUserIdAndAddressStatus(pageRequest, userId, AddressStatus.ACTIVE)
+        Page<AddressResponse> addresses = addressRepository.findAllByUserIdAndAddressStatus(pageRequest, userId)
                 .map(addressMapper::toResponse);
 
         return PageResponse.of(addresses);
@@ -54,7 +54,7 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        addressRepository.findByUserIdAndIsDefault(userId, true)
+        addressRepository.findDefaultByUserId(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address address = Address.builder()
@@ -96,7 +96,7 @@ public class AddressServiceImpl implements AddressService {
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        addressRepository.findByUserIdAndIsDefault(userId, true)
+        addressRepository.findDefaultByUserId(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address newDefault = addressRepository.findByIdAndUserId(id, userId)

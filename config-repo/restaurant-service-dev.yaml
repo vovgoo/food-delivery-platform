@@ -1,0 +1,23 @@
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5434/restaurantdb}
+    username: ${DB_USERNAME:user}
+    password: ${DB_PASSWORD:password}
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+app:
+  imgbb:
+    api-key: ${IMGBB_API_KEY:b597b3ceaef618dbae0551fe2fb90a86}
+    endpoint: ${IMGBB_ENDPOINT:https://api.imgbb.com/1/upload}
+
+springdoc:
+  swagger-ui:
+    enabled: true
+  api-docs:
+    enabled: true
