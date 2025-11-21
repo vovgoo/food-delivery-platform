@@ -1,13 +1,14 @@
 package org.vovgoo.orderservice.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.vovgoo.orderservice.dto.common.PageParams;
-import org.vovgoo.orderservice.dto.common.PageResponse;
+import org.vovgoo.dto.pageable.PageParams;
+import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
@@ -22,6 +23,7 @@ public class OrderController {
 
     @PostMapping
     @PreAuthorize("hasRole('USER')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
         OrderResponse response = orderService.placeOrder(createOrderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
