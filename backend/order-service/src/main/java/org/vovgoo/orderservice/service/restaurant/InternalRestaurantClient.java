@@ -10,7 +10,11 @@ import org.vovgoo.dto.restaurant.RestaurantShortResponse;
 import java.util.List;
 import java.util.UUID;
 
-@FeignClient(name = "restaurant-service", path = "/internal/restaurant")
+@FeignClient(
+        name = "restaurant-service",
+        contextId = "internalRestaurantClient",
+        path = "/internal/restaurant"
+)
 public interface InternalRestaurantClient {
 
     @GetMapping("/{restaurantId}")
