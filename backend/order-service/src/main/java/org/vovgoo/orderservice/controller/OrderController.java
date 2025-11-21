@@ -14,6 +14,8 @@ import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
 import org.vovgoo.orderservice.service.order.OrderService;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
@@ -31,21 +33,24 @@ public class OrderController {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<PageResponse<OrderResponse>> getOrders(@Valid PageParams pageParams) {
         return ResponseEntity.ok(orderService.getAllOrders(pageParams));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{orderId}")
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
-    public ResponseEntity<OrderResponse> getOrder(@PathVariable Long id) {
-        OrderResponse response = orderService.getOrderById(id);
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<OrderResponse> getOrder(@PathVariable UUID orderId) {
+        OrderResponse response = orderService.getOrderById(orderId);
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/{id}/status")
+    @PutMapping("/{orderId}/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<OrderResponse> updateStatus(@PathVariable Long id, @Valid @RequestBody UpdateOrderStatusRequest updateOrderStatusRequest) {
-        OrderResponse response = orderService.updateOrderStatus(id, updateOrderStatusRequest);
+    @SecurityRequirement(name = "bearerAuth")
+    public ResponseEntity<OrderResponse> updateStatus(@PathVariable UUID orderId, @Valid @RequestBody UpdateOrderStatusRequest updateOrderStatusRequest) {
+        OrderResponse response = orderService.updateOrderStatus(orderId, updateOrderStatusRequest);
         return ResponseEntity.ok(response);
     }
 }
