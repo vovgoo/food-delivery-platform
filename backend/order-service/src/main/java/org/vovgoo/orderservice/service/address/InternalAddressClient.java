@@ -7,7 +7,11 @@ import org.vovgoo.dto.address.AddressShortResponse;
 
 import java.util.UUID;
 
-@FeignClient(name = "user-service", path = "/internal/addresses")
+@FeignClient(
+    name = "user-service",
+    contextId = "internalAddressClient",
+    path = "/internal/addresses"
+)
 public interface InternalAddressClient {
 
     @GetMapping("/{userId}/{addressId}")

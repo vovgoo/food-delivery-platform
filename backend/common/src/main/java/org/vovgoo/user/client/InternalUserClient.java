@@ -7,7 +7,11 @@ import org.vovgoo.user.enums.UserStatus;
 
 import java.util.UUID;
 
-@FeignClient(name = "user-service", path = "/internal/users")
+@FeignClient(
+    name = "user-service",
+    contextId = "internalUserClient",
+    path = "/internal/user"
+)
 public interface InternalUserClient {
 
     @GetMapping("/{userId}/status")

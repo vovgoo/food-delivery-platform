@@ -110,7 +110,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressShortResponse getUserAddress(UUID userId, UUID addressId) {
-        Address address = addressRepository.findByIdAndUserIdAnyStatus(userId, addressId)
+        Address address = addressRepository.findByIdAndUserIdAnyStatus(addressId, userId)
                 .orElseThrow(AddressNotFound::new);
 
         return addressMapper.toShortResponse(address);
