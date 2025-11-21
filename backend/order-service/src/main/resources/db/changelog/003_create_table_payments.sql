@@ -1,14 +1,26 @@
+CREATE TYPE payment_status AS ENUM (
+    'PENDING',
+    'PROCESSING',
+    'COMPLETED',
+    'FAILED',
+    'CANCELLED',
+    'REFUNDED'
+);
+
+CREATE TYPE payment_method AS ENUM (
+    'CREDIT_CARD',
+    'DEBIT_CARD',
+    'PAYPAL',
+    'APPLE_PAY',
+    'GOOGLE_PAY',
+    'BANK_TRANSFER',
+    'CASH_ON_DELIVERY'
+);
+
 CREATE TABLE payments (
-    id BIGSERIAL PRIMARY KEY,
-    order_id BIGINT NOT NULL,
-    method VARCHAR(30) NOT NULL,
-    amount NUMERIC(10,2) NOT NULL,
-    status VARCHAR(20) NOT NULL,
-    CONSTRAINT chk_payments_amount CHECK (amount > 0),
-    CONSTRAINT chk_payments_method CHECK (method IN (
-        'CREDIT_CARD','DEBIT_CARD','PAYPAL','APPLE_PAY','GOOGLE_PAY','BANK_TRANSFER','CASH_ON_DELIVERY'
-    )),
-    CONSTRAINT chk_payments_status CHECK (status IN (
-        'PENDING','PROCESSING','COMPLETED','FAILED','CANCELLED','REFUNDED'
-    ))
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    method payment_method NOT NULL,
+    amount NUMERIC(10,2) NOT NULL CHECK (amount > 0),
+    status payment_status NOT NULL,
+    payment_date TIMESTAMP NOT NULL DEFAULT NOW()
 );

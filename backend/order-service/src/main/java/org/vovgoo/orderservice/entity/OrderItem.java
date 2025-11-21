@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "order_items")
@@ -17,8 +18,8 @@ import java.math.BigDecimal;
 public class OrderItem {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @NotNull(message = "Ссылка на заказ не может быть пустой")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,7 +27,7 @@ public class OrderItem {
 
     @NotNull(message = "ID блюда не может быть пустым")
     @Column(name = "dish_id", nullable = false)
-    private Long dishId;
+    private UUID dishId;
 
     @NotNull(message = "Количество не может быть пустым")
     @Min(value = 1, message = "Количество должно быть не меньше 1")

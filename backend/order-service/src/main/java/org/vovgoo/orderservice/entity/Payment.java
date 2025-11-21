@@ -3,10 +3,13 @@ package org.vovgoo.orderservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.vovgoo.orderservice.entity.enums.PaymentMethod;
 import org.vovgoo.orderservice.entity.enums.PaymentStatus;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "payments")
@@ -19,12 +22,11 @@ import java.math.BigDecimal;
 public class Payment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @NotNull(message = "Заказ, к которому относится платёж, не может быть пустым")
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", nullable = false)
+    @OneToOne(mappedBy = "payment")
     private Order order;
 
     @NotNull(message = "Необходимо указать способ оплаты")
@@ -39,4 +41,8 @@ public class Payment {
     @NotNull(message = "Необходимо указать статус платежа")
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime paymentDate;
 }
