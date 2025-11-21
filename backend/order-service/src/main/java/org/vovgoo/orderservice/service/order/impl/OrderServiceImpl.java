@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
+import org.vovgoo.orderservice.config.kafka.EventType;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
@@ -17,6 +18,9 @@ import org.vovgoo.orderservice.entity.Payment;
 import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.repository.OrderRepository;
+import org.vovgoo.orderservice.service.kafka.KafkaEventPublisher;
+import org.vovgoo.orderservice.service.kafka.event.OrderCreatedEvent;
+import org.vovgoo.orderservice.service.kafka.event.OrderStatusChangedEvent;
 import org.vovgoo.orderservice.service.order.OrderService;
 import org.vovgoo.orderservice.service.order.facade.OrderFacade;
 import org.vovgoo.orderservice.service.payment.PaymentService;
@@ -32,6 +36,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final OrderFacade orderFacade;
+    private final KafkaEventPublisher kafkaEventPublisher;
     private final PaymentService paymentService;
     private final OrderMapper orderMapper;
 
@@ -48,7 +53,19 @@ public class OrderServiceImpl implements OrderService {
 
         order = orderRepository.save(order);
 
-        return orderFacade.assembleOrderResponse(order);
+        OrderResponse orderResponse = orderFacade.assembleOrderResponse(order);
+
+        OrderCreatedEvent orderCreatedEvent = OrderCreatedEvent.builder()
+                .orderId(orderResponse.id())
+                .userId(orderResponse.user().id())
+                .userPhone(orderResponse.user().phone())
+                .orderDate(orderResponse.orderDate())
+                .totalPrice(orderResponse.totalPrice())
+                .build();
+
+        kafkaEventPublisher.publish(EventType.ORDER_CREATED, orderCreatedEvent);
+
+        return orderResponse;
     }
 
     @Override
@@ -96,6 +113,17 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(updateOrderStatusRequest.status());
         order = orderRepository.save(order);
 
-        return orderFacade.assembleOrderResponse(order);
+        OrderResponse orderResponse = orderFacade.assembleOrderResponse(order);
+
+        OrderStatusChangedEvent orderStatusChangedEvent = OrderStatusChangedEvent.builder()
+                .orderId(orderResponse.id())
+                .userId(orderResponse.user().id())
+                .userPhone(orderResponse.user().phone())
+                .orderStatus(orderResponse.status())
+                .build();
+
+        kafkaEventPublisher.publish(EventType.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
+
+        return orderResponse;
     }
 }

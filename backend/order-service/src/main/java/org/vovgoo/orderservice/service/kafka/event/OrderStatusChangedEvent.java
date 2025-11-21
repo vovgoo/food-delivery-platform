@@ -8,6 +8,7 @@ import java.util.UUID;
 @Builder
 public record OrderStatusChangedEvent(
         UUID orderId,
+        UUID userId,
         String userPhone,
         OrderStatus orderStatus
 ) {}
