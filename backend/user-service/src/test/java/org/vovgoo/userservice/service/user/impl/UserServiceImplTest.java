@@ -3,6 +3,8 @@ package org.vovgoo.userservice.service.user.impl;
 import org.junit.jupiter.api.*;
 import org.mockito.MockedStatic;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
@@ -18,7 +20,6 @@ import org.vovgoo.userservice.service.verification.email.EmailVerificationServic
 import org.vovgoo.userservice.service.verification.email.enums.EmailVerificationType;
 import org.vovgoo.userservice.service.verification.phone.PhoneVerificationService;
 import org.vovgoo.userservice.service.verification.phone.enums.PhoneVerificationType;
-import org.vovgoo.userservice.utils.CurrentUserUtils;
 
 import java.util.Optional;
 import java.util.UUID;
