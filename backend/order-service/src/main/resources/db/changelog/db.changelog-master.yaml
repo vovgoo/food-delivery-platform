@@ -6,6 +6,4 @@ databaseChangeLog:
   - include:
       file: db/changelog/003_create_table_payments.sql
   - include:
-      file: db/changelog/004_add_foreign_keys.sql
-  - include:
-      file: db/changelog/005_add_indexes.sql
+      file: db/changelog/004_add_indexes.sql
