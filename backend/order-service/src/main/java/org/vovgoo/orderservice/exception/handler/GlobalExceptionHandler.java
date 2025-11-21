@@ -1,4 +1,4 @@
-package org.vovgoo.orderservice.exception;
+package org.vovgoo.orderservice.exception.handler;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
