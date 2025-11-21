@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface RestaurantService {
     RestaurantShortResponse getRestaurant(UUID restaurantId);
-    RestaurantShortResponse getRestaurantValid(UUID restaurantId);
+    void validateRestaurant(UUID restaurantId);
     List<DishShortResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds);
     List<DishShortResponse> getAvailableDishesByRestaurant(UUID restaurantId, List<UUID> dishIds);
 }

@@ -35,13 +35,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressShortResponse getValidAddress(UUID userId, UUID addressId) {
+    public void validateAddress(UUID userId, UUID addressId) {
         AddressShortResponse address = getAddress(userId, addressId);
 
-        if (address.addressStatus() == AddressStatus.DELETED) {
+        if (AddressStatus.DELETED.equals(address.addressStatus())) {
             throw new AddressDeletedException();
         }
-
-        return address;
     }
 }

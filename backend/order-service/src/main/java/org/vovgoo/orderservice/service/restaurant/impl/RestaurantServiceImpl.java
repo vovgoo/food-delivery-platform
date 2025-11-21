@@ -34,12 +34,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantShortResponse getRestaurantValid(UUID restaurantId) {
+    public void validateRestaurant(UUID restaurantId) {
         RestaurantShortResponse restaurant = getRestaurant(restaurantId);
+
         if (!RestaurantStatus.ACTIVE.equals(restaurant.status())) {
             throw new RestaurantServiceException();
         }
-        return restaurant;
     }
 
     @Override
