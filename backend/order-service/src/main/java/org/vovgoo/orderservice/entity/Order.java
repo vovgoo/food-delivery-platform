@@ -31,7 +31,6 @@ public class Order {
     private OrderStatus status;
 
     @CreationTimestamp
-    @NotNull(message = "Дата создания заказа не может быть пустой")
     private LocalDateTime orderDate;
 
     @NotNull(message = "ID пользователя не может быть пустым")
@@ -52,7 +51,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "payment_id")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
 }

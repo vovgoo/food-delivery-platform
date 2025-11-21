@@ -25,8 +25,8 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @NotNull(message = "Заказ, к которому относится платёж, не может быть пустым")
-    @OneToOne(mappedBy = "payment")
+    @OneToOne
+    @JoinColumn(name = "order_id", nullable = false)
     private Order order;
 
     @NotNull(message = "Необходимо указать способ оплаты")
@@ -43,6 +43,5 @@ public class Payment {
     private PaymentStatus status;
 
     @CreationTimestamp
-    @Column(nullable = false, updatable = false)
     private LocalDateTime paymentDate;
 }
