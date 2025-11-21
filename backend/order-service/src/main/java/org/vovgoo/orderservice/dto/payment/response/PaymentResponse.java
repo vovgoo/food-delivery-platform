@@ -1,12 +1,12 @@
 package org.vovgoo.orderservice.dto.payment.response;
 
-import java.math.BigDecimal;
+import java.util.UUID;
+
 import org.vovgoo.orderservice.entity.enums.PaymentMethod;
 import org.vovgoo.orderservice.entity.enums.PaymentStatus;
 
 public record PaymentResponse(
-        Long id,
+        UUID id,
         PaymentMethod method,
-        BigDecimal amount,
         PaymentStatus status
 ) {}
