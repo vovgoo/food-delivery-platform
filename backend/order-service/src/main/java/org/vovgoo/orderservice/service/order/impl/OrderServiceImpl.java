@@ -11,9 +11,11 @@ import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
+import org.vovgoo.orderservice.dto.order.response.OrderShortResponse;
 import org.vovgoo.orderservice.entity.Order;
 import org.vovgoo.orderservice.entity.Payment;
 import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
+import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.repository.OrderRepository;
 import org.vovgoo.orderservice.service.order.OrderService;
 import org.vovgoo.orderservice.service.order.facade.OrderFacade;
@@ -31,6 +33,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderFacade orderFacade;
     private final PaymentService paymentService;
+    private final OrderMapper orderMapper;
 
     @Override
     @CheckUserStatus
@@ -50,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @CheckUserStatus
-    public PageResponse<OrderResponse> getAllOrders(PageParams pageParams) {
+    public PageResponse<OrderShortResponse> getAllOrders(PageParams pageParams) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
@@ -63,7 +66,7 @@ public class OrderServiceImpl implements OrderService {
             orders = orderRepository.findByUserIdWithItemsAndPayment(userId, pageRequest);
         }
 
-        Page<OrderResponse> orderResponses = orders.map(orderFacade::assembleOrderResponse);
+        Page<OrderShortResponse> orderResponses = orders.map(orderMapper::toShortResponse);
 
         return PageResponse.of(orderResponses);
     }

@@ -12,6 +12,7 @@ import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
+import org.vovgoo.orderservice.dto.order.response.OrderShortResponse;
 import org.vovgoo.orderservice.service.order.OrderService;
 
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class OrderController {
     @GetMapping
     @PreAuthorize("hasAnyRole('USER','ADMIN')")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<PageResponse<OrderResponse>> getOrders(@Valid PageParams pageParams) {
+    public ResponseEntity<PageResponse<OrderShortResponse>> getOrders(@Valid PageParams pageParams) {
         return ResponseEntity.ok(orderService.getAllOrders(pageParams));
     }
 

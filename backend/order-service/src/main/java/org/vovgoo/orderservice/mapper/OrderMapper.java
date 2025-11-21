@@ -6,6 +6,7 @@ import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
+import org.vovgoo.orderservice.dto.order.response.OrderShortResponse;
 import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;
 import org.vovgoo.orderservice.entity.Order;
 
@@ -24,4 +25,11 @@ public interface OrderMapper {
     @Mapping(source = "items", target = "items")
     @Mapping(source = "order.payment", target = "payment")
     OrderResponse toResponse(Order order, UserInternalResponse user, AddressInternalResponse address, RestaurantInternalResponse restaurant, List<OrderItemResponse> items);
+
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "status", target = "status")
+    @Mapping(source = "orderDate", target = "orderDate")
+    @Mapping(source = "totalPrice", target = "totalPrice")
+    @Mapping(source = "payment", target = "payment")
+    OrderShortResponse toShortResponse(Order order);
 }
