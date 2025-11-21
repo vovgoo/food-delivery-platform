@@ -109,8 +109,16 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressShortResponse getUserAddress(UUID userId, UUID addressId) {
+    public AddressShortResponse getActiveUserAddress(UUID userId, UUID addressId) {
         Address address = addressRepository.findByIdAndUserId(userId, addressId)
+                .orElseThrow(AddressNotFound::new);
+
+        return addressMapper.toShortResponse(address);
+    }
+
+    @Override
+    public AddressShortResponse getUserAddress(UUID userId, UUID addressId) {
+        Address address = addressRepository.findByIdAndUserIdAnyStatus(userId, addressId)
                 .orElseThrow(AddressNotFound::new);
 
         return addressMapper.toShortResponse(address);
