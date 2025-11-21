@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
+import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
 import org.vovgoo.orderservice.dto.orderItem.request.AddOrderItemRequest;
@@ -17,6 +18,7 @@ import org.vovgoo.orderservice.mapper.OrderItemMapper;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.service.address.AddressService;
 import org.vovgoo.orderservice.service.restaurant.RestaurantService;
+import org.vovgoo.user.client.InternalUserClient;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderFacade {
 
+    private final InternalUserClient internalUserClient;
     private final AddressService addressService;
     private final RestaurantService restaurantService;
     private final OrderItemMapper orderItemMapper;
@@ -76,6 +79,7 @@ public class OrderFacade {
     }
 
     public OrderResponse assembleOrderResponse(Order order) {
+        UserInternalResponse user = internalUserClient.getUser(order.getUserId());
         AddressInternalResponse address = addressService.getAddress(order.getUserId(), order.getDeliveryAddress());
         RestaurantInternalResponse restaurant = restaurantService.getRestaurant(order.getRestaurantId());
         List<DishInternalResponse> dishes = restaurantService.getDishesByRestaurant(
@@ -85,7 +89,7 @@ public class OrderFacade {
 
         List<OrderItemResponse> orderItemResponses = orderItemMapper.toResponseList(order.getItems(), dishes);
 
-        return orderMapper.toResponse(order, address, restaurant, orderItemResponses);
+        return orderMapper.toResponse(order, user, address, restaurant, orderItemResponses);
     }
 }
 
