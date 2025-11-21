@@ -2,6 +2,7 @@ package org.vovgoo.userservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.vovgoo.dto.address.AddressShortResponse;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.entity.Address;
 
@@ -20,4 +21,11 @@ public interface AddressMapper {
     @Mapping(target = "zip", source = "zip")
     @Mapping(target = "isDefault", source = "default")
     AddressResponse toResponse(Address address);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "city", source = "city")
+    @Mapping(target = "street", source = "street")
+    @Mapping(target = "house", source = "house")
+    @Mapping(target = "apartment", source = "apartment")
+    AddressShortResponse toShortResponse(Address address);
 }
