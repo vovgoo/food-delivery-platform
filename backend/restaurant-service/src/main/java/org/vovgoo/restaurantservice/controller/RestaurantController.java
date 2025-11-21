@@ -228,8 +228,6 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    // ----------------------- DISH METHODS -----------------------
-
     @Operation(summary = "Create a dish", description = "Create a new dish for a restaurant (Admin only)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Dish created successfully",
@@ -337,4 +335,41 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Set dish profile image", description = "Set a profile image for a dish (Admin only)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Profile image set successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "User blocked or not admin",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Dish not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    @PutMapping(value = "/{restaurantId}/dishes/{dishId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> setDishProfileImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId, @RequestParam("file") MultipartFile file) {
+        dishService.setProfileImage(restaurantId, dishId, file);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Remove dish profile image", description = "Remove the profile image from a dish (Admin only)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Profile image removed successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "403", description = "User blocked or not admin",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Dish not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    @DeleteMapping("/{restaurantId}/dishes/{dishId}/profile")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> removeDishProfileImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId) {
+        dishService.removeProfileImage(restaurantId, dishId);
+        return ResponseEntity.noContent().build();
+    }
 }
