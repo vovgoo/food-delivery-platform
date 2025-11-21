@@ -14,7 +14,7 @@ import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.AddressStatus;
+import org.vovgoo.dto.address.enums.AddressStatus;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.mapper.AddressMapper;
@@ -106,14 +106,6 @@ public class AddressServiceImpl implements AddressService {
         newDefault.setDefault(true);
 
         addressRepository.save(newDefault);
-    }
-
-    @Override
-    public AddressShortResponse getActiveUserAddress(UUID userId, UUID addressId) {
-        Address address = addressRepository.findByIdAndUserId(userId, addressId)
-                .orElseThrow(AddressNotFound::new);
-
-        return addressMapper.toShortResponse(address);
     }
 
     @Override

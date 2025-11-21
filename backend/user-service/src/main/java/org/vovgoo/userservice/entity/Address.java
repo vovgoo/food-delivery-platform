@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.vovgoo.userservice.entity.enums.AddressStatus;
+import org.vovgoo.dto.address.enums.AddressStatus;
 
 import java.util.UUID;
 

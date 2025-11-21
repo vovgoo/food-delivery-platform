@@ -27,5 +27,6 @@ public interface AddressMapper {
     @Mapping(target = "street", source = "street")
     @Mapping(target = "house", source = "house")
     @Mapping(target = "apartment", source = "apartment")
+    @Mapping(target = "addressStatus", source = "addressStatus")
     AddressShortResponse toShortResponse(Address address);
 }

@@ -1,6 +1,8 @@
 package org.vovgoo.dto.address;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.vovgoo.dto.address.enums.AddressStatus;
+
 import java.util.UUID;
 
 @Schema(description = "Short response with address details")
@@ -19,5 +21,8 @@ public record AddressShortResponse(
         String house,
 
         @Schema(description = "Apartment or office", example = "кв. 45")
-        String apartment
+        String apartment,
+
+        @Schema(description = "Address status", example = "DELETED")
+        AddressStatus addressStatus
 ) {}

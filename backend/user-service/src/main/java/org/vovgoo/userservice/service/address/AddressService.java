@@ -13,6 +13,5 @@ public interface AddressService {
     AddressResponse create(CreateAddressRequest createAddressRequest);
     void remove(UUID id);
     void setDefault(UUID id);
-    AddressShortResponse getActiveUserAddress(UUID userId, UUID addressId);
     AddressShortResponse getUserAddress(UUID userId, UUID addressId);
 }
