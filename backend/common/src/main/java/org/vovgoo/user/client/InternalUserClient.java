@@ -10,7 +10,7 @@ import java.util.UUID;
 @FeignClient(
     name = "user-service",
     contextId = "internalUserClient",
-    path = "/internal/user"
+    path = "/internal/users"
 )
 public interface InternalUserClient {
 
