@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.vovgoo.dto.dish.DishShortResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
@@ -145,8 +145,8 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<DishShortResponse> getInternalDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
-        List<DishShortResponse> dishes = dishRepository.findAllByRestaurantIdAndDishIdsWithImages(restaurantId, dishIds)
+    public List<DishInternalResponse> getInternalDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
+        List<DishInternalResponse> dishes = dishRepository.findAllByRestaurantIdAndDishIdsWithImages(restaurantId, dishIds)
                 .stream().map(dishMapper::toShortResponse).toList();
 
         if (dishes.size() != dishIds.size()) {

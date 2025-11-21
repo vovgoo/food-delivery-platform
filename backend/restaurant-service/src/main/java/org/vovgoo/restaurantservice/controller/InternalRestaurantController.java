@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.vovgoo.dto.dish.DishShortResponse;
-import org.vovgoo.dto.restaurant.RestaurantShortResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
+import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.service.dish.DishService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 
@@ -22,12 +22,12 @@ public class InternalRestaurantController {
     private final DishService dishService;
 
     @GetMapping("/{restaurantId}")
-    public ResponseEntity<RestaurantShortResponse> getRestaurant(@PathVariable("restaurantId") UUID restaurantId) {
+    public ResponseEntity<RestaurantInternalResponse> getRestaurant(@PathVariable("restaurantId") UUID restaurantId) {
         return ResponseEntity.ok(restaurantService.getInternalRestaurantById(restaurantId));
     }
 
     @GetMapping("/{restaurantId}/dishes")
-    public ResponseEntity<List<DishShortResponse>> getDishesByRestaurant( @PathVariable("restaurantId") UUID restaurantId, @RequestParam List<UUID> dishIds) {
+    public ResponseEntity<List<DishInternalResponse>> getDishesByRestaurant(@PathVariable("restaurantId") UUID restaurantId, @RequestParam List<UUID> dishIds) {
         return ResponseEntity.ok(dishService.getInternalDishesByRestaurant(restaurantId, dishIds));
     }
 }

@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.dish.DishShortResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 
@@ -30,5 +30,5 @@ public interface DishMapper {
     @Mapping(target = "profileImageUrl", source = "profileImage.url")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "status", source = "status")
-    DishShortResponse toShortResponse(Dish dish);
+    DishInternalResponse toShortResponse(Dish dish);
 }

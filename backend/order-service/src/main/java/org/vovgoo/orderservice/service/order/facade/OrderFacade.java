@@ -2,9 +2,9 @@ package org.vovgoo.orderservice.service.order.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.dto.address.AddressShortResponse;
-import org.vovgoo.dto.dish.DishShortResponse;
-import org.vovgoo.dto.restaurant.RestaurantShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
+import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
 import org.vovgoo.orderservice.dto.orderItem.request.AddOrderItemRequest;
@@ -36,12 +36,12 @@ public class OrderFacade {
     public Order buildOrder(UUID userId, CreateOrderRequest createOrderRequest) {
         addressService.validateAddress(userId, createOrderRequest.deliveryAddress());
         restaurantService.validateRestaurant(createOrderRequest.restaurantId());
-        List<DishShortResponse> dishes = restaurantService.getAvailableDishesByRestaurant(
+        List<DishInternalResponse> dishes = restaurantService.getAvailableDishesByRestaurant(
                 createOrderRequest.restaurantId(),
                 createOrderRequest.items().stream().map(AddOrderItemRequest::dishId).toList()
         );
-        Map<UUID, DishShortResponse> dishesMap = dishes.stream()
-                .collect(Collectors.toMap(DishShortResponse::id, d -> d));
+        Map<UUID, DishInternalResponse> dishesMap = dishes.stream()
+                .collect(Collectors.toMap(DishInternalResponse::id, d -> d));
 
         Order order = Order.builder()
                 .status(OrderStatus.CREATED)
@@ -53,7 +53,7 @@ public class OrderFacade {
 
         List<OrderItem> orderItems = createOrderRequest.items().stream()
             .map(itemRequest -> {
-                DishShortResponse dish = dishesMap.get(itemRequest.dishId());
+                DishInternalResponse dish = dishesMap.get(itemRequest.dishId());
                 if (dish == null) throw new DishNotAvailableException();
 
                 return OrderItem.builder()
@@ -76,9 +76,9 @@ public class OrderFacade {
     }
 
     public OrderResponse assembleOrderResponse(Order order) {
-        AddressShortResponse address = addressService.getAddress(order.getUserId(), order.getDeliveryAddress());
-        RestaurantShortResponse restaurant = restaurantService.getRestaurant(order.getRestaurantId());
-        List<DishShortResponse> dishes = restaurantService.getDishesByRestaurant(
+        AddressInternalResponse address = addressService.getAddress(order.getUserId(), order.getDeliveryAddress());
+        RestaurantInternalResponse restaurant = restaurantService.getRestaurant(order.getRestaurantId());
+        List<DishInternalResponse> dishes = restaurantService.getDishesByRestaurant(
                 order.getRestaurantId(),
                 order.getItems().stream().map(OrderItem::getDishId).toList()
         );

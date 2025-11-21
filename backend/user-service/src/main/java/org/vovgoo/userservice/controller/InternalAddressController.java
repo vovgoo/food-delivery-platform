@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.vovgoo.dto.address.AddressShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.userservice.service.address.AddressService;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class InternalAddressController {
     private final AddressService addressService;
 
     @GetMapping("/{userId}/{addressId}")
-    public ResponseEntity<AddressShortResponse> getUserAddressAnyStatus(@PathVariable("userId") UUID userId, @PathVariable("addressId") UUID addressId) {
+    public ResponseEntity<AddressInternalResponse> getUserAddressAnyStatus(@PathVariable("userId") UUID userId, @PathVariable("addressId") UUID addressId) {
         return ResponseEntity.ok(addressService.getUserAddress(userId, addressId));
     }
 }

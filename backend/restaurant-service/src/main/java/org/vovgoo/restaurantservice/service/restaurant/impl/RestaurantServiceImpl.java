@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
-import org.vovgoo.dto.restaurant.RestaurantShortResponse;
+import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
@@ -147,7 +147,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantShortResponse getInternalRestaurantById(UUID restaurantId) {
+    public RestaurantInternalResponse getInternalRestaurantById(UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdWithImagesIgnoreStatus(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 

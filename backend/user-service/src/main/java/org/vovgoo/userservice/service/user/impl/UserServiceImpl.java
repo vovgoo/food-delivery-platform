@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.enums.user.UserStatus;
@@ -193,10 +194,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserStatus getUserStatus(UUID userId) {
+    public UserInternalResponse getUser(UUID userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        return user.getStatus();
+        return userMapper.toInternalResponse(user);
     }
 }

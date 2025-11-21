@@ -3,7 +3,7 @@ package org.vovgoo.orderservice.service.address.impl;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.dto.address.AddressShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.orderservice.exception.custom.address.AddressDeletedException;
 import org.vovgoo.orderservice.exception.custom.address.AddressNotFoundException;
@@ -20,9 +20,9 @@ public class AddressServiceImpl implements AddressService {
     private final InternalAddressClient internalAddressClient;
 
     @Override
-    public AddressShortResponse  getAddress(UUID userId, UUID addressId) {
+    public AddressInternalResponse getAddress(UUID userId, UUID addressId) {
         try {
-            AddressShortResponse address = internalAddressClient.getUserAddressAnyStatus(userId, addressId);
+            AddressInternalResponse address = internalAddressClient.getUserAddressAnyStatus(userId, addressId);
             if (address == null) {
                 throw new AddressNotFoundException();
             }
@@ -36,7 +36,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void validateAddress(UUID userId, UUID addressId) {
-        AddressShortResponse address = getAddress(userId, addressId);
+        AddressInternalResponse address = getAddress(userId, addressId);
 
         if (AddressStatus.DELETED.equals(address.addressStatus())) {
             throw new AddressDeletedException();

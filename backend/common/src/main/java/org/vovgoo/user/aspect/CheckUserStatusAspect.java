@@ -25,7 +25,7 @@ public class CheckUserStatusAspect {
     public Object checkStatus(ProceedingJoinPoint joinPoint, CheckUserStatus check) throws Throwable {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        UserStatus status = internalUserClient.getUserStatus(userId);
+        UserStatus status = internalUserClient.getUser(userId).userStatus();
 
         for (UserStatus forbidden : check.forbidden()) {
             if (status == forbidden) {

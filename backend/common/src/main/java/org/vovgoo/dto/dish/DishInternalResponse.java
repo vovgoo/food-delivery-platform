@@ -5,7 +5,7 @@ import org.vovgoo.enums.dish.DishStatus;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public record DishShortResponse(
+public record DishInternalResponse(
         UUID id,
         String name,
         String profileImageUrl,

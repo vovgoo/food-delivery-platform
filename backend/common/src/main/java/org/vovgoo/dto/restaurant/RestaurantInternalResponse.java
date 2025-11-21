@@ -4,7 +4,7 @@ import org.vovgoo.enums.restaurant.RestaurantStatus;
 
 import java.util.UUID;
 
-public record RestaurantShortResponse(
+public record RestaurantInternalResponse(
         UUID id,
         String name,
         String cuisine,

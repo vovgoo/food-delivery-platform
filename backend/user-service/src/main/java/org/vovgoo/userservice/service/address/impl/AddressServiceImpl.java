@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vovgoo.dto.address.AddressShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.security.utils.CurrentUserUtils;
@@ -109,10 +109,10 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressShortResponse getUserAddress(UUID userId, UUID addressId) {
+    public AddressInternalResponse getUserAddress(UUID userId, UUID addressId) {
         Address address = addressRepository.findByIdAndUserIdAnyStatus(addressId, userId)
                 .orElseThrow(AddressNotFound::new);
 
-        return addressMapper.toShortResponse(address);
+        return addressMapper.toInternalResponse(address);
     }
 }

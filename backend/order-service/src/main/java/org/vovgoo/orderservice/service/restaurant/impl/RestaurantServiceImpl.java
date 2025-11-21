@@ -3,9 +3,9 @@ package org.vovgoo.orderservice.service.restaurant.impl;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.dto.dish.DishShortResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.enums.dish.DishStatus;
-import org.vovgoo.dto.restaurant.RestaurantShortResponse;
+import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.enums.restaurant.RestaurantStatus;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantNotFoundException;
@@ -23,7 +23,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final InternalRestaurantClient internalRestaurantClient;
 
     @Override
-    public RestaurantShortResponse getRestaurant(UUID restaurantId) {
+    public RestaurantInternalResponse getRestaurant(UUID restaurantId) {
         try {
             return internalRestaurantClient.getRestaurant(restaurantId);
         } catch (FeignException.NotFound e) {
@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     public void validateRestaurant(UUID restaurantId) {
-        RestaurantShortResponse restaurant = getRestaurant(restaurantId);
+        RestaurantInternalResponse restaurant = getRestaurant(restaurantId);
 
         if (!RestaurantStatus.ACTIVE.equals(restaurant.status())) {
             throw new RestaurantServiceException();
@@ -43,7 +43,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<DishShortResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
+    public List<DishInternalResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
         try {
             return internalRestaurantClient.getDishesByRestaurant(restaurantId, dishIds);
         } catch (FeignException.NotFound e) {
@@ -54,10 +54,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public List<DishShortResponse> getAvailableDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
-        List<DishShortResponse> dishes = getDishesByRestaurant(restaurantId, dishIds);
+    public List<DishInternalResponse> getAvailableDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
+        List<DishInternalResponse> dishes = getDishesByRestaurant(restaurantId, dishIds);
 
-        List<DishShortResponse> unavailable = dishes.stream()
+        List<DishInternalResponse> unavailable = dishes.stream()
                 .filter(d -> !DishStatus.AVAILABLE.equals(d.status()))
                 .toList();
 

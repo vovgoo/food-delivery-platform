@@ -3,7 +3,7 @@ package org.vovgoo.user.client;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.dto.user.UserInternalResponse;
 
 import java.util.UUID;
 
@@ -14,6 +14,6 @@ import java.util.UUID;
 )
 public interface InternalUserClient {
 
-    @GetMapping("/{userId}/status")
-    UserStatus getUserStatus(@PathVariable("userId") UUID userId);
+    @GetMapping("/{userId}")
+    UserInternalResponse getUser(@PathVariable("userId") UUID userId);
 }

@@ -4,7 +4,7 @@ import org.vovgoo.enums.address.AddressStatus;
 
 import java.util.UUID;
 
-public record AddressShortResponse(
+public record AddressInternalResponse(
         UUID id,
         String city,
         String street,

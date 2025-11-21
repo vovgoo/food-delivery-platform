@@ -1,6 +1,6 @@
 package org.vovgoo.userservice.service.address;
 
-import org.vovgoo.dto.address.AddressShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
@@ -13,5 +13,5 @@ public interface AddressService {
     AddressResponse create(CreateAddressRequest createAddressRequest);
     void remove(UUID id);
     void setDefault(UUID id);
-    AddressShortResponse getUserAddress(UUID userId, UUID addressId);
+    AddressInternalResponse getUserAddress(UUID userId, UUID addressId);
 }

@@ -1,10 +1,10 @@
 package org.vovgoo.orderservice.service.address;
 
-import org.vovgoo.dto.address.AddressShortResponse;
+import org.vovgoo.dto.address.AddressInternalResponse;
 
 import java.util.UUID;
 
 public interface AddressService {
-    AddressShortResponse getAddress(UUID userId, UUID addressId);
+    AddressInternalResponse getAddress(UUID userId, UUID addressId);
     void validateAddress(UUID userId, UUID addressId);
 }

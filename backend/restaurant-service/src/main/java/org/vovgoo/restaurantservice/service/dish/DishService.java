@@ -1,7 +1,7 @@
 package org.vovgoo.restaurantservice.service.dish;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.vovgoo.dto.dish.DishShortResponse;
+import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
 import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
@@ -20,5 +20,5 @@ public interface DishService {
     void deleteImage(UUID restaurantId, UUID dishId, UUID imageId);
     void setProfileImage(UUID restaurantId, UUID dishId, MultipartFile file);
     void removeProfileImage(UUID restaurantId, UUID dishId);
-    List<DishShortResponse> getInternalDishesByRestaurant(UUID restaurantId,  List<UUID> dishIds);
+    List<DishInternalResponse> getInternalDishesByRestaurant(UUID restaurantId, List<UUID> dishIds);
 }
