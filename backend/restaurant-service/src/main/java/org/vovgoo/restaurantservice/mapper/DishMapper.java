@@ -2,6 +2,7 @@ package org.vovgoo.restaurantservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.vovgoo.dto.dish.DishShortResponse;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 
@@ -23,4 +24,10 @@ public interface DishMapper {
     @Mapping(target = "status", source = "status")
     @Mapping(target = "images", expression = "java(dish.getImages().stream().filter(i -> !i.getIsProfile()).map(ImageMapper.INSTANCE::toResponse).toList())")
     DishResponse toResponse(Dish dish);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "profileImageUrl", source = "profileImage.url")
+    @Mapping(target = "status", source = "status")
+    DishShortResponse toShortResponse(Dish dish);
 }

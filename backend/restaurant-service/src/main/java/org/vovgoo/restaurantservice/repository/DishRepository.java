@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.vovgoo.restaurantservice.entity.Dish;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,7 @@ public interface DishRepository extends JpaRepository<Dish, UUID> {
 
     @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
     Optional<Dish> findByRestaurantIdAndDishIdWithImages(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
+
+    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.id IN :dishIds AND d.status <> 'REMOVED'")
+    List<Dish> findAllByRestaurantIdAndDishIdsWithImages(@Param("restaurantId") UUID restaurantId, @Param("dishIds") List<UUID> dishIds);
 }

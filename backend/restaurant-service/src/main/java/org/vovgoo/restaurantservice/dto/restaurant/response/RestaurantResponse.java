@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.dto.restaurant.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.vovgoo.restaurantservice.dto.image.response.ImageResponse;
-import org.vovgoo.restaurantservice.entity.enums.RestaurantStatus;
+import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
 
 import java.time.LocalTime;
 import java.util.List;

@@ -8,12 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
+import org.vovgoo.dto.restaurant.RestaurantShortResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
 import org.vovgoo.restaurantservice.entity.Restaurant;
-import org.vovgoo.restaurantservice.entity.enums.RestaurantStatus;
+import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.RestaurantMapper;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
@@ -143,5 +144,13 @@ public class RestaurantServiceImpl implements RestaurantService {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
         restaurantImageService.remove(restaurant, null, true);
+    }
+
+    @Override
+    public RestaurantShortResponse getInternalRestaurantById(UUID restaurantId) {
+        Restaurant restaurant = restaurantRepository.findByIdWithImagesIgnoreStatus(restaurantId)
+                .orElseThrow(RestaurantNotFoundException::new);
+
+        return restaurantMapper.toShortResponse(restaurant);
     }
 }

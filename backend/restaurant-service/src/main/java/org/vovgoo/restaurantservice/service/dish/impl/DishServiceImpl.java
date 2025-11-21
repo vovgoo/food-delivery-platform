@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.vovgoo.dto.dish.DishShortResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
@@ -13,7 +14,7 @@ import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 import org.vovgoo.restaurantservice.entity.Restaurant;
-import org.vovgoo.restaurantservice.entity.enums.DishStatus;
+import org.vovgoo.dto.dish.enums.DishStatus;
 import org.vovgoo.restaurantservice.exception.custom.dish.DishNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.DishMapper;
@@ -23,6 +24,7 @@ import org.vovgoo.restaurantservice.service.dish.DishImageService;
 import org.vovgoo.restaurantservice.service.dish.DishService;
 import org.vovgoo.user.aspect.CheckUserStatus;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -140,5 +142,17 @@ public class DishServiceImpl implements DishService {
         Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
         dishImageService.remove(dish, null, true);
+    }
+
+    @Override
+    public List<DishShortResponse> getInternalDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
+        List<DishShortResponse> dishes = dishRepository.findAllByRestaurantIdAndDishIdsWithImages(restaurantId, dishIds)
+                .stream().map(dishMapper::toShortResponse).toList();
+
+        if (dishes.size() != dishIds.size()) {
+            throw new DishNotFoundException();
+        }
+
+        return dishes;
     }
 }

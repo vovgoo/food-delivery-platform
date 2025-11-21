@@ -3,7 +3,7 @@ package org.vovgoo.restaurantservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.vovgoo.restaurantservice.entity.enums.DishStatus;
+import org.vovgoo.dto.dish.enums.DishStatus;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

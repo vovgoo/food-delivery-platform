@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.validator.constraints.URL;
-import org.vovgoo.restaurantservice.entity.enums.RestaurantStatus;
+import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
 import org.vovgoo.validators.phone.Phone;
 
 import java.time.LocalTime;

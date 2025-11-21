@@ -20,4 +20,7 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
 
     @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.images WHERE r.id = :id AND r.status <> 'CLOSED'")
     Optional<Restaurant> findByIdWithImages(@Param("id") UUID id);
+
+    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.images WHERE r.id = :id")
+    Optional<Restaurant> findByIdWithImagesIgnoreStatus(@Param("id") UUID id);
 }
