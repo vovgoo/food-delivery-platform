@@ -14,6 +14,5 @@ public interface RestaurantMapper {
     @Mapping(source = "address", target = "address")
     @Mapping(source = "phone", target = "phone")
     @Mapping(source = "profileImageUrl", target = "profileImageUrl")
-    @Mapping(source = "status", target = "status")
     RestaurantResponse toResponse(RestaurantShortResponse restaurant);
 }

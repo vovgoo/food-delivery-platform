@@ -10,7 +10,6 @@ public interface PaymentMapper {
 
     @Mapping(source = "id", target = "id")
     @Mapping(source = "method", target = "method")
-    @Mapping(source = "amount", target = "amount")
     @Mapping(source = "status", target = "status")
     PaymentResponse toResponse(Payment payment);
 }

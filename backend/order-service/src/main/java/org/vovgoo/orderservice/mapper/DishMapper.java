@@ -11,6 +11,5 @@ public interface DishMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "name", target = "name")
     @Mapping(source = "profileImageUrl", target = "profileImageUrl")
-    @Mapping(source = "status", target = "status")
     DishResponse toResponse(DishShortResponse dish);
 }
