@@ -1,4 +1,4 @@
-package org.vovgoo.dto.address.enums;
+package org.vovgoo.enums.address;
 
 public enum AddressStatus {
     ACTIVE,

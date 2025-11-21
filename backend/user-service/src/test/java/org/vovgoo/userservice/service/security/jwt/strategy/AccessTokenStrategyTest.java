@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.vovgoo.userservice.config.security.property.jwt.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.RoleType;
+import org.vovgoo.enums.user.RoleType;
 import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 

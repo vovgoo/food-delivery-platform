@@ -5,7 +5,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
@@ -13,7 +13,7 @@ import org.vovgoo.userservice.dto.verification.response.PhoneVerificationRespons
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.RoleType;
+import org.vovgoo.enums.user.RoleType;
 import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
 import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;

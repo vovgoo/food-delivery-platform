@@ -1,4 +1,4 @@
-package org.vovgoo.dto.restaurant.enums;
+package org.vovgoo.enums.restaurant;
 
 public enum RestaurantStatus {
     ACTIVE,

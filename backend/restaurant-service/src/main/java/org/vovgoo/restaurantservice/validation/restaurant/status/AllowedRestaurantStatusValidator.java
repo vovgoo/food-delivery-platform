@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.validation.restaurant.status;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
+import org.vovgoo.enums.restaurant.RestaurantStatus;
 
 import java.util.Arrays;
 

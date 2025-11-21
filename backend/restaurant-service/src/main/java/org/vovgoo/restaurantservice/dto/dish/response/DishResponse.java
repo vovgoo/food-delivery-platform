@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.dto.dish.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.vovgoo.restaurantservice.dto.image.response.ImageResponse;
-import org.vovgoo.dto.dish.enums.DishStatus;
+import org.vovgoo.enums.dish.DishStatus;
 
 import java.math.BigDecimal;
 import java.util.List;

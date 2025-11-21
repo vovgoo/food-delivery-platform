@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.user.aspect.CheckUserStatus;
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.user.request.*;

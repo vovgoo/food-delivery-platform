@@ -4,7 +4,7 @@ import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vovgoo.dto.address.AddressShortResponse;
-import org.vovgoo.dto.address.enums.AddressStatus;
+import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.orderservice.exception.custom.address.AddressDeletedException;
 import org.vovgoo.orderservice.exception.custom.address.AddressNotFoundException;
 import org.vovgoo.orderservice.exception.custom.address.AddressServiceException;

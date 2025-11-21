@@ -11,7 +11,7 @@ import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.RoleType;
+import org.vovgoo.enums.user.RoleType;
 import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
 import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;

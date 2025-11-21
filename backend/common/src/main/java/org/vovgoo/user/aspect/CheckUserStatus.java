@@ -1,6 +1,6 @@
 package org.vovgoo.user.aspect;
 
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.enums.user.UserStatus;
 import java.lang.annotation.*;
 
 @Target(ElementType.METHOD)

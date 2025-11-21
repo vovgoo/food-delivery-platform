@@ -14,7 +14,7 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
 import org.vovgoo.restaurantservice.entity.Restaurant;
-import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
+import org.vovgoo.enums.restaurant.RestaurantStatus;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.RestaurantMapper;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;

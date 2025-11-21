@@ -1,6 +1,6 @@
 package org.vovgoo.dto.address;
 
-import org.vovgoo.dto.address.enums.AddressStatus;
+import org.vovgoo.enums.address.AddressStatus;
 
 import java.util.UUID;
 

@@ -1,6 +1,6 @@
 package org.vovgoo.userservice.service.user;
 
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;

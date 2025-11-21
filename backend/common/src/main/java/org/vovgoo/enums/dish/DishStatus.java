@@ -1,4 +1,4 @@
-package org.vovgoo.dto.dish.enums;
+package org.vovgoo.enums.dish;
 
 public enum DishStatus {
     AVAILABLE,

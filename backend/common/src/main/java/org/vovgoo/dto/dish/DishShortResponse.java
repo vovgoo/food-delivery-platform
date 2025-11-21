@@ -1,6 +1,6 @@
 package org.vovgoo.dto.dish;
 
-import org.vovgoo.dto.dish.enums.DishStatus;
+import org.vovgoo.enums.dish.DishStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.entity.enums;
+package org.vovgoo.enums.user;
 
 public enum RoleType {
     USER("USER"),

@@ -1,6 +1,6 @@
 package org.vovgoo.dto.restaurant;
 
-import org.vovgoo.dto.restaurant.enums.RestaurantStatus;
+import org.vovgoo.enums.restaurant.RestaurantStatus;
 
 import java.util.UUID;
 
