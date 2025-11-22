@@ -3,8 +3,6 @@ package org.vovgoo.userservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
 import org.vovgoo.validators.phone.Phone;
@@ -54,10 +52,10 @@ public class User {
     @NotBlank(message = "Пароль не может быть пустым")
     private String passwordHash;
 
-    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
