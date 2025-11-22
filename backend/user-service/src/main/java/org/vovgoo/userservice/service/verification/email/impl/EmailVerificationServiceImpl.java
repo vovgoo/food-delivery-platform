@@ -29,7 +29,6 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
         String token = UUID.randomUUID().toString();
 
         redisService.set(RedisKey.EMAIL_VERIFICATION_LINK, email, type.name(), token);
-
         redisService.set(RedisKey.EMAIL_VERIFICATION_ATTEMPTS, 0, type.name(), email);
 
         EmailVerificationEvent event = EmailVerificationEvent.builder()

@@ -15,6 +15,8 @@ import org.vovgoo.userservice.service.redis.RedisService;
 import org.vovgoo.userservice.service.verification.phone.PhoneVerificationService;
 import org.vovgoo.userservice.service.verification.phone.enums.PhoneVerificationType;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -58,7 +60,12 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
         Integer attempts = redisService.get(RedisKey.PHONE_VERIFICATION_ATTEMPTS, Integer.class, type.name(), token)
                 .orElse(0);
 
-        if (!actualOtp.equals(code)) {
+        byte[] expected = actualOtp.getBytes(StandardCharsets.UTF_8);
+        byte[] provided = code.getBytes(StandardCharsets.UTF_8);
+
+        boolean valid = expected.length == provided.length && MessageDigest.isEqual(expected, provided);
+
+        if (!valid) {
             attempts++;
             redisService.set(RedisKey.PHONE_VERIFICATION_ATTEMPTS, attempts, type.name(), token);
 
