@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
+import org.vovgoo.userservice.config.security.SecurityConfig;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
@@ -45,11 +46,24 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtPair signIn(SignInRequest signInRequest) {
-        User user = userRepository.findByPhoneWithRoles(signInRequest.phone())
-                .orElseThrow(() -> new BadCredentialsException("Неверный номер или телефон"));
+        User user = userRepository.findByPhone(signInRequest.phone()).orElse(null);
 
-        if (!passwordEncoder.matches(signInRequest.password(), user.getPasswordHash())) {
-            throw new BadCredentialsException("Неверный номер или телефон");
+        String hashToCheck = (user != null)
+                ? user.getPasswordHash()
+                : SecurityConfig.DUMMY_PASSWORD_HASH;
+
+        boolean passwordMatches = passwordEncoder.matches(signInRequest.password(), hashToCheck);
+
+        if (!passwordMatches) {
+            throw new BadCredentialsException("Неверный номер или пароль");
+        }
+
+        if (user == null) {
+            throw new BadCredentialsException("Неверный номер или пароль");
+        }
+
+        if (user.getStatus() == UserStatus.BLOCKED) {
+            throw new BadCredentialsException("Пользователь заблокирован");
         }
 
         return new JwtPair(
@@ -63,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
         userRepository.findByPhone(signUpRequest.phone())
                 .ifPresent(u -> { throw new PhoneAlreadyExistsException(signUpRequest.phone()); });
 
-        String token = phoneVerificationService.sendOtp(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
+        String token = phoneVerificationService.send(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
 
         redisService.set(RedisKey.SIGNUP_REQUEST, signUpRequest, token);
 
@@ -77,7 +91,7 @@ public class AuthServiceImpl implements AuthService {
         SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, token)
                 .orElseThrow(SignUpRequestNotFoundException::new);
 
-        phoneVerificationService.sendOtp(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
+        phoneVerificationService.send(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
     }
 
     @Override
@@ -88,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
         SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, token)
                 .orElseThrow(SignUpRequestNotFoundException::new);
 
-        phoneVerificationService.validateOtp(token, code, PhoneVerificationType.SIGN_UP);
+        phoneVerificationService.validate(token, code, PhoneVerificationType.SIGN_UP);
 
         Role role = roleRepository.findByName(RoleType.USER)
                 .orElseThrow(RoleNotFoundException::new);
