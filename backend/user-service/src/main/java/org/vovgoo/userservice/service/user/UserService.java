@@ -1,6 +1,6 @@
 package org.vovgoo.userservice.service.user;
 
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
@@ -17,5 +17,5 @@ public interface UserService {
     void confirmChangeEmail(String token);
     void deactivateAccount();
     void reactivateAccount();
-    UserStatus getUserStatus(UUID userId);
+    UserInternalResponse getUser(UUID userId);
 }

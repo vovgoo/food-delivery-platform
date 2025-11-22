@@ -7,7 +7,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.user.client.InternalUserClient;
-import org.vovgoo.user.enums.UserStatus;
+import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.user.exception.UserActiveException;
 import org.vovgoo.user.exception.UserBlockedException;
 import org.vovgoo.user.exception.UserDeactivatedException;
@@ -25,7 +25,7 @@ public class CheckUserStatusAspect {
     public Object checkStatus(ProceedingJoinPoint joinPoint, CheckUserStatus check) throws Throwable {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        UserStatus status = internalUserClient.getUserStatus(userId);
+        UserStatus status = internalUserClient.getUser(userId).userStatus();
 
         for (UserStatus forbidden : check.forbidden()) {
             if (status == forbidden) {

@@ -1,105 +1,129 @@
 package org.vovgoo.orderservice.service.order.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
-import org.vovgoo.orderservice.dto.common.PageParams;
-import org.vovgoo.orderservice.dto.common.PageResponse;
+import org.springframework.transaction.annotation.Transactional;
+import org.vovgoo.dto.pageable.PageParams;
+import org.vovgoo.dto.pageable.PageResponse;
+import org.vovgoo.orderservice.config.kafka.EventType;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
+import org.vovgoo.orderservice.dto.order.response.OrderShortResponse;
 import org.vovgoo.orderservice.entity.Order;
-import org.vovgoo.orderservice.entity.OrderItem;
-import org.vovgoo.orderservice.entity.enums.OrderStatus;
+import org.vovgoo.orderservice.entity.Payment;
+import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.repository.OrderRepository;
+import org.vovgoo.orderservice.service.kafka.KafkaEventPublisher;
+import org.vovgoo.orderservice.service.kafka.event.OrderCreatedEvent;
+import org.vovgoo.orderservice.service.kafka.event.OrderStatusChangedEvent;
 import org.vovgoo.orderservice.service.order.OrderService;
+import org.vovgoo.orderservice.service.order.facade.OrderFacade;
 import org.vovgoo.orderservice.service.payment.PaymentService;
-import org.vovgoo.orderservice.utils.SecurityUtils;
+import org.vovgoo.security.utils.CurrentUserUtils;
+import org.vovgoo.user.aspect.CheckUserStatus;
 
-import java.math.BigDecimal;
-import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderFacade orderFacade;
+    private final KafkaEventPublisher kafkaEventPublisher;
     private final PaymentService paymentService;
     private final OrderMapper orderMapper;
 
     @Override
+    @CheckUserStatus
+    @Transactional
     public OrderResponse placeOrder(CreateOrderRequest createOrderRequest) {
-        Long userId = SecurityUtils.getCurrentUserId();
+        UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        List<OrderItem> orderItems = createOrderRequest.items().stream()
-                .map(item -> OrderItem.builder()
-                        .dishId(item.dishId())
-                        .quantity(item.quantity())
-                        .price(item.price())
-                        .build())
-                .toList();
+        Order order = orderFacade.buildOrder(userId, createOrderRequest);
 
-        BigDecimal totalPrice = orderItems.stream()
-                .map(i -> i.getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        Payment payment = paymentService.processPayment(order, createOrderRequest.payment());
+        order.setPayment(payment);
 
-        Order order = Order.builder()
-                .userId(userId)
-                .restaurantId(createOrderRequest.restaurantId())
-                .status(OrderStatus.CREATED)
-                .totalPrice(totalPrice)
-                .items(orderItems)
+        order = orderRepository.save(order);
+
+        OrderResponse orderResponse = orderFacade.assembleOrderResponse(order);
+
+        OrderCreatedEvent orderCreatedEvent = OrderCreatedEvent.builder()
+                .orderId(orderResponse.id())
+                .userId(orderResponse.user().id())
+                .userPhone(orderResponse.user().phone())
+                .orderDate(orderResponse.orderDate())
+                .totalPrice(orderResponse.totalPrice())
                 .build();
 
-        orderItems.forEach(i -> i.setOrder(order));
-        orderRepository.save(order);
+        kafkaEventPublisher.publish(EventType.ORDER_CREATED, orderCreatedEvent);
 
-        paymentService.processPayment(order, createOrderRequest.payment());
-
-        return orderMapper.toResponse(order);
+        return orderResponse;
     }
 
     @Override
-    public PageResponse<OrderResponse> getAllOrders(PageParams pageParams) {
-        Long userId = SecurityUtils.getCurrentUserId();
-        boolean isAdmin = SecurityUtils.isAdmin();
+    @CheckUserStatus
+    public PageResponse<OrderShortResponse> getAllOrders(PageParams pageParams) {
+        UUID userId = CurrentUserUtils.getCurrentUserId();
 
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
 
-        Page<Order> orderPage = isAdmin ? orderRepository.findAll(pageRequest) : orderRepository.findByUserId(userId, pageRequest);
+        Page<Order> orders;
 
-        Page<OrderResponse> content = orderPage.map(orderMapper::toResponse);
-
-        return PageResponse.of(content);
-    }
-
-    @Override
-    public OrderResponse getOrderById(Long orderId) {
-        Long userId = SecurityUtils.getCurrentUserId();
-        boolean isAdmin = SecurityUtils.isAdmin();
-
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Заказ не найден"));
-
-        if (!isAdmin && !order.getUserId().equals(userId)) {
-            throw new AccessDeniedException("Доступ запрещён");
+        if(CurrentUserUtils.isAdmin()) {
+            orders = orderRepository.findAllWithItemsAndPayment(pageRequest);
+        } else {
+            orders = orderRepository.findByUserIdWithItemsAndPayment(userId, pageRequest);
         }
 
-        return orderMapper.toResponse(order);
+        Page<OrderShortResponse> orderResponses = orders.map(orderMapper::toShortResponse);
+
+        return PageResponse.of(orderResponses);
     }
 
     @Override
-    public OrderResponse updateOrderStatus(Long orderId, UpdateOrderStatusRequest updateOrderStatusRequest) {
+    @CheckUserStatus
+    public OrderResponse getOrderById(UUID orderId) {
+        UUID userId = CurrentUserUtils.getCurrentUserId();
+
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Заказ не найден"));
+                .orElseThrow(OrderNotFoundException::new);
+
+        if(!order.getUserId().equals(userId) && !CurrentUserUtils.isAdmin()) {
+            throw new AccessDeniedException("Доступ запрещен.");
+        }
+
+        return orderFacade.assembleOrderResponse(order);
+    }
+
+    @Override
+    @CheckUserStatus
+    @Transactional
+    public OrderResponse updateOrderStatus(UUID orderId, UpdateOrderStatusRequest updateOrderStatusRequest) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(OrderNotFoundException::new);
 
         order.setStatus(updateOrderStatusRequest.status());
-        orderRepository.save(order);
+        order = orderRepository.save(order);
 
-        return orderMapper.toResponse(order);
+        OrderResponse orderResponse = orderFacade.assembleOrderResponse(order);
+
+        OrderStatusChangedEvent orderStatusChangedEvent = OrderStatusChangedEvent.builder()
+                .orderId(orderResponse.id())
+                .userId(orderResponse.user().id())
+                .userPhone(orderResponse.user().phone())
+                .orderStatus(orderResponse.status())
+                .build();
+
+        kafkaEventPublisher.publish(EventType.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
+
+        return orderResponse;
     }
 }

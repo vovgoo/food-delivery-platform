@@ -1,6 +1,7 @@
 package org.vovgoo.restaurantservice.service.restaurant;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
@@ -20,4 +21,5 @@ public interface RestaurantService {
     void deleteImage(UUID restaurantId, UUID imageId);
     void setProfileImage(UUID restaurantId, MultipartFile file);
     void removeProfileImage(UUID restaurantId);
+    RestaurantInternalResponse getInternalRestaurantById(UUID restaurantId);
 }

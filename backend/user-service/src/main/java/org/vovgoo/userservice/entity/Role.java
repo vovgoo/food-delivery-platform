@@ -2,7 +2,7 @@ package org.vovgoo.userservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.vovgoo.userservice.entity.enums.RoleType;
+import org.vovgoo.enums.user.RoleType;
 
 import java.util.HashSet;
 import java.util.Set;

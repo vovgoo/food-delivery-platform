@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.vovgoo.security.utils.CurrentUserUtils;
 
 import java.util.UUID;
 

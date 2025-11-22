@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.dto.dish.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import org.vovgoo.restaurantservice.entity.enums.DishStatus;
+import org.vovgoo.enums.dish.DishStatus;
 import org.vovgoo.restaurantservice.validation.dish.status.AllowedDishStatus;
 import java.math.BigDecimal;
 

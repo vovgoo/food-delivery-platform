@@ -1,21 +1,20 @@
 package org.vovgoo.orderservice.dto.orderItem.request;
 
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import java.math.BigDecimal;
 
+import java.util.UUID;
+
+@Schema(description = "Request to add an item to an order")
 public record AddOrderItemRequest(
-        @NotNull(message = "ID блюда обязателен")
-        Long dishId,
 
+        @Schema(description = "Unique ID of the dish", example = "770e8400-e29b-41d4-a716-446655440222")
+        @NotNull(message = "Идентификатор блюда обязателен")
+        UUID dishId,
+
+        @Schema(description = "Quantity of the dish", example = "2")
         @NotNull(message = "Количество обязано быть заполнено")
         @Min(value = 1, message = "Количество должно быть не меньше 1")
-        Long quantity,
-
-        @NotNull(message = "Цена обязательна")
-        @DecimalMin(value = "0.01", message = "Цена должна быть положительной")
-        @Digits(integer = 8, fraction = 2, message = "Цена должна быть числом с максимум 2 знаками после запятой")
-        BigDecimal price
+        Long quantity
 ) {}

@@ -5,17 +5,17 @@ import org.mockito.MockedStatic;
 import org.springframework.data.domain.*;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
+import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.entity.enums.AddressStatus;
+import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.mapper.AddressMapper;
 import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;
-import org.vovgoo.userservice.utils.CurrentUserUtils;
 
 import java.util.*;
 
