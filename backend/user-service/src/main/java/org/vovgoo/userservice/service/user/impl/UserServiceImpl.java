@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findByPhone(changePhoneRequest.phone())
                 .ifPresent( u -> {throw new PhoneAlreadyExistsException(changePhoneRequest.phone()); });
 
-        String token = phoneVerificationService.sendOtp(changePhoneRequest.phone(), PhoneVerificationType.CHANGE);
+        String token = phoneVerificationService.send(changePhoneRequest.phone(), PhoneVerificationType.CHANGE);
 
         redisService.set(RedisKey.PHONE_CHANGE_REQUEST, changePhoneRequest, user.getId().toString(), token);
 
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
         ChangePhoneRequest changePhoneRequest = redisService.get(RedisKey.PHONE_CHANGE_REQUEST, ChangePhoneRequest.class, user.getId().toString(), token)
                 .orElseThrow(ChangePhoneRequestNotFoundException::new);
 
-        phoneVerificationService.validateOtp(token, code, PhoneVerificationType.CHANGE);
+        phoneVerificationService.validate(token, code, PhoneVerificationType.CHANGE);
 
         userRepository.findByPhone(changePhoneRequest.phone())
                 .ifPresent( u -> {throw new PhoneAlreadyExistsException(changePhoneRequest.phone()); });
@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
         userRepository.findByEmail(changeEmailRequest.email())
                 .ifPresent( u -> {throw new EmailAlreadyExistsException(changeEmailRequest.email()); });
 
-        String token = emailVerificationService.sendVerificationLink(changeEmailRequest.email(), EmailVerificationType.CHANGE);
+        String token = emailVerificationService.send(changeEmailRequest.email(), EmailVerificationType.CHANGE);
 
         redisService.set(RedisKey.EMAIL_CHANGE_REQUEST, changeEmailRequest, user.getId().toString(), token);
     }
@@ -157,7 +157,7 @@ public class UserServiceImpl implements UserService {
         ChangeEmailRequest changeEmailRequest = redisService.get(RedisKey.EMAIL_CHANGE_REQUEST, ChangeEmailRequest.class, user.getId().toString(), token)
                 .orElseThrow(ChangeEmailRequestNotFoundException::new);
 
-        emailVerificationService.validateVerificationLink(token, EmailVerificationType.CHANGE);
+        emailVerificationService.validate(token, EmailVerificationType.CHANGE);
 
         userRepository.findByEmail(changeEmailRequest.email())
                 .ifPresent( u -> {throw new EmailAlreadyExistsException(changeEmailRequest.email()); });

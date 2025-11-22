@@ -29,7 +29,7 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
     private final EventPublisher eventPublisher;
 
     @Override
-    public String sendOtp(String phone, PhoneVerificationType type) {
+    public String send(String phone, PhoneVerificationType type) {
         String token = UUID.randomUUID().toString();
         String otpCode = String.valueOf(ThreadLocalRandom.current().nextInt(100_000, 1_000_000));
 
@@ -53,7 +53,7 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
     }
 
     @Override
-    public void validateOtp(String token, String code, PhoneVerificationType type) {
+    public void validate(String token, String code, PhoneVerificationType type) {
         String actualOtp = redisService.get(RedisKey.PHONE_VERIFICATION_CODE, String.class, type.name(), token)
                 .orElseThrow(OtpNotFoundException::new);
 

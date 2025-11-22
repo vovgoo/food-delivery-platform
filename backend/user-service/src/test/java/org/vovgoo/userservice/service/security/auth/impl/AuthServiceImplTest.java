@@ -101,7 +101,7 @@ class AuthServiceImplTest {
     void signUp_shouldReturnPhoneVerificationResponse_whenNewPhone() {
         SignUpRequest request = new SignUpRequest("123", "Name", LocalDate.now(), null);
         when(userRepository.findByPhone("123")).thenReturn(Optional.empty());
-        when(phoneVerificationService.sendOtp("123", PhoneVerificationType.SIGN_UP)).thenReturn("token123");
+        when(phoneVerificationService.send("123", PhoneVerificationType.SIGN_UP)).thenReturn("token123");
 
         PhoneVerificationResponse result = authService.signUp(request);
 
@@ -124,7 +124,7 @@ class AuthServiceImplTest {
 
         authService.resendSignUpOtpCode("token");
 
-        verify(phoneVerificationService).sendOtp("123", PhoneVerificationType.SIGN_UP);
+        verify(phoneVerificationService).send("123", PhoneVerificationType.SIGN_UP);
     }
 
     @Test
@@ -141,7 +141,7 @@ class AuthServiceImplTest {
         User savedUser = User.builder().phone("123").roles(Set.of(role)).build();
 
         when(redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, "token")).thenReturn(Optional.of(request));
-        doNothing().when(phoneVerificationService).validateOtp("token", "code123", PhoneVerificationType.SIGN_UP);
+        doNothing().when(phoneVerificationService).validate("token", "code123", PhoneVerificationType.SIGN_UP);
         when(roleRepository.findByName(RoleType.USER)).thenReturn(Optional.of(role));
         when(passwordEncoder.encode("pwd")).thenReturn("hashed");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -166,7 +166,7 @@ class AuthServiceImplTest {
     void confirmSignUp_shouldThrow_whenRoleNotFound() {
         SignUpRequest request = new SignUpRequest("123", "Name", LocalDate.now(), null);
         when(redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, "token")).thenReturn(Optional.of(request));
-        doNothing().when(phoneVerificationService).validateOtp(anyString(), anyString(), any());
+        doNothing().when(phoneVerificationService).validate(anyString(), anyString(), any());
 
         when(roleRepository.findByName(RoleType.USER)).thenReturn(Optional.empty());
 

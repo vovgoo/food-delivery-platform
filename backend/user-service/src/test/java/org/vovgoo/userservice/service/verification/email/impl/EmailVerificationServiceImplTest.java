@@ -42,7 +42,7 @@ class EmailVerificationServiceImplTest {
         String email = "test@example.com";
         EmailVerificationType type = EmailVerificationType.CHANGE;
 
-        String token = emailVerificationService.sendVerificationLink(email, type);
+        String token = emailVerificationService.send(email, type);
 
         assertNotNull(token);
 
@@ -65,7 +65,7 @@ class EmailVerificationServiceImplTest {
                 .thenReturn(Optional.empty());
 
         assertThrows(EmailVerificationNotFoundException.class,
-                () -> emailVerificationService.validateVerificationLink(token, type));
+                () -> emailVerificationService.validate(token, type));
     }
 
     @Test
@@ -80,7 +80,7 @@ class EmailVerificationServiceImplTest {
                 .thenReturn(Optional.of(3));
 
         assertThrows(EmailVerificationAttemptsExceededException.class,
-                () -> emailVerificationService.validateVerificationLink(token, type));
+                () -> emailVerificationService.validate(token, type));
 
         verify(redisService).delete(any(), eq(type.name()), eq(token));
         verify(redisService).delete(any(), eq(type.name()), eq(email));
@@ -97,7 +97,7 @@ class EmailVerificationServiceImplTest {
         when(redisService.get(any(), eq(Integer.class), eq(type.name()), eq(email)))
                 .thenReturn(Optional.of(1));
 
-        assertDoesNotThrow(() -> emailVerificationService.validateVerificationLink(token, type));
+        assertDoesNotThrow(() -> emailVerificationService.validate(token, type));
 
         verify(redisService).delete(any(), eq(type.name()), eq(token));
         verify(redisService).delete(any(), eq(type.name()), eq(email));

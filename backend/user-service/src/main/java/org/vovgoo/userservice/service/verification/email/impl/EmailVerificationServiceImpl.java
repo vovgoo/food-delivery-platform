@@ -25,7 +25,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     private final EventPublisher eventPublisher;
 
     @Override
-    public String sendVerificationLink(String email, EmailVerificationType type) {
+    public String send(String email, EmailVerificationType type) {
         String token = UUID.randomUUID().toString();
 
         redisService.set(RedisKey.EMAIL_VERIFICATION_LINK, email, type.name(), token);
@@ -43,7 +43,7 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     }
 
     @Override
-    public void validateVerificationLink(String token, EmailVerificationType type) {
+    public void validate(String token, EmailVerificationType type) {
         String email = redisService.get(RedisKey.EMAIL_VERIFICATION_LINK, String.class, type.name(), token)
                 .orElseThrow(EmailVerificationNotFoundException::new);
 
