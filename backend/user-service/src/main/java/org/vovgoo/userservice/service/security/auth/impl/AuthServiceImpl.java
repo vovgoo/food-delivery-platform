@@ -10,7 +10,6 @@ import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.config.security.SecurityConfig;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
-import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
@@ -73,36 +72,25 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public PhoneVerificationResponse signUp(SignUpRequest signUpRequest) {
+    public void signUp(SignUpRequest signUpRequest) {
         userRepository.findByPhone(signUpRequest.phone())
                 .ifPresent(u -> { throw new PhoneAlreadyExistsException(signUpRequest.phone()); });
 
-        String token = phoneVerificationService.send(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
-
-        redisService.set(RedisKey.SIGNUP_REQUEST, signUpRequest, token);
-
-        return PhoneVerificationResponse.builder()
-                .token(token)
-                .build();
-    }
-
-    @Override
-    public void resendSignUpOtpCode(String token) {
-        SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, token)
-                .orElseThrow(SignUpRequestNotFoundException::new);
-
         phoneVerificationService.send(signUpRequest.phone(), PhoneVerificationType.SIGN_UP);
+
+        redisService.set(RedisKey.SIGNUP_REQUEST, signUpRequest, signUpRequest.phone());
     }
 
     @Override
     @Transactional
-    public JwtPair confirmSignUp(String token, ConfirmSignUpRequest confirmSignUpRequest) {
+    public JwtPair confirmSignUp(ConfirmSignUpRequest confirmSignUpRequest) {
+        String phone = confirmSignUpRequest.phone();
         String code = confirmSignUpRequest.code();
 
-        SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, token)
+        SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, phone)
                 .orElseThrow(SignUpRequestNotFoundException::new);
 
-        phoneVerificationService.validate(token, code, PhoneVerificationType.SIGN_UP);
+        phoneVerificationService.validate(phone, code, PhoneVerificationType.SIGN_UP);
 
         Role role = roleRepository.findByName(RoleType.USER)
                 .orElseThrow(RoleNotFoundException::new);
@@ -118,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
 
         user = userRepository.save(user);
 
-        redisService.delete(RedisKey.SIGNUP_REQUEST, token);
+        redisService.delete(RedisKey.SIGNUP_REQUEST, phone);
 
         return JwtPair.builder()
                 .accessToken(jwtTokenProvider.generateToken(JwtTokenType.ACCESS, user))

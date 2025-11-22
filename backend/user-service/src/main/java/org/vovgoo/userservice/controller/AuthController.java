@@ -17,7 +17,6 @@ import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
-import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.service.security.auth.AuthService;
 import org.vovgoo.userservice.utils.CookieUtils;
 
@@ -51,8 +50,7 @@ public class AuthController {
 
     @Operation(summary = "User sign-up", description = "Register a new user and send verification code")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sign-up initiated, verification token sent",
-                    content = @Content(schema = @Schema(implementation = PhoneVerificationResponse.class))),
+            @ApiResponse(responseCode = "204", description = "Sign-up initiated, verification token sent"),
             @ApiResponse(responseCode = "400", description = "Invalid input data or validation errors",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -67,27 +65,8 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/signUp")
-    public ResponseEntity<PhoneVerificationResponse> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        return ResponseEntity.ok(authService.signUp(signUpRequest));
-    }
-
-    @Operation(summary = "Resend OTP code", description = "Resend the verification code for sign-up")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "OTP code resent successfully"),
-            @ApiResponse(responseCode = "400", description = "Invalid request",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Sign-up request not found",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "429", description = "Too many requests: OTP attempts exceeded",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
-    })
-    @PostMapping("/resendOtpCode")
-    public ResponseEntity<Void> resendSignUpOtpCode(@RequestParam("token") String token) {
-        authService.resendSignUpOtpCode(token);
+    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
+        authService.signUp(signUpRequest);
         return ResponseEntity.noContent().build();
     }
 
@@ -111,8 +90,8 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/confirmSignUp")
-    public ResponseEntity<JwtResponse> confirmSignUp(@RequestParam("token") String token, @Valid @RequestBody ConfirmSignUpRequest confirmSignUpRequest, HttpServletResponse response) {
-        JwtPair jwtPair = authService.confirmSignUp(token, confirmSignUpRequest);
+    public ResponseEntity<JwtResponse> confirmSignUp(@Valid @RequestBody ConfirmSignUpRequest confirmSignUpRequest, HttpServletResponse response) {
+        JwtPair jwtPair = authService.confirmSignUp(confirmSignUpRequest);
         CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
         return ResponseEntity.status(HttpStatus.CREATED).body(new JwtResponse(jwtPair.accessToken()));
     }

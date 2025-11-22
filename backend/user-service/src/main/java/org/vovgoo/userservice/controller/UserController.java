@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
-import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.service.user.UserService;
 
 @RestController
@@ -90,8 +89,7 @@ public class UserController {
 
     @Operation(summary = "Change user phone", description = "Initiate phone number change and send verification code")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Phone change initiated",
-                    content = @Content(schema = @Schema(implementation = PhoneVerificationResponse.class))),
+            @ApiResponse(responseCode = "204", description = "Phone change initiated"),
             @ApiResponse(responseCode = "400", description = "Invalid input",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -107,8 +105,9 @@ public class UserController {
     })
     @PutMapping("/me/phone")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<PhoneVerificationResponse> changePhone(@Valid @RequestBody ChangePhoneRequest request) {
-        return ResponseEntity.ok(userService.changePhone(request));
+    public ResponseEntity<Void> changePhone(@Valid @RequestBody ChangePhoneRequest request) {
+        userService.changePhone(request);
+        return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "Confirm phone change", description = "Confirm new phone with verification token and code")
@@ -131,8 +130,8 @@ public class UserController {
     })
     @PutMapping("/me/phone/confirm")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestParam("token") String token, @Valid @RequestBody ConfirmChangePhoneRequest request) {
-        userService.confirmChangePhone(token, request);
+    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmChangePhoneRequest request) {
+        userService.confirmChangePhone(request);
         return ResponseEntity.noContent().build();
     }
 

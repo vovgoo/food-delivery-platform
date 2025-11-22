@@ -9,7 +9,6 @@ import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
-import org.vovgoo.userservice.dto.verification.response.PhoneVerificationResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
@@ -93,35 +92,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @CheckUserStatus
-    public PhoneVerificationResponse changePhone(ChangePhoneRequest changePhoneRequest) {
+    public void changePhone(ChangePhoneRequest changePhoneRequest) {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         userRepository.findByPhone(changePhoneRequest.phone())
                 .ifPresent( u -> {throw new PhoneAlreadyExistsException(changePhoneRequest.phone()); });
 
-        String token = phoneVerificationService.send(changePhoneRequest.phone(), PhoneVerificationType.CHANGE);
+        phoneVerificationService.send(changePhoneRequest.phone(), PhoneVerificationType.CHANGE);
 
-        redisService.set(RedisKey.PHONE_CHANGE_REQUEST, changePhoneRequest, user.getId().toString(), token);
-
-        return PhoneVerificationResponse.builder()
-                .token(token)
-                .build();
+        redisService.set(RedisKey.PHONE_CHANGE_REQUEST, changePhoneRequest, user.getId().toString(), changePhoneRequest.phone());
     }
 
     @Override
     @Transactional
     @CheckUserStatus
-    public void confirmChangePhone(String token, ConfirmChangePhoneRequest confirmChangePhoneRequest) {
+    public void confirmChangePhone(ConfirmChangePhoneRequest confirmChangePhoneRequest) {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         String code = confirmChangePhoneRequest.code();
 
-        ChangePhoneRequest changePhoneRequest = redisService.get(RedisKey.PHONE_CHANGE_REQUEST, ChangePhoneRequest.class, user.getId().toString(), token)
+        ChangePhoneRequest changePhoneRequest = redisService.get(RedisKey.PHONE_CHANGE_REQUEST, ChangePhoneRequest.class, user.getId().toString(), confirmChangePhoneRequest.phone())
                 .orElseThrow(ChangePhoneRequestNotFoundException::new);
 
-        phoneVerificationService.validate(token, code, PhoneVerificationType.CHANGE);
+        phoneVerificationService.validate(confirmChangePhoneRequest.phone(), code, PhoneVerificationType.CHANGE);
 
         userRepository.findByPhone(changePhoneRequest.phone())
                 .ifPresent( u -> {throw new PhoneAlreadyExistsException(changePhoneRequest.phone()); });
@@ -130,7 +125,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        redisService.delete(RedisKey.PHONE_CHANGE_REQUEST, user.getId().toString(), token);
+        redisService.delete(RedisKey.PHONE_CHANGE_REQUEST, user.getId().toString(), confirmChangePhoneRequest.phone());
     }
 
     @Override

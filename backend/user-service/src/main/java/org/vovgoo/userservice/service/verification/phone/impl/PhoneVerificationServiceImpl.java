@@ -17,7 +17,6 @@ import org.vovgoo.userservice.service.verification.phone.enums.PhoneVerification
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -29,13 +28,11 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
     private final EventPublisher eventPublisher;
 
     @Override
-    public String send(String phone, PhoneVerificationType type) {
-        String token = UUID.randomUUID().toString();
+    public void send(String phone, PhoneVerificationType type) {
         String otpCode = String.valueOf(ThreadLocalRandom.current().nextInt(100_000, 1_000_000));
 
-        redisService.set(RedisKey.PHONE_VERIFICATION_CODE, otpCode, type.name(), token);
-        redisService.set(RedisKey.PHONE_VERIFICATION_RATE_LIMIT, true, type.name(), token);
-        redisService.set(RedisKey.PHONE_VERIFICATION_ATTEMPTS, 0, type.name(), token);
+        redisService.set(RedisKey.PHONE_VERIFICATION_CODE, otpCode, type.name(), phone);
+        redisService.set(RedisKey.PHONE_VERIFICATION_ATTEMPTS, 0, type.name(), phone);
 
         PhoneVerificationEvent event = PhoneVerificationEvent.builder()
                 .phone(phone)
@@ -48,16 +45,14 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
                 RabbitRoutingKey.PHONE_VERIFICATION_REQUESTED,
                 event
         );
-
-        return token;
     }
 
     @Override
-    public void validate(String token, String code, PhoneVerificationType type) {
-        String actualOtp = redisService.get(RedisKey.PHONE_VERIFICATION_CODE, String.class, type.name(), token)
+    public void validate(String phone, String code, PhoneVerificationType type) {
+        String actualOtp = redisService.get(RedisKey.PHONE_VERIFICATION_CODE, String.class, type.name(), phone)
                 .orElseThrow(OtpNotFoundException::new);
 
-        Integer attempts = redisService.get(RedisKey.PHONE_VERIFICATION_ATTEMPTS, Integer.class, type.name(), token)
+        Integer attempts = redisService.get(RedisKey.PHONE_VERIFICATION_ATTEMPTS, Integer.class, type.name(), phone)
                 .orElse(0);
 
         byte[] expected = actualOtp.getBytes(StandardCharsets.UTF_8);
@@ -67,12 +62,11 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
 
         if (!valid) {
             attempts++;
-            redisService.set(RedisKey.PHONE_VERIFICATION_ATTEMPTS, attempts, type.name(), token);
+            redisService.set(RedisKey.PHONE_VERIFICATION_ATTEMPTS, attempts, type.name(), phone);
 
             if (attempts >= verificationProperty.getPhone().getMaxAttempts()) {
-                redisService.delete(RedisKey.PHONE_VERIFICATION_CODE, type.name(), token);
-                redisService.delete(RedisKey.PHONE_VERIFICATION_RATE_LIMIT, type.name(), token);
-                redisService.delete(RedisKey.PHONE_VERIFICATION_ATTEMPTS, type.name(), token);
+                redisService.delete(RedisKey.PHONE_VERIFICATION_CODE, type.name(), phone);
+                redisService.delete(RedisKey.PHONE_VERIFICATION_ATTEMPTS, type.name(), phone);
 
                 throw new OtpAttemptsExceededException();
             }
@@ -80,8 +74,7 @@ public class PhoneVerificationServiceImpl implements PhoneVerificationService {
             throw new InvalidOtpException();
         }
 
-        redisService.delete(RedisKey.PHONE_VERIFICATION_CODE, type.name(), token);
-        redisService.delete(RedisKey.PHONE_VERIFICATION_RATE_LIMIT, type.name(), token);
-        redisService.delete(RedisKey.PHONE_VERIFICATION_ATTEMPTS, type.name(), token);
+        redisService.delete(RedisKey.PHONE_VERIFICATION_CODE, type.name(), phone);
+        redisService.delete(RedisKey.PHONE_VERIFICATION_ATTEMPTS, type.name(), phone);
     }
 }
