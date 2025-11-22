@@ -1,0 +1,1 @@
+CREATE TYPE user_status_enum AS ENUM ('ACTIVE', 'DEACTIVATED', 'BLOCKED');

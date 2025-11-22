@@ -1,0 +1,1 @@
+CREATE TYPE address_status_enum AS ENUM ('ACTIVE', 'INACTIVE', 'DELETED');
