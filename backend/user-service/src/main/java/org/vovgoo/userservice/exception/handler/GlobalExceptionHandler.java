@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -43,18 +44,30 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            BadCredentialsException.class,
             InvalidRefreshTokenException.class,
-            AuthorizationDeniedException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleUnauthorized(RuntimeException ex, HttpServletRequest request) {
-        String message = switch (ex.getClass().getSimpleName()) {
-            case "BadCredentialsException" -> "Неверный телефон или пароль";
-            case "AuthorizationDeniedException" -> "Требуется аутентификация";
-            default -> ex.getMessage();
-        };
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.of(message, HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse<FieldErrors>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAuthDenied(AuthorizationDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionResponse.of("Требуется аутентификация", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponse.of("Доступ запрещён", HttpStatus.FORBIDDEN, request.getRequestURI()));
     }
 
     @ExceptionHandler({
@@ -78,14 +91,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             InvalidOtpException.class,
             PasswordMismatchException.class,
-            MethodArgumentNotValidException.class
     })
     public ResponseEntity<ExceptionResponse<?>> handleBadRequest(Exception ex, HttpServletRequest request) {
-        if (ex instanceof MethodArgumentNotValidException manv) {
-            FieldErrors fieldErrors = new FieldErrors(manv.getBindingResult().getFieldErrors());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
-        }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
