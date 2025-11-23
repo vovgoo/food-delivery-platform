@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.config.security.property.jwt;
+package org.vovgoo.userservice.config.security.property;
 
 
 import lombok.Data;
