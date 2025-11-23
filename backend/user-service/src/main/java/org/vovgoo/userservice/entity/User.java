@@ -3,6 +3,8 @@ package org.vovgoo.userservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
 import org.vovgoo.validators.phone.Phone;
@@ -46,6 +48,7 @@ public class User {
 
     @NotNull(message = "Статус пользователя не может быть пустым")
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
@@ -70,4 +73,15 @@ public class User {
     )
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (updatedAt == null) updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
