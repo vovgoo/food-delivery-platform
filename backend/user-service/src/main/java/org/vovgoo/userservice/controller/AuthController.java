@@ -17,8 +17,8 @@ import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
-import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.service.security.auth.AuthService;
+import org.vovgoo.userservice.service.security.auth.SignUpService;
 import org.vovgoo.userservice.utils.CookieUtils;
 
 @RestController
@@ -28,6 +28,7 @@ import org.vovgoo.userservice.utils.CookieUtils;
 public class AuthController {
 
     private final AuthService authService;
+    private final SignUpService signUpService;
 
     @Operation(summary = "User sign-in", description = "Authenticate user by phone and password")
     @ApiResponses(value = {
@@ -43,8 +44,8 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/signIn")
-    public ResponseEntity<JwtResponse> signIn(@Valid @RequestBody SignInRequest signInRequest, HttpServletResponse response) {
-        JwtPair jwtPair = authService.signIn(signInRequest);
+    public ResponseEntity<JwtResponse> signIn(@Valid @RequestBody SignInRequest request, HttpServletResponse response) {
+        JwtPair jwtPair = authService.signIn(request);
         CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
         return ResponseEntity.ok(new JwtResponse(jwtPair.accessToken()));
     }
@@ -66,8 +67,8 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/signUp")
-    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
-        authService.signUp(signUpRequest);
+    public ResponseEntity<Void> signUp(@Valid @RequestBody SignUpRequest request) {
+        signUpService.signUp(request);
         return ResponseEntity.noContent().build();
     }
 
@@ -91,8 +92,8 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/confirmSignUp")
-    public ResponseEntity<JwtResponse> confirmSignUp(@Valid @RequestBody ConfirmOtpRequest request, HttpServletResponse response) {
-        JwtPair jwtPair = authService.confirmSignUp(request);
+    public ResponseEntity<JwtResponse> confirmSignUp(@Valid @RequestBody ConfirmSignUpRequest request, HttpServletResponse response) {
+        JwtPair jwtPair = signUpService.confirmSignUp(request);
         CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
         return ResponseEntity.status(HttpStatus.CREATED).body(new JwtResponse(jwtPair.accessToken()));
     }

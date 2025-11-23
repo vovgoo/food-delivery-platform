@@ -3,7 +3,7 @@ package org.vovgoo.userservice.service.security.jwt.strategy;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import io.jsonwebtoken.*;
-import org.vovgoo.userservice.config.security.property.jwt.JwtExpirationProperty;
+import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;

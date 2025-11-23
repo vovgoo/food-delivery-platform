@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
-import org.vovgoo.userservice.dto.verification.email.request.ConfirmEmailRequest;
-import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
+import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
+import org.vovgoo.userservice.dto.user.request.ConfirmChangePhoneRequest;
+import org.vovgoo.userservice.service.user.ChangeEmailService;
+import org.vovgoo.userservice.service.user.ChangePhoneService;
 import org.vovgoo.userservice.service.user.UserService;
 
 @RestController
@@ -27,6 +29,8 @@ import org.vovgoo.userservice.service.user.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final ChangeEmailService changeEmailService;
+    private final ChangePhoneService changePhoneService;
 
     @Operation(summary = "Get user profile", description = "Retrieve the current authenticated user's profile")
     @ApiResponses(value = {
@@ -108,7 +112,7 @@ public class UserController {
     @PutMapping("/me/phone")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changePhone(@Valid @RequestBody ChangePhoneRequest request) {
-        userService.changePhone(request);
+        changePhoneService.changePhone(request);
         return ResponseEntity.noContent().build();
     }
 
@@ -132,8 +136,8 @@ public class UserController {
     })
     @PutMapping("/me/phone/confirm")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmOtpRequest request) {
-        userService.confirmChangePhone(request);
+    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmChangePhoneRequest request) {
+        changePhoneService.confirmChangePhone(request);
         return ResponseEntity.noContent().build();
     }
 
@@ -154,7 +158,7 @@ public class UserController {
     @PutMapping("/me/email")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changeEmail(@Valid @RequestBody ChangeEmailRequest request) {
-        userService.changeEmail(request);
+        changeEmailService.changeEmail(request);
         return ResponseEntity.noContent().build();
     }
 
@@ -176,8 +180,8 @@ public class UserController {
     })
     @PutMapping("/me/email/confirm")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> confirmChangeEmail(@Valid @RequestBody ConfirmEmailRequest request) {
-        userService.confirmChangeEmail(request);
+    public ResponseEntity<Void> confirmChangeEmail(@Valid @RequestBody ConfirmChangeEmailRequest request) {
+        changeEmailService.confirmChangeEmail(request);
         return ResponseEntity.noContent().build();
     }
 
