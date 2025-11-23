@@ -11,6 +11,7 @@ import org.vovgoo.userservice.config.security.SecurityConfig;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
+import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.entity.Role;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.enums.user.RoleType;
@@ -83,9 +84,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     @Transactional
-    public JwtPair confirmSignUp(ConfirmSignUpRequest confirmSignUpRequest) {
-        String phone = confirmSignUpRequest.phone();
-        String code = confirmSignUpRequest.code();
+    public JwtPair confirmSignUp(ConfirmOtpRequest confirmOtpRequest) {
+        String phone = confirmOtpRequest.phone();
+        String code = confirmOtpRequest.code();
 
         SignUpRequest signUpRequest = redisService.get(RedisKey.SIGNUP_REQUEST, SignUpRequest.class, phone)
                 .orElseThrow(SignUpRequestNotFoundException::new);

@@ -11,6 +11,7 @@ import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
+import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
@@ -107,16 +108,16 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     @CheckUserStatus
-    public void confirmChangePhone(ConfirmChangePhoneRequest confirmChangePhoneRequest) {
+    public void confirmChangePhone(ConfirmOtpRequest confirmOtpRequest) {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
-        String code = confirmChangePhoneRequest.code();
+        String code = confirmOtpRequest.code();
 
         ChangePhoneRequest changePhoneRequest = redisService.get(RedisKey.PHONE_CHANGE_REQUEST, ChangePhoneRequest.class, user.getId().toString(), confirmChangePhoneRequest.phone())
                 .orElseThrow(ChangePhoneRequestNotFoundException::new);
 
-        phoneVerificationService.validate(confirmChangePhoneRequest.phone(), code, PhoneVerificationType.CHANGE);
+        phoneVerificationService.validate(confirmOtpRequest.phone(), code, PhoneVerificationType.CHANGE);
 
         userRepository.findByPhone(changePhoneRequest.phone())
                 .ifPresent( u -> {throw new PhoneAlreadyExistsException(changePhoneRequest.phone()); });
@@ -125,7 +126,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        redisService.delete(RedisKey.PHONE_CHANGE_REQUEST, user.getId().toString(), confirmChangePhoneRequest.phone());
+        redisService.delete(RedisKey.PHONE_CHANGE_REQUEST, user.getId().toString(), confirmOtpRequest.phone());
     }
 
     @Override

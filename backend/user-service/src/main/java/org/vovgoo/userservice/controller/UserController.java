@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
+import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.service.user.UserService;
 
 @RestController
@@ -130,7 +131,7 @@ public class UserController {
     })
     @PutMapping("/me/phone/confirm")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmChangePhoneRequest request) {
+    public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmOtpRequest request) {
         userService.confirmChangePhone(request);
         return ResponseEntity.noContent().build();
     }

@@ -1,12 +1,12 @@
-package org.vovgoo.userservice.dto.security.auth.request;
+package org.vovgoo.userservice.dto.verification.phone.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import org.vovgoo.validators.phone.Phone;
 
-@Schema(description = "Request to confirm user sign-up with verification code")
-public record ConfirmSignUpRequest(
+@Schema(description = "Request to confirm phone number with verification code")
+public record ConfirmOtpRequest(
 
         @Phone
         @NotBlank(message = "Телефон не может быть пустым")
