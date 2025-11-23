@@ -11,6 +11,7 @@ import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.redis.RedisKey;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
+import org.vovgoo.userservice.dto.verification.email.request.ConfirmEmailRequest;
 import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
@@ -146,14 +147,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     @CheckUserStatus
-    public void confirmChangeEmail(String token) {
+    public void confirmChangeEmail(ConfirmEmailRequest confirmEmailRequest) {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
 
         ChangeEmailRequest changeEmailRequest = redisService.get(RedisKey.EMAIL_CHANGE_REQUEST, ChangeEmailRequest.class, user.getId().toString(), token)
                 .orElseThrow(ChangeEmailRequestNotFoundException::new);
 
-        emailVerificationService.validate(token, EmailVerificationType.CHANGE);
+        emailVerificationService.validate(confirmEmailRequest.token(), EmailVerificationType.CHANGE);
 
         userRepository.findByEmail(changeEmailRequest.email())
                 .ifPresent( u -> {throw new EmailAlreadyExistsException(changeEmailRequest.email()); });
@@ -162,7 +163,7 @@ public class UserServiceImpl implements UserService {
 
         user = userRepository.save(user);
 
-        redisService.delete(RedisKey.EMAIL_CHANGE_REQUEST, user.getId().toString(), token);
+        redisService.delete(RedisKey.EMAIL_CHANGE_REQUEST, user.getId().toString(), confirmEmailRequest.token());
     }
 
     @Override

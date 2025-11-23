@@ -43,21 +43,21 @@ public class EmailVerificationServiceImpl implements EmailVerificationService {
     }
 
     @Override
-    public void validate(String token, EmailVerificationType type) {
-        String email = redisService.get(RedisKey.EMAIL_VERIFICATION_LINK, String.class, type.name(), token)
+    public void validate(UUID token, EmailVerificationType type) {
+        String email = redisService.get(RedisKey.EMAIL_VERIFICATION_LINK, String.class, type.name(), token.toString())
                 .orElseThrow(EmailVerificationNotFoundException::new);
 
         Integer attempts = redisService.get(RedisKey.EMAIL_VERIFICATION_ATTEMPTS, Integer.class, type.name(), email)
                 .orElse(0);
 
         if (attempts >= verificationProperty.getEmail().getMaxAttempts()) {
-            redisService.delete(RedisKey.EMAIL_VERIFICATION_LINK, type.name(), token);
+            redisService.delete(RedisKey.EMAIL_VERIFICATION_LINK, type.name(), token.toString());
             redisService.delete(RedisKey.EMAIL_VERIFICATION_ATTEMPTS, type.name(), email);
 
             throw new EmailVerificationAttemptsExceededException();
         }
 
-        redisService.delete(RedisKey.EMAIL_VERIFICATION_LINK, type.name(), token);
+        redisService.delete(RedisKey.EMAIL_VERIFICATION_LINK, type.name(), token.toString());
         redisService.delete(RedisKey.EMAIL_VERIFICATION_ATTEMPTS, type.name(), email);
     }
 }

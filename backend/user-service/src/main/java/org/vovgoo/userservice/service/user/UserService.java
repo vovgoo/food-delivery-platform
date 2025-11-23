@@ -3,6 +3,7 @@ package org.vovgoo.userservice.service.user;
 import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
+import org.vovgoo.userservice.dto.verification.email.request.ConfirmEmailRequest;
 import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 
 import java.util.UUID;
@@ -14,7 +15,7 @@ public interface UserService {
     void changePhone(ChangePhoneRequest changePhoneRequest);
     void confirmChangePhone(ConfirmOtpRequest confirmOtpRequest);
     void changeEmail(ChangeEmailRequest changeEmailRequest);
-    void confirmChangeEmail(String token);
+    void confirmChangeEmail(ConfirmEmailRequest confirmEmailRequest);
     void deactivateAccount();
     void reactivateAccount();
     UserInternalResponse getUser(UUID userId);

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
+import org.vovgoo.userservice.dto.verification.email.request.ConfirmEmailRequest;
 import org.vovgoo.userservice.dto.verification.phone.request.ConfirmOtpRequest;
 import org.vovgoo.userservice.service.user.UserService;
 
@@ -175,8 +176,8 @@ public class UserController {
     })
     @PutMapping("/me/email/confirm")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Void> confirmChangeEmail(@Valid @RequestParam("token") String token) {
-        userService.confirmChangeEmail(token);
+    public ResponseEntity<Void> confirmChangeEmail(@Valid @RequestBody ConfirmEmailRequest request) {
+        userService.confirmChangeEmail(request);
         return ResponseEntity.noContent().build();
     }
 
