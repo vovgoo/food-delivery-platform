@@ -91,11 +91,10 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
         redisService.set(PhoneChangeAttemptsKey.of(userId), attempts.get());
 
         if (!valid) {
-            redisService.delete(PhoneChangeRequestKey.of(userId));
-            redisService.delete(PhoneChangeCodeKey.of(userId));
-            redisService.delete(PhoneChangeAttemptsKey.of(userId));
-
             if (attempts.get() >= verificationProperty.getAttempts().getPhone()) {
+                redisService.delete(PhoneChangeRequestKey.of(userId));
+                redisService.delete(PhoneChangeCodeKey.of(userId));
+                redisService.delete(PhoneChangeAttemptsKey.of(userId));
                 throw new OtpAttemptsExceededException();
             }
 

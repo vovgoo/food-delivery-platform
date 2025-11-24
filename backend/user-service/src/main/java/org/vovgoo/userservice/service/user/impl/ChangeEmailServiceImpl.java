@@ -91,11 +91,10 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
         redisService.set(EmailChangeAttemptsKey.of(userId), attempts.get());
 
         if (!valid) {
-            redisService.delete(EmailChangeRequestKey.of(userId));
-            redisService.delete(EmailChangeTokenKey.of(userId));
-            redisService.delete(EmailChangeAttemptsKey.of(userId));
-
             if (attempts.get() >= verificationProperty.getAttempts().getEmail()) {
+                redisService.delete(EmailChangeRequestKey.of(userId));
+                redisService.delete(EmailChangeTokenKey.of(userId));
+                redisService.delete(EmailChangeAttemptsKey.of(userId));
                 throw new OtpAttemptsExceededException();
             }
 

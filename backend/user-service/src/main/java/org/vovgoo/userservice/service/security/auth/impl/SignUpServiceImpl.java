@@ -85,11 +85,10 @@ public class SignUpServiceImpl implements SignUpService {
         redisService.set(SignUpAttemptsKey.of(phone), attempts.get());
 
         if (!valid) {
-            redisService.delete(SignUpRequestKey.of(phone));
-            redisService.delete(SignUpCodeKey.of(phone));
-            redisService.delete(SignUpAttemptsKey.of(phone));
-
             if (attempts.get() >= verificationProperty.getAttempts().getPhone()) {
+                redisService.delete(SignUpRequestKey.of(phone));
+                redisService.delete(SignUpCodeKey.of(phone));
+                redisService.delete(SignUpAttemptsKey.of(phone));
                 throw new OtpAttemptsExceededException();
             }
 
