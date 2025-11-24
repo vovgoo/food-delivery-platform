@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+@Schema(description = "Request to confirm a user's phone change using a verification code")
 public record ConfirmChangePhoneRequest(
 
         @NotBlank(message = "Код не может быть пустым")
