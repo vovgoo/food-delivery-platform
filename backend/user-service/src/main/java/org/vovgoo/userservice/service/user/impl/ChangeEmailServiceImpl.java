@@ -61,7 +61,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
     public void confirmChangeEmail(ConfirmChangeEmailRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         ChangeEmailRequest changeEmailRequest = redisService.get(EmailChangeRequestKey.of(userId))

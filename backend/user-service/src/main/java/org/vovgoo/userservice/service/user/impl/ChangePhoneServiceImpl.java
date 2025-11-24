@@ -60,7 +60,7 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
     public void confirmChangePhone(ConfirmChangePhoneRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        User user = userRepository.findById(userId)
+        User user = userRepository.findByIdForUpdate(userId)
                 .orElseThrow(UserNotFoundException::new);
 
         ChangePhoneRequest changePhoneRequest = redisService.get(PhoneChangeRequestKey.of(userId))
