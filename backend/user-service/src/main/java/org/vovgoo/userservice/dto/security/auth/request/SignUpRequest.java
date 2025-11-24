@@ -2,6 +2,7 @@ package org.vovgoo.userservice.dto.security.auth.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import org.vovgoo.userservice.validators.age.min.MinAge;
 import org.vovgoo.validators.phone.Phone;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public record SignUpRequest(
 
         @NotNull(message = "День рождения обязательна")
         @Past(message = "Дата рождения должна быть в прошлом")
+        @MinAge(value = 16, message = "Пользователь должен быть старше 16 лет")
         @Schema(description = "Birth date (must be in the past)", example = "1990-05-21")
         LocalDate birthDate,
 

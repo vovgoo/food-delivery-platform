@@ -2,6 +2,11 @@ server:
   port: ${SERVER_PORT:8080}
 
 spring:
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6380}
+    password: ${REDIS_PASSWORD:}
+    database: ${REDIS_DB:0}
   cloud:
     gateway:
       routes:
@@ -9,14 +14,60 @@ spring:
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
-        - id: user-service-auth
+
+        - id: auth-signIn
           uri: lb://user-service
           predicates:
-            - Path=/api/v1/auth/**
+            - Path=/api/v1/auth/signIn
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter.replenishRate: 5
+                redis-rate-limiter.burstCapacity: 10
+                redis-rate-limiter.requestedTokens: 1
+
+        - id: auth-signUp
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/auth/signUp
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.requestedTokens: 1
+
+        - id: auth-confirmSignUp
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/auth/confirmSignUp
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter.replenishRate: 1
+                redis-rate-limiter.burstCapacity: 3
+                redis-rate-limiter.requestedTokens: 1
+
+        - id: auth-refresh
+          uri: lb://user-service
+          predicates:
+            - Path=/api/v1/auth/refresh
+          filters:
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@ipKeyResolver}"
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
+                redis-rate-limiter.requestedTokens: 1
+
         - id: user-service-addresses
           uri: lb://user-service
           predicates:
             - Path=/api/v1/address/**
+
         - id: user-service-docs
           uri: lb://user-service
           predicates:

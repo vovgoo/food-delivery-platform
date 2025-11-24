@@ -3,9 +3,10 @@ package org.vovgoo.userservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.userservice.validators.age.min.MinAge;
 import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
 import org.vovgoo.validators.phone.Phone;
 
@@ -27,7 +28,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @AllowedEmailDomain
     @Email(message = "Почта должна быть корректной")
     @Size(max = 255, message = "Почта слишком длинная")
     @Column(unique = true)
@@ -44,20 +44,22 @@ public class User {
 
     @NotNull(message = "День рождения обязательна")
     @Past(message = "Дата рождения должна быть в прошлом")
+    @MinAge(value = 16, message = "Пользователь должен быть старше 16 лет")
     private LocalDate birthDate;
 
     @NotNull(message = "Статус пользователя не может быть пустым")
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Builder.Default
     private UserStatus status = UserStatus.ACTIVE;
 
     @NotBlank(message = "Пароль не может быть пустым")
     private String passwordHash;
 
-    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -72,4 +74,15 @@ public class User {
     )
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
+    @PrePersist
+    public void prePersist() {
+        if (createdAt == null) createdAt = LocalDateTime.now();
+        if (updatedAt == null) updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }

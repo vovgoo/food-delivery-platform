@@ -1,25 +1,150 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/001_create_table_users.sql
-  - include:
-      file: db/changelog/002_create_table_roles.sql
-  - include:
-      file: db/changelog/003_create_table_addresses.sql
-  - include:
-      file: db/changelog/004_create_table_user_role.sql
-  - include:
-      file: db/changelog/005_add_constraints_users.sql
-  - include:
-      file: db/changelog/006_add_constraints_roles.sql
-  - include:
-      file: db/changelog/007_add_constraints_addresses.sql
-  - include:
-      file: db/changelog/008_add_foreign_keys.sql
-  - include:
-      file: db/changelog/009_add_indexes.sql
-  - include:
-      file: db/changelog/010_insert_roles.sql
-  - include:
-      file: db/changelog/011_create_table_email_domains.sql
-  - include:
-      file: db/changelog/012_insert_default_email_domains.sql
+  - changeSet:
+      id: 001
+      author: migration
+      changes:
+        - sqlFile:
+            path: 001_create_uuid_extension.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 002
+      author: migration
+      changes:
+        - sqlFile:
+            path: 002_create_enum_user_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 003
+      author: migration
+      changes:
+        - sqlFile:
+            path: 003_create_enum_role_type.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 004
+      author: migration
+      changes:
+        - sqlFile:
+            path: 004_create_enum_address_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 005
+      author: migration
+      changes:
+        - sqlFile:
+            path: 005_create_table_users.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 006
+      author: migration
+      changes:
+        - sqlFile:
+            path: 006_create_table_roles.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 007
+      author: migration
+      changes:
+        - sqlFile:
+            path: 007_create_table_user_role.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 008
+      author: migration
+      changes:
+        - sqlFile:
+            path: 008_create_table_email_domains.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 009
+      author: migration
+      changes:
+        - sqlFile:
+            path: 009_create_table_addresses.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 010
+      author: migration
+      changes:
+        - sqlFile:
+            path: 010_create_constraints_users.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 011
+      author: migration
+      changes:
+        - sqlFile:
+            path: 011_create_constraints_addresses.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 012
+      author: migration
+      changes:
+        - sqlFile:
+            path: 012_create_indexes_users.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 013
+      author: migration
+      changes:
+        - sqlFile:
+            path: 013_create_indexes_addresses.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 014
+      author: migration
+      changes:
+        - sqlFile:
+            path: 014_create_trigger_update_timestamp.sql
+            relativeToChangelogFile: true
+            splitStatements: false
+            stripComments: true
+
+  - changeSet:
+      id: 015
+      author: migration
+      changes:
+        - sqlFile:
+            path: 015_insert_email_domains.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

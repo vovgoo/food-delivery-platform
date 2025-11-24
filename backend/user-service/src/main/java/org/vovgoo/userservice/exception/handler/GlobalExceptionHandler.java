@@ -2,9 +2,10 @@ package org.vovgoo.userservice.exception.handler;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.amqp.AmqpException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,12 +15,11 @@ import org.vovgoo.dto.exception.FieldErrors;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
-import org.vovgoo.userservice.exception.custom.messaging.RedisKeyTypeMismatchException;
 import org.vovgoo.userservice.exception.custom.messaging.RedisSerializationException;
 import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
-import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
-import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
-import org.vovgoo.userservice.exception.custom.security.TokenStrategyNotFoundException;
+import org.vovgoo.userservice.exception.custom.jwt.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.auth.InvalidRefreshTokenException;
+import org.vovgoo.userservice.exception.custom.jwt.TokenStrategyNotFoundException;
 import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.exception.custom.verification.*;
 
@@ -31,7 +31,6 @@ public class GlobalExceptionHandler {
             AddressNotFound.class,
             RoleNotFoundException.class,
             EntityNotFoundException.class,
-            EmailVerificationNotFoundException.class,
             OtpNotFoundException.class,
             SignUpRequestNotFoundException.class,
             ChangePhoneRequestNotFoundException.class,
@@ -42,19 +41,41 @@ public class GlobalExceptionHandler {
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
     }
 
-    @ExceptionHandler({
-            BadCredentialsException.class,
-            InvalidRefreshTokenException.class,
-            AuthorizationDeniedException.class
-    })
-    public ResponseEntity<ExceptionResponse<String>> handleUnauthorized(RuntimeException ex, HttpServletRequest request) {
-        String message = switch (ex.getClass().getSimpleName()) {
-            case "BadCredentialsException" -> "Неверный телефон или пароль";
-            case "AuthorizationDeniedException" -> "Требуется аутентификация";
-            default -> ex.getMessage();
-        };
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleInvalidRefreshToken(InvalidRefreshTokenException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(ExceptionResponse.of(message, HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAuthorizationDenied(AuthorizationDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionResponse.of("Требуется авторизация", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponse.of("Доступ запрещен", HttpStatus.FORBIDDEN, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ExceptionResponse<FieldErrors>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
+        FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
+    }
+
+    @ExceptionHandler({
+            InvalidOtpException.class,
+            PasswordMismatchException.class,
+            PasswordAlreadyUsedException.class,
+            EmailAlreadyCurrentException.class,
+            PhoneAlreadyCurrentException.class
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleBadRequest(RuntimeException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
 
     @ExceptionHandler({
@@ -67,7 +88,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            EmailVerificationAttemptsExceededException.class,
             OtpAttemptsExceededException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleTooManyRequests(RuntimeException ex, HttpServletRequest request) {
@@ -76,29 +96,14 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            InvalidOtpException.class,
-            PasswordMismatchException.class,
-            MethodArgumentNotValidException.class
-    })
-    public ResponseEntity<ExceptionResponse<?>> handleBadRequest(Exception ex, HttpServletRequest request) {
-        if (ex instanceof MethodArgumentNotValidException manv) {
-            FieldErrors fieldErrors = new FieldErrors(manv.getBindingResult().getFieldErrors());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
-        }
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.BAD_REQUEST, request.getRequestURI()));
-    }
-
-    @ExceptionHandler({
             RabbitEventSerializationException.class,
             RabbitEventTypeMismatchException.class,
-            RedisKeyTypeMismatchException.class,
             RedisSerializationException.class,
             TokenStrategyNotFoundException.class,
-            InvalidJwtTokenException.class
+            InvalidJwtTokenException.class,
+            AmqpException.class
     })
-    public ResponseEntity<ExceptionResponse<String>> handleInternalServerError(RuntimeException ex, HttpServletRequest request) {
+    public ResponseEntity<ExceptionResponse<String>> handleInternal(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
     }

@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
+import org.vovgoo.userservice.validators.age.min.MinAge;
 
 import java.time.LocalDate;
 
@@ -18,6 +19,7 @@ public record UpdateUserProfileRequest(
 
         @NotNull(message = "День рождения обязательна")
         @Past(message = "Дата рождения должна быть в прошлом")
+        @MinAge(value = 16, message = "Пользователь должен быть старше 16 лет")
         @Schema(description = "Birth date (must be in the past)", example = "1990-05-21")
         LocalDate birthDate
 ) {}

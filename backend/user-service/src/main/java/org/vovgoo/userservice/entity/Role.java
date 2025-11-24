@@ -2,6 +2,9 @@ package org.vovgoo.userservice.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.Type;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.enums.user.RoleType;
 
 import java.util.HashSet;
@@ -23,6 +26,7 @@ public class Role {
     private UUID id;
 
     @Enumerated(EnumType.STRING)
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Column(nullable = false, unique = true)
     private RoleType name;
 

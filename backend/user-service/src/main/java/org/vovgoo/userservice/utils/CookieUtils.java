@@ -6,13 +6,23 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class CookieUtils {
 
+    private static final int REFRESH_TOKEN_MAX_AGE_SECONDS = 15 * 24 * 60 * 60;
+
     public static void addRefreshTokenCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie("refreshToken", token);
         cookie.setHttpOnly(true);
         cookie.setSecure(true);
         cookie.setPath("/");
-        cookie.setMaxAge(15 * 24 * 60 * 60);
-        response.addCookie(cookie);
+        cookie.setMaxAge(REFRESH_TOKEN_MAX_AGE_SECONDS);
+
+        String cookieHeader = cookie.getName() + "=" + cookie.getValue() +
+                "; Max-Age=" + cookie.getMaxAge() +
+                "; Path=" + cookie.getPath() +
+                "; HttpOnly" +
+                "; Secure" +
+                "; SameSite=Strict";
+
+        response.addHeader("Set-Cookie", cookieHeader);
     }
 
     public static String extractRefreshToken(HttpServletRequest request) {

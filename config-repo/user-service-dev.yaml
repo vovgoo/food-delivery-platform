@@ -23,22 +23,14 @@ spring:
     database: ${REDIS_DB:0}
 
 app:
-  rabbitmq:
-    exchanges:
-      user-events:
-        name: ${USER_EVENTS_EXCHANGE:user.events.exchange}
-    queues:
-      phone-verification:
-        name: ${PHONE_VERIFICATION_QUEUE:phone.verification.queue}
-      email-verification:
-        name: ${EMAIL_VERIFICATION_QUEUE:email.verification.queue}
-
+  internal-services:
+    tokens:
+      user-service: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
+    self: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
   verification:
-    phone:
-      max-attempts: ${PHONE_VERIFICATION_MAX_ATTEMPTS:10}
-    email:
-      max-attempts: ${EMAIL_VERIFICATION_MAX_ATTEMPTS:10}
-
+    attempts:
+      phone: ${PHONE_VERIFICATION_MAX_ATTEMPTS:10}
+      email: ${EMAIL_VERIFICATION_MAX_ATTEMPTS:10}
   jwt:
     keys:
       private-key: ${JWT_PRIVATE_KEY:MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDNl7TBlOT6Rs9D77X9kuf4ZZNRiitj7OJZlNOGyxxweehH9arnUAAyUbpdBfCLT6Vtl74Y+u28j2KmpO+FuhHs6Nxf4JcWK5MzZK8bufLK4gJXh7qqe4RAPkChfYgAQZGQ9/TYZRmAcSm5jS406IEw1LQ3FpONPxDNIczg7DmCMwjbsLTUXyqBWwP9ha0kpCAlVMeJJWaVM/U3YczenzgYVh/uE+yEZWWUV2iS2xmq2gkycttVDVoy022k1ZE9eW9heJdYJ/9TXIzacmro0WWXpi5q9evz6KgL/N23uh7BsY5YKij0++BN2kwoRHvYsUdaDgbZKozsa6IsHNsfRqQpAgMBAAECggEAQcI+XJSlULAJZ29qxHqSm87Regk5q7J/C6wgpEKfDBLSCwI28dmS1oVxmINn1wdYoF8ivJa2J9Os+CRVQG6tgRtSMZCCguLZKF0R7UpisCXuHdUaDaGIQYwn2/9s2rgeOUI2HGjp6T1I3UKc/utHNzkxk1UzSMBdPV+MSn0EP/JD+/bHh+Vfe2oe3F1cKGCw0Qpa41rG/rppECL2yFEtYU4su4fnyeOP1RP2+7g6A7B1/tYx+vHkDXpEkxKbfQZX2Ry9T/eSb+kz8ZaIw5quBCkkR6DB4WjJf/MauewDL+UHMHaLpOl34MUJM4n8NwjsYhPEX8eCFlNqjTxr8AfnKQKBgQDwnD4ZH0HGTpwKyDsmQBILhhakvUoSf3qDoexi1KOa27881gRGhyt+S0b5+bVWf8vwQ3N/EoqmVqEEgJ+2kK66hJTCzvrYSq27un2UpJRS956T0PCWN4HENO/5r4YxlN10Fy/8ztVXjkZQTxgHY3vqXJPFD0u3Slc0YKlSNvCDpwKBgQDavhUwLgIduNhMinV8AJ/wgCKcEhuJtEA5ZjhXEcZlP5MgCdA/v3zCLQCOD8pE3ePlA6iqYca9JkADzz7JdbDUYMERa0sqgjPQSOMZmuGhLzhgJJJx66gLkh192V7s9Nfsj4HglZCBWDld6IXH23ZwXxph/IeW6U9CI5b8XBbTrwKBgDeLSgaQoaV+1iTjDkyJM+E3JhkHnYbhqM2kXqZ+Afqoyd/oY/pID/FKvWrNi2AZhmHDoHDwPdOiYe9hJf2GLt/d5V2HXH771llk9sKOr7LreM8Ux8VVsP4zXkacj3T4sZqwE6LfuH5K2M6HQ7vI6n0yu+Yc3tTEM5dizROunR03AoGADLu58gcLmn1TIgmBU0maBd7/pMQtFDQI9Q5tQyxGt0gfIWNQ2xUjhw4llR94L9AW3xL6c4ijkAk0+sPKrOGL/KDxPDlZs8zGhV5o0enBLqfYCUi3uaf1LU9BJj1MGFEcbKnh7pfmRJFFLaFGgF7XIy12FLQllHRaZ8g4ltIphgMCgYBlsK3xeaLOFtJ4ETgDnAxtCFx1gUgZ9S+EmjpYaVkAOxzO71gb4JvpdYU+jo8qmboNZy0zjAbklluWoWD+qof+fVXYdpqMsC2TuheARk95I/rz/coGFMy/9ueMtLmy6NrWoTBM8ZA4M5RRryCd6IjaFgNkXMxKH6jar6UIZpHHKA==}
@@ -46,6 +38,15 @@ app:
     expiration:
       access-ms: ${JWT_ACCESS_EXPIRATION_MS:900000}
       refresh-ms: ${JWT_REFRESH_EXPIRATION_MS:1296000000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 springdoc:
   swagger-ui:

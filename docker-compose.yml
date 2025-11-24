@@ -35,6 +35,12 @@ services:
     ports:
       - "6379:6379"
 
+  redis-api-gateway:
+    image: redis:7-alpine
+    container_name: redis-api-gateway
+    ports:
+      - "6380:6379"
+
   postgres-user:
     image: postgres:15-alpine
     container_name: postgres-user

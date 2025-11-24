@@ -3,13 +3,15 @@ package org.vovgoo.userservice.service.security.jwt.strategy;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.RSAKey;
 import io.jsonwebtoken.*;
-import org.vovgoo.userservice.config.security.property.jwt.JwtExpirationProperty;
+import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.jwt.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.jwt.JwtKeyException;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
 import java.util.UUID;
 
 public abstract class TokenStrategy {
@@ -26,7 +28,7 @@ public abstract class TokenStrategy {
         try {
             return rsaKey.toRSAPrivateKey();
         } catch (JOSEException e) {
-            throw new IllegalStateException("Failed to get RSA private key", e);
+            throw new JwtKeyException("Failed to get RSA private key", e);
         }
     }
 
@@ -34,7 +36,7 @@ public abstract class TokenStrategy {
         try {
             return rsaKey.toRSAPublicKey();
         } catch (JOSEException e) {
-            throw new IllegalStateException("Failed to get RSA public key", e);
+            throw new JwtKeyException("Failed to get RSA public key", e);
         }
     }
 
@@ -45,7 +47,14 @@ public abstract class TokenStrategy {
     public boolean validateToken(String token) {
         try {
             Claims claims = parseClaims(token);
-            return getType().name().equals(claims.get("type", String.class));
+
+            if (!getType().name().equals(claims.get("type", String.class))) {
+                return false;
+            }
+
+            Date expiration = claims.getExpiration();
+
+            return expiration != null && !expiration.before(new Date());
         } catch (InvalidJwtTokenException e) {
             return false;
         }
