@@ -48,7 +48,7 @@ public class Address {
 
     @NotBlank(message = "Номер дома обязателен")
     @Size(max = 20, message = "Номер дома слишком длинный")
-    @Pattern(regexp = "^[0-9A-Za-z\\-\\/]+$", message = "Номер дома содержит недопустимые символы")
+    @Pattern(regexp = "^[0-9\\p{L}\\-\\/]+$", message = "Номер дома содержит недопустимые символы")
     private String house;
 
     @Size(max = 10, message = "Слишком длинный корпус")

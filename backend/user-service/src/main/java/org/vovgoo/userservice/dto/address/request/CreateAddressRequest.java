@@ -14,7 +14,7 @@ public record CreateAddressRequest(
         @Pattern(regexp = "^[\\p{L}\\s\\-]+$", message = "Страна содержит недопустимые символы")
         String country,
 
-        @Schema(description = "State or region", example = "Минская область")
+        @Schema(description = "State or region", example = "Минская")
         @NotBlank(message = "Штат/регион не может быть пустым")
         @Size(max = 100, message = "Слишком длинный штат/регион")
         @Pattern(regexp = "^[\\p{L}\\s\\-]+$", message = "Штат/регион содержит недопустимые символы")
@@ -35,15 +35,15 @@ public record CreateAddressRequest(
         @Schema(description = "House number", example = "12А")
         @NotBlank(message = "Номер дома обязателен")
         @Size(max = 20, message = "Номер дома слишком длинный")
-        @Pattern(regexp = "^[0-9A-Za-z\\-\\/]+$", message = "Номер дома содержит недопустимые символы")
+        @Pattern(regexp = "^[0-9\\p{L}\\-\\/]+$", message = "Номер дома содержит недопустимые символы")
         String house,
 
-        @Schema(description = "Building/Block", example = "корпус 1")
+        @Schema(description = "Building/Block", example = "1")
         @Size(max = 10, message = "Слишком длинный корпус")
         @Pattern(regexp = "^[0-9A-Za-z\\-\\/]*$", message = "Корпус содержит недопустимые символы")
         String building,
 
-        @Schema(description = "Apartment or office", example = "кв. 45")
+        @Schema(description = "Apartment or office", example = "45")
         @Size(max = 10, message = "Слишком длинная квартира/офис")
         @Pattern(regexp = "^[0-9A-Za-z\\-\\/]*$", message = "Квартира содержит недопустимые символы")
         String apartment,
