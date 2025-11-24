@@ -55,7 +55,7 @@ public class AddressServiceImpl implements AddressService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
 
-        addressRepository.findDefaultByUserId(userId)
+        addressRepository.findDefaultByUserIdForUpdate(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address address = Address.builder()
@@ -97,7 +97,7 @@ public class AddressServiceImpl implements AddressService {
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
-        addressRepository.findDefaultByUserId(userId)
+        addressRepository.findDefaultByUserIdForUpdate(userId)
                 .ifPresent(current -> current.setDefault(false));
 
         Address newDefault = addressRepository.findByIdAndUserId(id, userId)
