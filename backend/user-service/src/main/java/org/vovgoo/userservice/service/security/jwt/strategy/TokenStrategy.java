@@ -10,6 +10,7 @@ import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Date;
 import java.util.UUID;
 
 public abstract class TokenStrategy {
@@ -45,7 +46,14 @@ public abstract class TokenStrategy {
     public boolean validateToken(String token) {
         try {
             Claims claims = parseClaims(token);
-            return getType().name().equals(claims.get("type", String.class));
+
+            if (!getType().name().equals(claims.get("type", String.class))) {
+                return false;
+            }
+
+            Date expiration = claims.getExpiration();
+
+            return expiration != null && !expiration.before(new Date());
         } catch (InvalidJwtTokenException e) {
             return false;
         }
