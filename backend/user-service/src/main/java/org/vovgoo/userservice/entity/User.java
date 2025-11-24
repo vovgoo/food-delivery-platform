@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.userservice.validators.age.min.MinAge;
 import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
 import org.vovgoo.validators.phone.Phone;
 
@@ -44,6 +45,7 @@ public class User {
 
     @NotNull(message = "День рождения обязательна")
     @Past(message = "Дата рождения должна быть в прошлом")
+    @MinAge(value = 16, message = "Пользователь должен быть старше 16 лет")
     private LocalDate birthDate;
 
     @NotNull(message = "Статус пользователя не может быть пустым")
