@@ -9,7 +9,6 @@ import org.vovgoo.userservice.config.verification.VerificationProperty;
 import org.vovgoo.userservice.domain.redis.email.change.EmailChangeAttemptsKey;
 import org.vovgoo.userservice.domain.redis.email.change.EmailChangeRequestKey;
 import org.vovgoo.userservice.domain.redis.email.change.EmailChangeTokenKey;
-import org.vovgoo.userservice.domain.redis.phone.change.PhoneChangeAttemptsKey;
 import org.vovgoo.userservice.dto.user.request.ChangeEmailRequest;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
 import org.vovgoo.userservice.entity.User;
@@ -57,7 +56,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
 
         redisService.set(EmailChangeRequestKey.of(userId), request);
         redisService.set(EmailChangeTokenKey.of(userId), token);
-        redisService.set(PhoneChangeAttemptsKey.of(userId), 0);
+        redisService.set(EmailChangeAttemptsKey.of(userId), 0);
 
         eventService.publishEmailChangeEvent(email, token);
     }
@@ -85,7 +84,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
                 actualToken.toString(),
                 providedToken.toString(),
                 attempts,
-                verificationProperty.getAttempts().getPhone()
+                verificationProperty.getAttempts().getEmail()
         );
 
         redisService.set(EmailChangeAttemptsKey.of(userId), attempts.get());
@@ -95,7 +94,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
             redisService.delete(EmailChangeTokenKey.of(userId));
             redisService.delete(EmailChangeAttemptsKey.of(userId));
 
-            if (attempts.get() >= verificationProperty.getAttempts().getPhone()) {
+            if (attempts.get() >= verificationProperty.getAttempts().getEmail()) {
                 throw new OtpAttemptsExceededException();
             }
 
