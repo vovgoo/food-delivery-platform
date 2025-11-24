@@ -42,8 +42,15 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
     public void changeEmail(ChangeEmailRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (request.email().equals(user.getEmail())) {
+            throw new IllegalArgumentException("Новый email совпадает с текущим");
+        }
+
         userRepository.findByEmail(request.email())
-                .ifPresent( u -> {throw new EmailAlreadyExistsException(request.email()); });
+                .ifPresent(u -> { throw new EmailAlreadyExistsException(request.email()); });
 
         String email = request.email();
         UUID token = VerificationUtils.generateEmailToken();

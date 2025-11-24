@@ -72,6 +72,10 @@ public class UserServiceImpl implements UserService {
             throw new PasswordMismatchException();
         }
 
+        if(passwordEncoder.matches(changePasswordRequest.newPassword(), user.getPasswordHash())) {
+            throw new IllegalArgumentException("Новый пароль не должен совпадать со старым");
+        }
+
         user.setPasswordHash(passwordEncoder.encode(changePasswordRequest.newPassword()));
 
         userRepository.save(user);

@@ -41,8 +41,15 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
     public void changePhone(ChangePhoneRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (request.phone().equals(user.getPhone())) {
+            throw new IllegalArgumentException("Новый телефон совпадает с текущим");
+        }
+
         userRepository.findByPhone(request.phone())
-                .ifPresent( u -> {throw new PhoneAlreadyExistsException(request.phone()); });
+                .ifPresent(u -> { throw new PhoneAlreadyExistsException(request.phone()); });
 
         String phone = request.phone();
         String otp = VerificationUtils.generateOtp();
