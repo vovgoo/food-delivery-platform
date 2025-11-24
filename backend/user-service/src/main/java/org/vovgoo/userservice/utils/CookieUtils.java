@@ -12,7 +12,15 @@ public class CookieUtils {
         cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(15 * 24 * 60 * 60);
-        response.addCookie(cookie);
+
+        String cookieHeader = cookie.getName() + "=" + cookie.getValue() +
+                "; Max-Age=" + cookie.getMaxAge() +
+                "; Path=" + cookie.getPath() +
+                "; HttpOnly" +
+                "; Secure" +
+                "; SameSite=Strict";
+
+        response.addHeader("Set-Cookie", cookieHeader);
     }
 
     public static String extractRefreshToken(HttpServletRequest request) {
