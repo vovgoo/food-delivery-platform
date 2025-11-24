@@ -28,7 +28,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @AllowedEmailDomain
     @Email(message = "Почта должна быть корректной")
     @Size(max = 255, message = "Почта слишком длинная")
     @Column(unique = true)
