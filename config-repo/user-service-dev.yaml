@@ -23,6 +23,10 @@ spring:
     database: ${REDIS_DB:0}
 
 app:
+  internal-services:
+    tokens:
+      user-service: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
+    self: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
   verification:
     attempts:
       phone: ${PHONE_VERIFICATION_MAX_ATTEMPTS:10}

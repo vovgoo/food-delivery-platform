@@ -135,7 +135,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/phone/confirm")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> confirmChangePhone(@Valid @RequestBody ConfirmChangePhoneRequest request) {
         changePhoneService.confirmChangePhone(request);
         return ResponseEntity.noContent().build();
@@ -156,7 +155,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/email")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changeEmail(@Valid @RequestBody ChangeEmailRequest request) {
         changeEmailService.changeEmail(request);
         return ResponseEntity.noContent().build();
@@ -179,7 +177,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/email/confirm")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> confirmChangeEmail(@Valid @RequestBody ConfirmChangeEmailRequest request) {
         changeEmailService.confirmChangeEmail(request);
         return ResponseEntity.noContent().build();
@@ -198,7 +195,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/deactivate")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> deactivateAccount() {
         userService.deactivateAccount();
         return ResponseEntity.noContent().build();
@@ -217,7 +213,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/reactivate")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> reactivateAccount() {
         userService.reactivateAccount();
         return ResponseEntity.noContent().build();
