@@ -138,3 +138,13 @@ databaseChangeLog:
             relativeToChangelogFile: true
             splitStatements: false
             stripComments: true
+
+  - changeSet:
+      id: 015
+      author: migration
+      changes:
+        - sqlFile:
+            path: 015_insert_email_domains.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
