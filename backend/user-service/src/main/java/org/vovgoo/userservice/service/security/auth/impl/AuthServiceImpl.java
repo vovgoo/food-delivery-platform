@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtPair signIn(SignInRequest request) {
-        User user = userRepository.findByPhone(request.phone()).orElse(null);
+        User user = userRepository.findByPhoneWithRoles(request.phone()).orElse(null);
 
         String hashToCheck = (user != null)
                 ? user.getPasswordHash()
