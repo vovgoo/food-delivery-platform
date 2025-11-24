@@ -37,3 +37,12 @@ app:
     expiration:
       access-ms: ${JWT_ACCESS_EXPIRATION_MS:900000}
       refresh-ms: ${JWT_REFRESH_EXPIRATION_MS:1296000000}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
