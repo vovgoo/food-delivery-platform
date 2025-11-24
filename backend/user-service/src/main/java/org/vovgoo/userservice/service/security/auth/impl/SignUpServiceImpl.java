@@ -1,6 +1,7 @@
 package org.vovgoo.userservice.service.security.auth.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,7 +112,11 @@ public class SignUpServiceImpl implements SignUpService {
                 .roles(Set.of(role))
                 .build();
 
-        user = userRepository.save(user);
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException ex) {
+            throw new PhoneAlreadyExistsException(signUpRequest.phone());
+        }
 
         return JwtPair.builder()
                 .accessToken(jwtTokenProvider.generateToken(JwtTokenType.ACCESS, user))

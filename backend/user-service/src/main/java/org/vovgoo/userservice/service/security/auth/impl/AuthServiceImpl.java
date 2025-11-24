@@ -7,17 +7,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.enums.user.UserStatus;
 import org.vovgoo.userservice.config.security.SecurityConfig;
-import org.vovgoo.userservice.config.verification.VerificationProperty;
 import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
-import org.vovgoo.userservice.repository.RoleRepository;
 import org.vovgoo.userservice.repository.UserRepository;
-import org.vovgoo.userservice.service.rabbit.EventService;
-import org.vovgoo.userservice.service.redis.RedisService;
 import org.vovgoo.userservice.service.security.auth.AuthService;
 import org.vovgoo.userservice.service.security.jwt.JwtTokenProvider;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
@@ -30,12 +26,8 @@ import java.util.UUID;
 public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
-    private final RedisService redisService;
-    private final RoleRepository roleRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
-    private final VerificationProperty verificationProperty;
-    private final EventService eventService;
 
     @Override
     public JwtPair signIn(SignInRequest request) {
