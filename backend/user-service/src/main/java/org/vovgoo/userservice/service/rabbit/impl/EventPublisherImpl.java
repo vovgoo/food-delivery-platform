@@ -10,7 +10,8 @@ import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.vovgoo.userservice.config.rabbit.RabbitMQConfig;
 import org.vovgoo.userservice.domain.rabbit.key.EventKey;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
+import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
 import org.vovgoo.userservice.service.rabbit.EventPublisher;
 
 @Service
@@ -28,18 +29,14 @@ public class EventPublisherImpl implements EventPublisher {
     )
     public <T> void publish(EventKey<T> eventKey, T payload) {
         if (!eventKey.payloadType().isAssignableFrom(payload.getClass())) {
-            throw new IllegalArgumentException(
-                    "Неверный тип payload для routing key " + eventKey.key()
-            );
+            throw new RabbitEventTypeMismatchException("Payload type does not match expected event key type " + eventKey.key());
         }
 
         try {
             String json = objectMapper.writeValueAsString(payload);
             rabbitTemplate.convertAndSend(EXCHANGE, eventKey.key(), json);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(
-                    "Ошибка сериализации события для RabbitMQ", e
-            );
+            throw new RabbitEventSerializationException("Failed to serialize value for key", e);
         }
     }
 }

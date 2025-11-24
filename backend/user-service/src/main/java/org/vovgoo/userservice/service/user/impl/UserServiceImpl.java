@@ -12,6 +12,7 @@ import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
+import org.vovgoo.userservice.exception.custom.user.PasswordAlreadyUsedException;
 import org.vovgoo.userservice.exception.custom.user.PasswordMismatchException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.mapper.UserMapper;
@@ -73,7 +74,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if(passwordEncoder.matches(changePasswordRequest.newPassword(), user.getPasswordHash())) {
-            throw new IllegalArgumentException("Новый пароль не должен совпадать со старым");
+            throw new PasswordAlreadyUsedException();
         }
 
         user.setPasswordHash(passwordEncoder.encode(changePasswordRequest.newPassword()));

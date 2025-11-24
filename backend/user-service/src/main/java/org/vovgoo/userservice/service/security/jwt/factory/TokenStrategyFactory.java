@@ -2,7 +2,7 @@ package org.vovgoo.userservice.service.security.jwt.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.vovgoo.userservice.exception.custom.security.TokenStrategyNotFoundException;
+import org.vovgoo.userservice.exception.custom.jwt.TokenStrategyNotFoundException;
 import org.vovgoo.userservice.service.security.jwt.strategy.TokenStrategy;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 

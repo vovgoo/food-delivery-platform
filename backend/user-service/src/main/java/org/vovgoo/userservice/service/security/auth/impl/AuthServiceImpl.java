@@ -11,7 +11,7 @@ import org.vovgoo.userservice.dto.security.auth.request.*;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.exception.custom.security.InvalidRefreshTokenException;
+import org.vovgoo.userservice.exception.custom.auth.InvalidRefreshTokenException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.security.auth.AuthService;

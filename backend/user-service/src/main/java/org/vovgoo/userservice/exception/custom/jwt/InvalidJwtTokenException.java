@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom.security;
+package org.vovgoo.userservice.exception.custom.jwt;
 
 public class InvalidJwtTokenException extends RuntimeException {
     public InvalidJwtTokenException() {

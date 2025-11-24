@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom.security;
+package org.vovgoo.userservice.exception.custom.jwt;
 
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 

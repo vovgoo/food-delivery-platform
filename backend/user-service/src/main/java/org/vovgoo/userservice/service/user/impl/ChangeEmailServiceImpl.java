@@ -12,6 +12,7 @@ import org.vovgoo.userservice.domain.redis.email.change.EmailChangeTokenKey;
 import org.vovgoo.userservice.dto.user.request.ChangeEmailRequest;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
 import org.vovgoo.userservice.entity.User;
+import org.vovgoo.userservice.exception.custom.user.EmailAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.ChangeEmailRequestNotFoundException;
@@ -45,7 +46,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
                 .orElseThrow(UserNotFoundException::new);
 
         if (request.email().equals(user.getEmail())) {
-            throw new IllegalArgumentException("Новый email совпадает с текущим");
+            throw new EmailAlreadyCurrentException();
         }
 
         userRepository.findByEmail(request.email())

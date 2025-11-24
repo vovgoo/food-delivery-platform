@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.exception.custom.security;
+package org.vovgoo.userservice.exception.custom.auth;
 
 public class InvalidRefreshTokenException extends RuntimeException {
     public InvalidRefreshTokenException() {

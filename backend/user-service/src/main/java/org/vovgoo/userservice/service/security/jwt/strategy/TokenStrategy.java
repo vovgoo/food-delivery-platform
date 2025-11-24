@@ -5,7 +5,8 @@ import com.nimbusds.jose.jwk.RSAKey;
 import io.jsonwebtoken.*;
 import org.vovgoo.userservice.config.security.property.JwtExpirationProperty;
 import org.vovgoo.userservice.entity.User;
-import org.vovgoo.userservice.exception.custom.security.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.jwt.InvalidJwtTokenException;
+import org.vovgoo.userservice.exception.custom.jwt.JwtKeyException;
 import org.vovgoo.userservice.service.security.jwt.enums.JwtTokenType;
 
 import java.security.interfaces.RSAPrivateKey;
@@ -27,7 +28,7 @@ public abstract class TokenStrategy {
         try {
             return rsaKey.toRSAPrivateKey();
         } catch (JOSEException e) {
-            throw new IllegalStateException("Failed to get RSA private key", e);
+            throw new JwtKeyException("Failed to get RSA private key", e);
         }
     }
 
@@ -35,7 +36,7 @@ public abstract class TokenStrategy {
         try {
             return rsaKey.toRSAPublicKey();
         } catch (JOSEException e) {
-            throw new IllegalStateException("Failed to get RSA public key", e);
+            throw new JwtKeyException("Failed to get RSA public key", e);
         }
     }
 

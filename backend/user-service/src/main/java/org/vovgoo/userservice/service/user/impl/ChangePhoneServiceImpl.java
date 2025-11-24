@@ -12,6 +12,7 @@ import org.vovgoo.userservice.domain.redis.phone.change.PhoneChangeRequestKey;
 import org.vovgoo.userservice.dto.user.request.ChangePhoneRequest;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangePhoneRequest;
 import org.vovgoo.userservice.entity.User;
+import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.ChangePhoneRequestNotFoundException;
@@ -45,7 +46,7 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
                 .orElseThrow(UserNotFoundException::new);
 
         if (request.phone().equals(user.getPhone())) {
-            throw new IllegalArgumentException("Новый телефон совпадает с текущим");
+            throw new PhoneAlreadyCurrentException();
         }
 
         userRepository.findByPhone(request.phone())
