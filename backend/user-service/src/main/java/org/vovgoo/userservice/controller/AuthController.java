@@ -34,11 +34,7 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful authentication",
                     content = @Content(schema = @Schema(implementation = JwtResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid input data or validation errors",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized: invalid credentials",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden: user blocked or deactivated",
+            @ApiResponse(responseCode = "401", description = "Unauthorized: invalid credentials or user blocked",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
@@ -54,10 +50,6 @@ public class AuthController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Sign-up initiated, verification token sent"),
             @ApiResponse(responseCode = "400", description = "Invalid input data or validation errors",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden: user blocked or deactivated",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "409", description = "Conflict: phone already exists",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -77,10 +69,6 @@ public class AuthController {
             @ApiResponse(responseCode = "201", description = "User confirmed successfully, JWT returned",
                     content = @Content(schema = @Schema(implementation = JwtResponse.class))),
             @ApiResponse(responseCode = "400", description = "Invalid input data or OTP code",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized: invalid verification token",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden: user blocked or deactivated",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "404", description = "Sign-up request not found",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
@@ -104,7 +92,7 @@ public class AuthController {
                     content = @Content(schema = @Schema(implementation = JwtResponse.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized: refresh token missing or invalid",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
-            @ApiResponse(responseCode = "403", description = "Forbidden: user blocked or deactivated",
+            @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
