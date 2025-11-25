@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.vovgoo.restaurantservice.exception.custom.dish.DishNotBelongsToRestaurantException;
 import org.vovgoo.restaurantservice.exception.custom.dish.DishNotFoundException;
-import org.vovgoo.restaurantservice.exception.custom.image.ImageNotFoundException;
-import org.vovgoo.restaurantservice.exception.custom.image.ImageReadException;
-import org.vovgoo.restaurantservice.exception.custom.image.ImageUploadException;
+import org.vovgoo.restaurantservice.exception.custom.image.*;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.exception.FieldErrors;
@@ -29,6 +27,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(ImageLimitExceededException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleImageLimitExceeded(ImageLimitExceededException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.CONFLICT, request.getRequestURI()));
     }
 
     @ExceptionHandler({
@@ -60,7 +64,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             ImageReadException.class,
-            ImageUploadException.class
+            ImageUploadException.class,
+            ImageHandlerNotFoundException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleImageExceptions(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
