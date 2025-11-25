@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.service.image.impl;
+package org.vovgoo.restaurantservice.service.image.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,10 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.enums.ImageType;
+import org.vovgoo.restaurantservice.exception.custom.image.ImageLimitExceededException;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageNotFoundException;
 import org.vovgoo.restaurantservice.repository.ImageRepository;
-import org.vovgoo.restaurantservice.service.image.ImageService;
-import org.vovgoo.restaurantservice.service.image.ImageUploader;
+import org.vovgoo.restaurantservice.service.image.service.ImageService;
+import org.vovgoo.restaurantservice.service.image.uploader.ImageUploader;
 
 import java.util.UUID;
 
@@ -22,7 +23,13 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     @Transactional
-    public void uploadImage(UUID parentId, ImageType type, MultipartFile file) {
+    public void uploadImage(UUID parentId, ImageType type, MultipartFile file, Long limit) {
+        long currentCount = imageRepository.countImages(parentId, type);
+
+        if (currentCount >= limit) {
+            throw new ImageLimitExceededException(limit);
+        }
+
         String url = imageUploader.upload(file);
 
         Image image = Image.builder()
