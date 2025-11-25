@@ -10,14 +10,14 @@ import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.orderservice.exception.custom.address.AddressDeletedException;
 import org.vovgoo.orderservice.exception.custom.address.AddressNotFoundException;
 import org.vovgoo.orderservice.exception.custom.address.AddressServiceException;
-import org.vovgoo.orderservice.service.address.AddressService;
+import org.vovgoo.orderservice.service.address.AddressClientService;
 import org.vovgoo.orderservice.service.address.InternalAddressClient;
 
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AddressServiceImpl implements AddressService {
+public class AddressClientServiceImpl implements AddressClientService {
 
     private final InternalAddressClient internalAddressClient;
 

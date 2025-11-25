@@ -16,8 +16,8 @@ import org.vovgoo.orderservice.entity.enums.OrderStatus;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.mapper.OrderItemMapper;
 import org.vovgoo.orderservice.mapper.OrderMapper;
-import org.vovgoo.orderservice.service.address.AddressService;
-import org.vovgoo.orderservice.service.restaurant.RestaurantService;
+import org.vovgoo.orderservice.service.address.AddressClientService;
+import org.vovgoo.orderservice.service.restaurant.RestaurantClientService;
 import org.vovgoo.user.client.InternalUserClient;
 
 import java.math.BigDecimal;
@@ -31,15 +31,15 @@ import java.util.stream.Collectors;
 public class OrderFacade {
 
     private final InternalUserClient internalUserClient;
-    private final AddressService addressService;
-    private final RestaurantService restaurantService;
+    private final AddressClientService addressClientService;
+    private final RestaurantClientService restaurantClientService;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
 
     public Order buildOrder(UUID userId, CreateOrderRequest createOrderRequest) {
-        addressService.validateAddress(userId, createOrderRequest.deliveryAddress());
-        restaurantService.validateRestaurant(createOrderRequest.restaurantId());
-        List<DishInternalResponse> dishes = restaurantService.getAvailableDishesByRestaurant(
+        addressClientService.validateAddress(userId, createOrderRequest.deliveryAddress());
+        restaurantClientService.validateRestaurant(createOrderRequest.restaurantId());
+        List<DishInternalResponse> dishes = restaurantClientService.getAvailableDishesByRestaurant(
                 createOrderRequest.restaurantId(),
                 createOrderRequest.items().stream().map(AddOrderItemRequest::dishId).toList()
         );
@@ -80,9 +80,9 @@ public class OrderFacade {
 
     public OrderResponse assembleOrderResponse(Order order) {
         UserInternalResponse user = internalUserClient.getUser(order.getUserId());
-        AddressInternalResponse address = addressService.getAddress(order.getUserId(), order.getDeliveryAddress());
-        RestaurantInternalResponse restaurant = restaurantService.getRestaurant(order.getRestaurantId());
-        List<DishInternalResponse> dishes = restaurantService.getDishesByRestaurant(
+        AddressInternalResponse address = addressClientService.getAddress(order.getUserId(), order.getDeliveryAddress());
+        RestaurantInternalResponse restaurant = restaurantClientService.getRestaurant(order.getRestaurantId());
+        List<DishInternalResponse> dishes = restaurantClientService.getDishesByRestaurant(
                 order.getRestaurantId(),
                 order.getItems().stream().map(OrderItem::getDishId).toList()
         );

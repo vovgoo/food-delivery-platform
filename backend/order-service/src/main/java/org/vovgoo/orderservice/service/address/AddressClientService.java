@@ -4,7 +4,7 @@ import org.vovgoo.dto.address.AddressInternalResponse;
 
 import java.util.UUID;
 
-public interface AddressService {
+public interface AddressClientService {
     AddressInternalResponse getAddress(UUID userId, UUID addressId);
     void validateAddress(UUID userId, UUID addressId);
 }

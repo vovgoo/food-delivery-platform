@@ -13,14 +13,14 @@ import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantServiceException;
 import org.vovgoo.orderservice.service.restaurant.InternalRestaurantClient;
-import org.vovgoo.orderservice.service.restaurant.RestaurantService;
+import org.vovgoo.orderservice.service.restaurant.RestaurantClientService;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RestaurantServiceImpl implements RestaurantService {
+public class RestaurantClientServiceImpl implements RestaurantClientService {
 
     private final InternalRestaurantClient internalRestaurantClient;
 
