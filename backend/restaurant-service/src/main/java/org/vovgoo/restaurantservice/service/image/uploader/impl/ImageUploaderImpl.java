@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.service.image.impl;
+package org.vovgoo.restaurantservice.service.image.uploader.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.vovgoo.restaurantservice.config.image.ImgbbProperties;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageReadException;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageUploadException;
-import org.vovgoo.restaurantservice.service.image.ImageUploader;
+import org.vovgoo.restaurantservice.service.image.uploader.ImageUploader;
 
 import java.io.IOException;
 

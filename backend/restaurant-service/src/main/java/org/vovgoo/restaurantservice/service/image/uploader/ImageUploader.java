@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.service.image;
+package org.vovgoo.restaurantservice.service.image.uploader;
 
 import org.springframework.web.multipart.MultipartFile;
 
