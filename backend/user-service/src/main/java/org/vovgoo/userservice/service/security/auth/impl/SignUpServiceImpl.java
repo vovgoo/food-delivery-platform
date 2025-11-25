@@ -54,7 +54,16 @@ public class SignUpServiceImpl implements SignUpService {
         String phone = request.phone();
         String otp = VerificationUtils.generateOtp();
 
-        redisService.set(SignUpRequestKey.of(phone), request);
+        String encodedPassword = passwordEncoder.encode(request.password());
+
+        SignUpRequest safeRequest = SignUpRequest.builder()
+                .phone(phone)
+                .fullName(request.fullName())
+                .birthDate(request.birthDate())
+                .password(encodedPassword)
+                .build();
+
+        redisService.set(SignUpRequestKey.of(phone), safeRequest);
         redisService.set(SignUpCodeKey.of(phone), otp);
         redisService.set(SignUpAttemptsKey.of(phone), 0);
 
@@ -107,7 +116,7 @@ public class SignUpServiceImpl implements SignUpService {
                 .fullName(signUpRequest.fullName())
                 .birthDate(signUpRequest.birthDate())
                 .status(UserStatus.ACTIVE)
-                .passwordHash(passwordEncoder.encode(signUpRequest.password()))
+                .passwordHash(signUpRequest.password())
                 .roles(Set.of(role))
                 .build();
 

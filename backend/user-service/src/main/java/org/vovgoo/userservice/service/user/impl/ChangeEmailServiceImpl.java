@@ -15,10 +15,7 @@ import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
-import org.vovgoo.userservice.exception.custom.verification.ChangeEmailRequestNotFoundException;
-import org.vovgoo.userservice.exception.custom.verification.InvalidOtpException;
-import org.vovgoo.userservice.exception.custom.verification.OtpAttemptsExceededException;
-import org.vovgoo.userservice.exception.custom.verification.OtpNotFoundException;
+import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.rabbit.EventService;
 import org.vovgoo.userservice.service.redis.RedisService;
@@ -77,7 +74,7 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
         UUID providedToken = request.token();
 
         UUID actualToken = redisService.get(EmailChangeTokenKey.of(userId))
-                .orElseThrow(OtpNotFoundException::new);
+                .orElseThrow(TokenNotFoundException::new);
 
         AtomicInteger attempts = new AtomicInteger(redisService.get(EmailChangeAttemptsKey.of(userId)).orElse(0));
 
@@ -95,10 +92,10 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
                 redisService.delete(EmailChangeRequestKey.of(userId));
                 redisService.delete(EmailChangeTokenKey.of(userId));
                 redisService.delete(EmailChangeAttemptsKey.of(userId));
-                throw new OtpAttemptsExceededException();
+                throw new TokenAttemptsExceededException();
             }
 
-            throw new InvalidOtpException();
+            throw new InvalidTokenException();
         }
 
         redisService.delete(EmailChangeRequestKey.of(userId));
