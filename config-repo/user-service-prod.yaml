@@ -30,6 +30,8 @@ app:
     attempts:
       phone: ${PHONE_VERIFICATION_MAX_ATTEMPTS}
       email: ${EMAIL_VERIFICATION_MAX_ATTEMPTS}
+  address:
+    limit: ${ADDRESS_LIMIT}
   jwt:
     keys:
       private-key: ${JWT_PRIVATE_KEY}

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.exception.FieldErrors;
+import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
@@ -82,7 +83,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             EmailAlreadyExistsException.class,
-            PhoneAlreadyExistsException.class
+            PhoneAlreadyExistsException.class,
+            AddressLimitExceededException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)

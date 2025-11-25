@@ -10,11 +10,13 @@ import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.security.utils.CurrentUserUtils;
 import org.vovgoo.user.aspect.CheckUserStatus;
+import org.vovgoo.userservice.config.address.AddressLimitProperties;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.enums.address.AddressStatus;
+import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
 import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.mapper.AddressMapper;
@@ -30,6 +32,7 @@ import java.util.UUID;
 public class AddressServiceImpl implements AddressService {
 
     private final AddressRepository addressRepository;
+    private final AddressLimitProperties addressLimitProperties;
     private final UserRepository userRepository;
     private final AddressMapper addressMapper;
 
@@ -54,6 +57,12 @@ public class AddressServiceImpl implements AddressService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
+
+        Long currentCount = addressRepository.countAddressesByUser(userId);
+
+        if (currentCount >= addressLimitProperties.getLimit()) {
+            throw new AddressLimitExceededException(addressLimitProperties.getLimit());
+        }
 
         addressRepository.findDefaultByUserIdForUpdate(userId)
                 .ifPresent(current -> {
