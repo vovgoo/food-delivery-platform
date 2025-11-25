@@ -1,0 +1,5 @@
+CREATE TYPE dish_status AS ENUM (
+    'AVAILABLE',
+    'TEMPORARY_UNAVAILABLE',
+    'REMOVED'
+);
