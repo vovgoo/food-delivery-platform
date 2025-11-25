@@ -3,6 +3,7 @@ package org.vovgoo.orderservice.exception.handler;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.KafkaException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -14,7 +15,7 @@ import org.vovgoo.orderservice.exception.custom.address.AddressDeletedException;
 import org.vovgoo.orderservice.exception.custom.address.AddressNotFoundException;
 import org.vovgoo.orderservice.exception.custom.address.AddressServiceException;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
-import org.vovgoo.orderservice.exception.custom.kafka.InvalidEventTypeException;
+import org.vovgoo.orderservice.exception.custom.kafka.KafkaEventTypeMismatchException;
 import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantServiceException;
@@ -64,7 +65,8 @@ public class GlobalExceptionHandler {
     @ExceptionHandler({
             AddressServiceException.class,
             RestaurantServiceException.class,
-            InvalidEventTypeException.class
+            KafkaEventTypeMismatchException.class,
+            KafkaException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleInternal(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

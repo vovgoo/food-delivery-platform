@@ -1,9 +1,130 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/001_create_table_orders.sql
-  - include:
-      file: db/changelog/002_create_table_order_items.sql
-  - include:
-      file: db/changelog/003_create_table_payments.sql
-  - include:
-      file: db/changelog/004_add_indexes.sql
+  - changeSet:
+      id: 001
+      author: migration
+      changes:
+        - sqlFile:
+            path: 001_create_uuid_extension.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 002
+      author: migration
+      changes:
+        - sqlFile:
+            path: 002_create_enum_order_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 003
+      author: migration
+      changes:
+        - sqlFile:
+            path: 003_create_enum_payment_method.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 004
+      author: migration
+      changes:
+        - sqlFile:
+            path: 004_create_enum_payment_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 005
+      author: migration
+      changes:
+        - sqlFile:
+            path: 005_create_table_orders.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 006
+      author: migration
+      changes:
+        - sqlFile:
+            path: 006_create_table_order_items.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 007
+      author: migration
+      changes:
+        - sqlFile:
+            path: 007_create_table_payments.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 008
+      author: migration
+      changes:
+        - sqlFile:
+            path: 008_create_constraints_orders.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 009
+      author: migration
+      changes:
+        - sqlFile:
+            path: 009_create_constraints_order_items.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 010
+      author: migration
+      changes:
+        - sqlFile:
+            path: 010_create_constraints_payments.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 011
+      author: migration
+      changes:
+        - sqlFile:
+            path: 011_create_indexes_orders.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 012
+      author: migration
+      changes:
+        - sqlFile:
+            path: 012_create_indexes_order_items.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 013
+      author: migration
+      changes:
+        - sqlFile:
+            path: 013_create_indexes_payments.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

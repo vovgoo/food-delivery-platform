@@ -6,7 +6,7 @@ import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
 import java.util.List;
 import java.util.UUID;
 
-public interface RestaurantService {
+public interface RestaurantClientService {
     RestaurantInternalResponse getRestaurant(UUID restaurantId);
     void validateRestaurant(UUID restaurantId);
     List<DishInternalResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds);

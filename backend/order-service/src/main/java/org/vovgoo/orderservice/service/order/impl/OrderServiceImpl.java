@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
-import org.vovgoo.orderservice.config.kafka.EventType;
+import org.vovgoo.orderservice.domain.kafka.key.KafkaEvents;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
@@ -19,8 +19,8 @@ import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.repository.OrderRepository;
 import org.vovgoo.orderservice.service.kafka.KafkaEventPublisher;
-import org.vovgoo.orderservice.service.kafka.event.OrderCreatedEvent;
-import org.vovgoo.orderservice.service.kafka.event.OrderStatusChangedEvent;
+import org.vovgoo.orderservice.domain.kafka.event.OrderCreatedEvent;
+import org.vovgoo.orderservice.domain.kafka.event.OrderStatusChangedEvent;
 import org.vovgoo.orderservice.service.order.OrderService;
 import org.vovgoo.orderservice.service.order.facade.OrderFacade;
 import org.vovgoo.orderservice.service.payment.PaymentService;
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orderResponse.totalPrice())
                 .build();
 
-        kafkaEventPublisher.publish(EventType.ORDER_CREATED, orderCreatedEvent);
+        kafkaEventPublisher.publish(KafkaEvents.ORDER_CREATED, orderCreatedEvent);
 
         return orderResponse;
     }
@@ -122,7 +122,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderStatus(orderResponse.status())
                 .build();
 
-        kafkaEventPublisher.publish(EventType.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
+        kafkaEventPublisher.publish(KafkaEvents.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
 
         return orderResponse;
     }

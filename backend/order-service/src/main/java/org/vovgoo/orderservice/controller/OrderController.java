@@ -32,7 +32,8 @@ public class OrderController {
 
     @Operation(
             summary = "Place new order",
-            description = "Allows an authenticated user to create a new order."
+            description = "Allows an authenticated user to create a new order.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Order created successfully",
@@ -49,7 +50,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
         OrderResponse response = orderService.placeOrder(createOrderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -57,7 +57,8 @@ public class OrderController {
 
     @Operation(
             summary = "Get orders",
-            description = "Returns all orders of the authenticated user (or all orders for admin)."
+            description = "Returns all orders of the authenticated user (or all orders for admin).",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Orders retrieved successfully",
@@ -70,14 +71,14 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<PageResponse<OrderShortResponse>> getOrders(@Valid PageParams pageParams) {
         return ResponseEntity.ok(orderService.getAllOrders(pageParams));
     }
 
     @Operation(
             summary = "Get order by ID",
-            description = "Returns details of an order. Users can view only their own orders. Admin can view any order."
+            description = "Returns details of an order. Users can view only their own orders. Admin can view any order.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Order retrieved successfully",
@@ -92,7 +93,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping("/{orderId}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable UUID orderId) {
         OrderResponse response = orderService.getOrderById(orderId);
         return ResponseEntity.ok(response);
@@ -100,7 +100,8 @@ public class OrderController {
 
     @Operation(
             summary = "Update order status",
-            description = "Allows admin users to update order status."
+            description = "Allows admin users to update order status.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Order status updated",
@@ -117,7 +118,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/{orderId}/status")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderResponse> updateStatus(@PathVariable UUID orderId, @Valid @RequestBody UpdateOrderStatusRequest updateOrderStatusRequest) {
         OrderResponse response = orderService.updateOrderStatus(orderId, updateOrderStatusRequest);
         return ResponseEntity.ok(response);

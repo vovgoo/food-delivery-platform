@@ -2,6 +2,8 @@ package org.vovgoo.orderservice.service.restaurant.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.enums.dish.DishStatus;
@@ -11,18 +13,22 @@ import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantServiceException;
 import org.vovgoo.orderservice.service.restaurant.InternalRestaurantClient;
-import org.vovgoo.orderservice.service.restaurant.RestaurantService;
+import org.vovgoo.orderservice.service.restaurant.RestaurantClientService;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RestaurantServiceImpl implements RestaurantService {
+public class RestaurantClientServiceImpl implements RestaurantClientService {
 
     private final InternalRestaurantClient internalRestaurantClient;
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public RestaurantInternalResponse getRestaurant(UUID restaurantId) {
         try {
             return internalRestaurantClient.getRestaurant(restaurantId);
@@ -34,6 +40,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public void validateRestaurant(UUID restaurantId) {
         RestaurantInternalResponse restaurant = getRestaurant(restaurantId);
 
@@ -43,6 +53,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public List<DishInternalResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
         try {
             return internalRestaurantClient.getDishesByRestaurant(restaurantId, dishIds);

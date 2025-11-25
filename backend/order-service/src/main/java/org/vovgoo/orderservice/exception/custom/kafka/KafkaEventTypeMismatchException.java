@@ -1,7 +1,7 @@
 package org.vovgoo.orderservice.exception.custom.kafka;
 
-public class InvalidEventTypeException extends RuntimeException {
-    public InvalidEventTypeException() {
+public class KafkaEventTypeMismatchException extends RuntimeException {
+    public KafkaEventTypeMismatchException() {
         super("Некорректный тип события");
     }
 }
