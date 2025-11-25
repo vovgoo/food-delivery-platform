@@ -49,7 +49,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<OrderResponse> placeOrder(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
         OrderResponse response = orderService.placeOrder(createOrderRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
@@ -70,7 +69,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<PageResponse<OrderShortResponse>> getOrders(@Valid PageParams pageParams) {
         return ResponseEntity.ok(orderService.getAllOrders(pageParams));
     }
@@ -92,7 +90,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping("/{orderId}")
-    @PreAuthorize("hasAnyRole('USER','ADMIN')")
     public ResponseEntity<OrderResponse> getOrder(@PathVariable UUID orderId) {
         OrderResponse response = orderService.getOrderById(orderId);
         return ResponseEntity.ok(response);
@@ -117,7 +114,6 @@ public class OrderController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/{orderId}/status")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<OrderResponse> updateStatus(@PathVariable UUID orderId, @Valid @RequestBody UpdateOrderStatusRequest updateOrderStatusRequest) {
         OrderResponse response = orderService.updateOrderStatus(orderId, updateOrderStatusRequest);
         return ResponseEntity.ok(response);
