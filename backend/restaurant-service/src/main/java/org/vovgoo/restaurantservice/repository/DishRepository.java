@@ -13,15 +13,15 @@ import java.util.UUID;
 
 public interface DishRepository extends JpaRepository<Dish, UUID> {
 
-    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.status <> 'REMOVED'")
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.status <> 'REMOVED'")
     Page<Dish> findAllByRestaurantId(@Param("restaurantId") UUID restaurantId, Pageable pageable);
 
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
     Optional<Dish> findByRestaurantIdAndDishIdAndStatusNotRemoved(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
 
-    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
-    Optional<Dish> findByRestaurantIdAndDishIdWithImages(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
+    Optional<Dish> findByRestaurantIdAndDishId(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
 
-    @Query("SELECT d FROM Dish d LEFT JOIN FETCH d.images WHERE d.restaurant.id = :restaurantId AND d.id IN :dishIds AND d.status <> 'REMOVED'")
-    List<Dish> findAllByRestaurantIdAndDishIdsWithImages(@Param("restaurantId") UUID restaurantId, @Param("dishIds") List<UUID> dishIds);
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id IN :dishIds AND d.status <> 'REMOVED'")
+    List<Dish> findAllByRestaurantIdAndDishIds(@Param("restaurantId") UUID restaurantId, @Param("dishIds") List<UUID> dishIds);
 }
