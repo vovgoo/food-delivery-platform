@@ -29,4 +29,7 @@ public interface AddressRepository extends JpaRepository<Address, UUID> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT a FROM Address a WHERE a.user.id = :userId AND a.isDefault = true")
     Optional<Address> findDefaultByUserIdForUpdate(@Param("userId") UUID userId);
+
+    @Query("SELECT COUNT(a) FROM Address a WHERE a.user.id = :userId")
+    Long countAddressesByUser(@Param("userId") UUID userId);
 }
