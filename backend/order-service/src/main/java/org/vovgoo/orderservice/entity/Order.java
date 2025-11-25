@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.orderservice.entity.enums.OrderStatus;
 
 import java.math.BigDecimal;
@@ -27,6 +29,7 @@ public class Order {
     private UUID id;
 
     @NotNull(message = "Статус заказа не может быть пустым")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

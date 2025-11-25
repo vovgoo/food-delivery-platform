@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.orderservice.entity.enums.PaymentMethod;
 import org.vovgoo.orderservice.entity.enums.PaymentStatus;
 
@@ -30,6 +32,7 @@ public class Payment {
     private Order order;
 
     @NotNull(message = "Необходимо указать способ оплаты")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
 
@@ -39,6 +42,7 @@ public class Payment {
     private BigDecimal amount;
 
     @NotNull(message = "Необходимо указать статус платежа")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 
