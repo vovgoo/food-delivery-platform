@@ -2,6 +2,8 @@ package org.vovgoo.orderservice.service.restaurant.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.vovgoo.dto.dish.DishInternalResponse;
 import org.vovgoo.enums.dish.DishStatus;
@@ -23,6 +25,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final InternalRestaurantClient internalRestaurantClient;
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public RestaurantInternalResponse getRestaurant(UUID restaurantId) {
         try {
             return internalRestaurantClient.getRestaurant(restaurantId);
@@ -34,6 +40,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public void validateRestaurant(UUID restaurantId) {
         RestaurantInternalResponse restaurant = getRestaurant(restaurantId);
 
@@ -43,6 +53,10 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public List<DishInternalResponse> getDishesByRestaurant(UUID restaurantId, List<UUID> dishIds) {
         try {
             return internalRestaurantClient.getDishesByRestaurant(restaurantId, dishIds);

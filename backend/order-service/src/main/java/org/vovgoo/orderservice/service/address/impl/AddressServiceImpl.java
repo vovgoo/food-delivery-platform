@@ -2,6 +2,8 @@ package org.vovgoo.orderservice.service.address.impl;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.enums.address.AddressStatus;
@@ -20,6 +22,10 @@ public class AddressServiceImpl implements AddressService {
     private final InternalAddressClient internalAddressClient;
 
     @Override
+    @Retryable(
+            retryFor = { FeignException.class },
+            backoff = @Backoff(delay = 1000, multiplier = 2)
+    )
     public AddressInternalResponse getAddress(UUID userId, UUID addressId) {
         try {
             AddressInternalResponse address = internalAddressClient.getUserAddressAnyStatus(userId, addressId);
