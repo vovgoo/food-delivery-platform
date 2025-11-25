@@ -43,8 +43,6 @@ public class RestaurantController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Restaurants retrieved successfully",
                     content = @Content(schema = @Schema(implementation = PageResponse.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized",
-                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
