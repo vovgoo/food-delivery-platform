@@ -57,7 +57,10 @@ public class ImageServiceImpl implements ImageService {
         String url = imageUploader.upload(file);
 
         imageRepository.findProfileImage(parentId, type)
-                .ifPresent(imageRepository::delete);
+                .ifPresent(img -> {
+                    imageRepository.delete(img);
+                    imageRepository.flush();
+                });
 
         Image image = Image.builder()
                 .url(url)
