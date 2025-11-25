@@ -1,4 +1,4 @@
-package org.vovgoo.orderservice.service.kafka.event;
+package org.vovgoo.orderservice.domain.kafka.event;
 
 import lombok.Builder;
 
