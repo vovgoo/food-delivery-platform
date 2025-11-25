@@ -12,9 +12,22 @@ spring:
       ddl-auto: validate
 
 app:
+  internal-services:
+    tokens:
+      user-service: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
+    self: ${RESTAURANT_SERVICE_INTERNAL_TOKEN:restaurant-service-secret-token}
   imgbb:
     api-key: ${IMGBB_API_KEY:b597b3ceaef618dbae0551fe2fb90a86}
     endpoint: ${IMGBB_ENDPOINT:https://api.imgbb.com/1/upload}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
 
 springdoc:
   swagger-ui:
