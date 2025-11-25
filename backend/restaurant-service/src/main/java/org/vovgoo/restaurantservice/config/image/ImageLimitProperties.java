@@ -8,6 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "app.image.limit")
 public class ImageLimitProperties {
-    private int restaurant;
-    private int dish;
+    private Long restaurant;
+    private Long dish;
 }
