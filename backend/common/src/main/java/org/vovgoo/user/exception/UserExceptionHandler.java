@@ -19,7 +19,7 @@ public class UserExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.FORBIDDEN, request.getRequestURI()));
     }
-    
+
     @ExceptionHandler({
             UserActiveException.class
     })

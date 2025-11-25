@@ -4,6 +4,6 @@ import org.vovgoo.dto.user.UserInternalResponse;
 
 import java.util.UUID;
 
-public interface UserService {
+public interface UserClientService {
     UserInternalResponse getUser(UUID userId);
 }
