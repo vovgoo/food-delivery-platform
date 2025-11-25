@@ -16,6 +16,22 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
+app:
+  internal-services:
+    tokens:
+      user-service: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
+      restaurant-service: ${RESTAURANT_SERVICE_INTERNAL_TOKEN:restaurant-service-secret-token}
+    self: ${USER_SERVICE_INTERNAL_TOKEN:order-service-secret-token}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
 springdoc:
   swagger-ui:
     enabled: true
