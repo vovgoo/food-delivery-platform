@@ -12,15 +12,15 @@ import java.util.UUID;
 
 public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
 
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.images WHERE r.status <> 'CLOSED' AND (:cuisine IS NULL OR LOWER(r.cuisine) LIKE LOWER(CONCAT('%', :cuisine, '%')))")
+    @Query("SELECT r FROM Restaurant r WHERE r.status <> 'CLOSED' AND (:cuisine IS NULL OR LOWER(r.cuisine) LIKE LOWER(CONCAT('%', :cuisine, '%')))")
     Page<Restaurant> findByCuisineContainingIgnoreCase(String cuisine, Pageable pageable);
 
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.status <> 'CLOSED'")
     Optional<Restaurant> findByIdAndStatusNotClosed(@Param("id") UUID id);
 
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.images WHERE r.id = :id AND r.status <> 'CLOSED'")
-    Optional<Restaurant> findByIdWithImages(@Param("id") UUID id);
+    @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.status <> 'CLOSED'")
+    Optional<Restaurant> findByIdNotClosed(@Param("id") UUID id);
 
-    @Query("SELECT r FROM Restaurant r LEFT JOIN FETCH r.images WHERE r.id = :id")
-    Optional<Restaurant> findByIdWithImagesIgnoreStatus(@Param("id") UUID id);
+    @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
+    Optional<Restaurant> findByIdIgnoreStatus(@Param("id") UUID id);
 }
