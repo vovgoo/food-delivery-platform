@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.vovgoo.dto.exception.ExceptionResponse;
@@ -99,7 +98,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RestaurantResponse> createRestaurant(
             @Valid @RequestBody RestaurantCreateRequest restaurantCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -122,7 +120,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/{restaurantId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RestaurantResponse> updateRestaurant(@PathVariable UUID restaurantId,
                                                                @Valid @RequestBody RestaurantUpdateRequest restaurantUpdateRequest) {
         return ResponseEntity.ok(restaurantService.update(restaurantId, restaurantUpdateRequest));
@@ -141,7 +138,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRestaurant(@PathVariable UUID restaurantId) {
         restaurantService.delete(restaurantId);
         return ResponseEntity.noContent().build();
@@ -162,7 +158,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping(value = "/{restaurantId}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> addRestaurantImage(@PathVariable UUID restaurantId,
                                                    @RequestParam("file") MultipartFile file) {
         restaurantService.uploadImage(restaurantId, file);
@@ -182,7 +177,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}/images/{imageId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> removeRestaurantImage(@PathVariable UUID restaurantId,
                                                       @PathVariable UUID imageId) {
         restaurantService.deleteImage(restaurantId, imageId);
@@ -202,7 +196,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping(value = "/{restaurantId}/images/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> setRestaurantProfileImage(@PathVariable UUID restaurantId,
                                                           @RequestParam("file") MultipartFile file) {
         restaurantService.setProfileImage(restaurantId, file);
@@ -222,7 +215,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}/images/profile")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> removeRestaurantProfileImage(@PathVariable UUID restaurantId) {
         restaurantService.removeProfileImage(restaurantId);
         return ResponseEntity.noContent().build();
@@ -244,7 +236,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/{restaurantId}/dishes")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<DishResponse> createDish(@PathVariable UUID restaurantId,
                                                    @Valid @RequestBody DishCreateRequest dishCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -267,10 +258,7 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/{restaurantId}/dishes/{dishId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<DishResponse> updateDish(@PathVariable UUID restaurantId,
-                                                   @PathVariable UUID dishId,
-                                                   @Valid @RequestBody DishUpdateRequest dishUpdateRequest) {
+    public ResponseEntity<DishResponse> updateDish(@PathVariable UUID restaurantId, @PathVariable UUID dishId, @Valid @RequestBody DishUpdateRequest dishUpdateRequest) {
         return ResponseEntity.ok(dishService.update(restaurantId, dishId, dishUpdateRequest));
     }
 
@@ -287,7 +275,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}/dishes/{dishId}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteDish(@PathVariable UUID restaurantId, @PathVariable UUID dishId) {
         dishService.delete(restaurantId, dishId);
         return ResponseEntity.noContent().build();
@@ -306,10 +293,7 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PostMapping("/{restaurantId}/dishes/{dishId}/images")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> addDishImage(@PathVariable UUID restaurantId,
-                                             @PathVariable UUID dishId,
-                                             @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Void> addDishImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId, @RequestParam("file") MultipartFile file) {
         dishService.uploadImage(restaurantId, dishId, file);
         return ResponseEntity.noContent().build();
     }
@@ -327,10 +311,7 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}/dishes/{dishId}/images/{imageId}")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> removeDishImage(@PathVariable UUID restaurantId,
-                                                @PathVariable UUID dishId,
-                                                @PathVariable UUID imageId) {
+    public ResponseEntity<Void> removeDishImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId, @PathVariable UUID imageId) {
         dishService.deleteImage(restaurantId, dishId, imageId);
         return ResponseEntity.noContent().build();
     }
@@ -348,7 +329,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping(value = "/{restaurantId}/dishes/{dishId}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> setDishProfileImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId, @RequestParam("file") MultipartFile file) {
         dishService.setProfileImage(restaurantId, dishId, file);
         return ResponseEntity.noContent().build();
@@ -367,7 +347,6 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @DeleteMapping("/{restaurantId}/dishes/{dishId}/profile")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> removeDishProfileImage(@PathVariable UUID restaurantId, @PathVariable UUID dishId) {
         dishService.removeProfileImage(restaurantId, dishId);
         return ResponseEntity.noContent().build();

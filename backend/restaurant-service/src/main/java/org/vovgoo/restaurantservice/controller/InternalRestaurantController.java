@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/internal/restaurant")
+@RequestMapping("/internal/restaurants")
 @RequiredArgsConstructor
 @Hidden
 public class InternalRestaurantController {

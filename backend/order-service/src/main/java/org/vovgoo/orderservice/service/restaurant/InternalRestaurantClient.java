@@ -13,7 +13,7 @@ import java.util.UUID;
 @FeignClient(
         name = "restaurant-service",
         contextId = "internalRestaurantClient",
-        path = "/internal/restaurant"
+        path = "/internal/restaurants"
 )
 public interface InternalRestaurantClient {
 
