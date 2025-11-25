@@ -2,11 +2,13 @@ package org.vovgoo.userservice.dto.security.auth.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
+import lombok.Builder;
 import org.vovgoo.userservice.validators.age.min.MinAge;
 import org.vovgoo.validators.phone.Phone;
 
 import java.time.LocalDate;
 
+@Builder
 @Schema(description = "Request for user sign-up")
 public record SignUpRequest(
 
