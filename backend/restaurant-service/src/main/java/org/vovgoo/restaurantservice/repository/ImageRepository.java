@@ -24,4 +24,7 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
     Optional<Image> findByIdAndParentIdAndType(UUID id, UUID parentId, ImageType type);
 
     List<Image> findAllByParentIdAndType(UUID parentId, ImageType type);
+
+    @Query("SELECT COUNT(i) FROM Image i WHERE i.parentId = :parentId AND i.type = :type AND i.isProfile = false")
+    Long countImages(@Param("parentId") UUID parentId, @Param("type") ImageType type);
 }
