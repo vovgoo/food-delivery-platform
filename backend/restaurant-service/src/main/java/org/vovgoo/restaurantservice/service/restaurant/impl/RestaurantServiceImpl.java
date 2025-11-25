@@ -21,7 +21,7 @@ import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFou
 import org.vovgoo.restaurantservice.mapper.RestaurantMapper;
 import org.vovgoo.restaurantservice.repository.ImageRepository;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
-import org.vovgoo.restaurantservice.service.image.ImageService;
+import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 import org.vovgoo.user.aspect.CheckUserStatus;
 
@@ -38,7 +38,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
     private final ImageRepository imageRepository;
-    private final ImageService imageService;
+    private final ImageFacadeService imageFacadeService;
     private final RestaurantMapper restaurantMapper;
 
     @Override
@@ -134,40 +134,40 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     @CheckUserStatus
     public void uploadImage(UUID restaurantId, MultipartFile file) {
-        restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        imageService.uploadImage(restaurantId, ImageType.RESTAURANT, file);
+        imageFacadeService.uploadImage(restaurant, file);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void deleteImage(UUID restaurantId, UUID imageId) {
-        restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        imageService.removeImage(restaurantId, imageId, ImageType.RESTAURANT);
+        imageFacadeService.removeImage(restaurant, imageId);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void setProfileImage(UUID restaurantId, MultipartFile file) {
-        restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        imageService.uploadProfileImage(restaurantId, ImageType.RESTAURANT, file);
+        imageFacadeService.uploadProfileImage(restaurant, file);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void removeProfileImage(UUID restaurantId) {
-        restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        imageService.removeProfileImage(restaurantId, ImageType.RESTAURANT);
+        imageFacadeService.removeProfileImage(restaurant);
     }
 
     @Override

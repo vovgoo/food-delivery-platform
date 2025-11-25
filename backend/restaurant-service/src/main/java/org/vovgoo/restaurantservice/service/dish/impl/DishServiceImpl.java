@@ -24,7 +24,7 @@ import org.vovgoo.restaurantservice.repository.DishRepository;
 import org.vovgoo.restaurantservice.repository.ImageRepository;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
 import org.vovgoo.restaurantservice.service.dish.DishService;
-import org.vovgoo.restaurantservice.service.image.ImageService;
+import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 import org.vovgoo.user.aspect.CheckUserStatus;
 
 import java.util.Collections;
@@ -42,7 +42,7 @@ public class DishServiceImpl implements DishService {
     private final DishRepository dishRepository;
     private final RestaurantRepository restaurantRepository;
     private final ImageRepository imageRepository;
-    private final ImageService imageService;
+    private final ImageFacadeService imageFacadeService;
     private final DishMapper dishMapper;
 
     @Override
@@ -130,40 +130,40 @@ public class DishServiceImpl implements DishService {
     @Transactional
     @CheckUserStatus
     public void uploadImage(UUID restaurantId, UUID dishId, MultipartFile file) {
-        dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
-        imageService.uploadImage(dishId, ImageType.DISH, file);
+        imageFacadeService.uploadImage(dish, file);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void deleteImage(UUID restaurantId, UUID dishId, UUID imageId) {
-        dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
-        imageService.removeImage(dishId, imageId, ImageType.DISH);
+        imageFacadeService.removeImage(dish, imageId);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void setProfileImage(UUID restaurantId, UUID dishId, MultipartFile file) {
-        dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
-        imageService.uploadProfileImage(dishId, ImageType.DISH, file);
+        imageFacadeService.uploadProfileImage(dish, file);
     }
 
     @Override
     @Transactional
     @CheckUserStatus
     public void removeProfileImage(UUID restaurantId, UUID dishId) {
-        dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
-        imageService.removeProfileImage(dishId, ImageType.DISH);
+        imageFacadeService.removeProfileImage(dish);
     }
 
     @Override
