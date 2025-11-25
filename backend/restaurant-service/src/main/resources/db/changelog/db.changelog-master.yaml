@@ -1,13 +1,130 @@
 databaseChangeLog:
-  - include:
-      file: db/changelog/001_create_table_restaurants.sql
-  - include:
-      file: db/changelog/002_create_table_dishes.sql
-  - include:
-      file: db/changelog/003_create_table_restaurant_images.sql
-  - include:
-      file: db/changelog/004_create_table_dish_images.sql
-  - include:
-      file: db/changelog/005_add_foreign_keys.sql
-  - include:
-      file: db/changelog/006_add_indexes.sql
+  - changeSet:
+      id: 001
+      author: migration
+      changes:
+        - sqlFile:
+            path: 001_create_uuid_extension.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 002
+      author: migration
+      changes:
+        - sqlFile:
+            path: 002_create_enum_dish_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 003
+      author: migration
+      changes:
+        - sqlFile:
+            path: 003_create_enum_restaurant_status.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 004
+      author: migration
+      changes:
+        - sqlFile:
+            path: 004_create_enum_image_type.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 005
+      author: migration
+      changes:
+        - sqlFile:
+            path: 005_create_table_restaurants.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 006
+      author: migration
+      changes:
+        - sqlFile:
+            path: 006_create_table_dishes.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 007
+      author: migration
+      changes:
+        - sqlFile:
+            path: 007_create_table_images.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 008
+      author: migration
+      changes:
+        - sqlFile:
+            path: 008_create_constraints_restaurants.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 009
+      author: migration
+      changes:
+        - sqlFile:
+            path: 009_create_constraints_dishes.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 010
+      author: migration
+      changes:
+        - sqlFile:
+            path: 010_create_constraints_images.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 011
+      author: migration
+      changes:
+        - sqlFile:
+            path: 011_create_indexes_restaurants.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 012
+      author: migration
+      changes:
+        - sqlFile:
+            path: 012_create_indexes_dishes.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+
+  - changeSet:
+      id: 013
+      author: migration
+      changes:
+        - sqlFile:
+            path: 013_create_indexes_images.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

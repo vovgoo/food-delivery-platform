@@ -3,11 +3,11 @@ package org.vovgoo.restaurantservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.vovgoo.enums.dish.DishStatus;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -28,12 +28,8 @@ public class Dish {
     @Size(min = 2, max = 100, message = "Название блюда должно быть от 2 до 100 символов")
     private String name;
 
-    @Size(min = 0, max = 500, message = "Описание блюда должно быть до 500 символов")
+    @Size(max = 500, message = "Описание блюда должно быть до 500 символов")
     private String description;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_image_id")
-    private DishImage profileImage;
 
     @PositiveOrZero(message = "Вес блюда должен быть положительным или нулевым")
     private Integer portionInGrams;
@@ -62,6 +58,7 @@ public class Dish {
     private BigDecimal price;
 
     @NotNull(message = "Статус ресторана не может быть пустым")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private DishStatus status = DishStatus.AVAILABLE;
@@ -69,8 +66,4 @@ public class Dish {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
-
-    @OneToMany(mappedBy = "dish", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<DishImage> images = new ArrayList<>();
 }

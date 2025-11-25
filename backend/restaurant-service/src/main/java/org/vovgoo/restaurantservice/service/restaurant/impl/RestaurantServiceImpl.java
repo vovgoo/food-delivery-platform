@@ -13,16 +13,23 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
+import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.Restaurant;
 import org.vovgoo.enums.restaurant.RestaurantStatus;
+import org.vovgoo.restaurantservice.entity.enums.ImageType;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.restaurantservice.mapper.RestaurantMapper;
+import org.vovgoo.restaurantservice.repository.ImageRepository;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
-import org.vovgoo.restaurantservice.service.restaurant.RestaurantImageService;
+import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 import org.vovgoo.user.aspect.CheckUserStatus;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,25 +37,36 @@ import java.util.UUID;
 public class RestaurantServiceImpl implements RestaurantService {
 
     private final RestaurantRepository restaurantRepository;
-    private final RestaurantImageService restaurantImageService;
+    private final ImageRepository imageRepository;
+    private final ImageFacadeService imageFacadeService;
     private final RestaurantMapper restaurantMapper;
 
     @Override
     public PageResponse<RestaurantResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams) {
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
+        Page<Restaurant> restaurantPage = restaurantRepository.findByCuisineContainingIgnoreCase(searchRequest.cuisine(), pageRequest);
 
-        Page<RestaurantResponse> page = restaurantRepository.findByCuisineContainingIgnoreCase(searchRequest.cuisine(), pageRequest)
-                .map(restaurantMapper::toResponse);
+        List<UUID> pageIds = restaurantPage.map(Restaurant::getId).toList();
 
-        return PageResponse.of(page);
+        List<Image> images = imageRepository.findAllByParentIdsAndType(pageIds, ImageType.RESTAURANT);
+
+        Map<UUID, List<Image>> imagesMap = images.stream()
+                .collect(Collectors.groupingBy(Image::getParentId));
+
+        Page<RestaurantResponse> restaurantsResponses = restaurantPage
+                .map(d -> restaurantMapper.toResponse(d, imagesMap.getOrDefault(d.getId(), Collections.emptyList())));
+
+        return PageResponse.of(restaurantsResponses);
     }
 
     @Override
     public RestaurantResponse getById(UUID restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdWithImages(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        return restaurantMapper.toResponse(restaurant);
+        List<Image> images = imageRepository.findAllByParentIdAndType(restaurantId, ImageType.RESTAURANT);
+
+        return restaurantMapper.toResponse(restaurant, images);
     }
 
     @Override
@@ -72,7 +90,7 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         restaurant = restaurantRepository.save(restaurant);
 
-        return restaurantMapper.toResponse(restaurant);
+        return restaurantMapper.toResponse(restaurant, List.of());
     }
 
     @Override
@@ -80,7 +98,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @CheckUserStatus
     public RestaurantResponse update(UUID restaurantId, RestaurantUpdateRequest request) {
 
-        Restaurant restaurant = restaurantRepository.findByIdWithImages(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
         restaurant.setName(request.name());
@@ -97,7 +115,9 @@ public class RestaurantServiceImpl implements RestaurantService {
 
         restaurant = restaurantRepository.save(restaurant);
 
-        return restaurantMapper.toResponse(restaurant);
+        List<Image> images = imageRepository.findAllByParentIdAndType(restaurantId, ImageType.RESTAURANT);
+
+        return restaurantMapper.toResponse(restaurant, images);
     }
 
     @Override
@@ -116,7 +136,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void uploadImage(UUID restaurantId, MultipartFile file) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
-        restaurantImageService.upload(restaurant, file, false);
+
+        imageFacadeService.uploadImage(restaurant, file);
     }
 
     @Override
@@ -125,7 +146,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void deleteImage(UUID restaurantId, UUID imageId) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
-        restaurantImageService.remove(restaurant, imageId, false);
+
+        imageFacadeService.removeImage(restaurant, imageId);
     }
 
     @Override
@@ -134,7 +156,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void setProfileImage(UUID restaurantId, MultipartFile file) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
-        restaurantImageService.upload(restaurant, file, true);
+
+        imageFacadeService.uploadProfileImage(restaurant, file);
     }
 
     @Override
@@ -143,14 +166,18 @@ public class RestaurantServiceImpl implements RestaurantService {
     public void removeProfileImage(UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
-        restaurantImageService.remove(restaurant, null, true);
+
+        imageFacadeService.removeProfileImage(restaurant);
     }
 
     @Override
     public RestaurantInternalResponse getInternalRestaurantById(UUID restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdWithImagesIgnoreStatus(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdIgnoreStatus(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
-        return restaurantMapper.toShortResponse(restaurant);
+        Image image = imageRepository.findProfileImage(restaurantId, ImageType.RESTAURANT)
+                .orElse(null);
+
+        return restaurantMapper.toShortResponse(restaurant, image);
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "app.image.service.imgbb")
-public class ImgbbProperties {
-    private String apiKey;
-    private String endpoint;
+@ConfigurationProperties(prefix = "app.image.limit")
+public class ImageLimitProperties {
+    private Long restaurant;
+    private Long dish;
 }

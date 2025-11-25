@@ -1,0 +1,34 @@
+server:
+  port: ${SERVER_PORT:8082}
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+app:
+  internal-services:
+    tokens:
+      user-service: ${USER_SERVICE_INTERNAL_TOKEN}
+    self: ${RESTAURANT_SERVICE_INTERNAL_TOKEN}
+  image:
+    service:
+      imgbb:
+        api-key: ${IMGBB_API_KEY}
+        endpoint: ${IMGBB_ENDPOINT}
+    limit:
+      restaurant: ${RESTAURANT_IMAGE_LIMIT}
+      dish: ${DISH_IMAGE_LIMIT}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always

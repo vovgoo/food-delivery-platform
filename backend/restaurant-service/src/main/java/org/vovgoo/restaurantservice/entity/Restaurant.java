@@ -3,6 +3,8 @@ package org.vovgoo.restaurantservice.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.validator.constraints.URL;
 import org.vovgoo.enums.restaurant.RestaurantStatus;
 import org.vovgoo.validators.phone.Phone;
@@ -45,10 +47,6 @@ public class Restaurant {
     @URL(message = "Некорректный формат сайта")
     private String website;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_image_id")
-    private RestaurantImage profileImage;
-
     @Phone
     @NotBlank(message = "Телефон не может быть пустым")
     private String phone;
@@ -66,6 +64,7 @@ public class Restaurant {
     private Boolean parkingAvailable;
 
     @NotNull(message = "Статус ресторана не может быть пустым")
+    @JdbcType(PostgreSQLEnumJdbcType.class)
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private RestaurantStatus status = RestaurantStatus.ACTIVE;
@@ -73,8 +72,4 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @Builder.Default
     private List<Dish> dishes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @Builder.Default
-    private List<RestaurantImage> images = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.service.image.impl;
+package org.vovgoo.restaurantservice.service.image.uploader.impl;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,13 +12,13 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.vovgoo.restaurantservice.config.image.ImgbbProperties;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageReadException;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageUploadException;
-import org.vovgoo.restaurantservice.service.image.ImageService;
+import org.vovgoo.restaurantservice.service.image.uploader.ImageUploader;
 
 import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
-public class ImageServiceImpl implements ImageService {
+public class ImageUploaderImpl implements ImageUploader {
 
     private final ImgbbProperties imgbbProperties;
     private final ObjectMapper objectMapper;
@@ -32,7 +32,7 @@ public class ImageServiceImpl implements ImageService {
                 .build();
     }
 
-    public String uploadImage(MultipartFile file) {
+    public String upload(MultipartFile file) {
 
         try {
             ByteArrayResource resource = new ByteArrayResource(file.getBytes()) {
