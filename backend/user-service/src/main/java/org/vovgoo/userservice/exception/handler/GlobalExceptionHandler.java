@@ -32,6 +32,7 @@ public class GlobalExceptionHandler {
             RoleNotFoundException.class,
             EntityNotFoundException.class,
             OtpNotFoundException.class,
+            TokenNotFoundException.class,
             SignUpRequestNotFoundException.class,
             ChangePhoneRequestNotFoundException.class,
             ChangeEmailRequestNotFoundException.class
@@ -68,6 +69,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             InvalidOtpException.class,
+            InvalidTokenException.class,
             PasswordMismatchException.class,
             PasswordAlreadyUsedException.class,
             EmailAlreadyCurrentException.class,
@@ -88,7 +90,8 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            OtpAttemptsExceededException.class
+            OtpAttemptsExceededException.class,
+            TokenAttemptsExceededException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleTooManyRequests(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
