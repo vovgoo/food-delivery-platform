@@ -1,12 +1,27 @@
 package org.vovgoo.restaurantservice.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.enums.ImageType;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface ImageRepository extends JpaRepository<Image, UUID> {
-    Optional<Image> findByParentIdAndTypeAndIsProfile(UUID parentId, ImageType type, Boolean isProfile);
+
+    @Query("SELECT i FROM Image i WHERE i.parentId = :parentId AND i.type = :type AND i.isProfile = true")
+    Optional<Image> findProfileImage(@Param("parentId") UUID parentId, @Param("type") ImageType type);
+
+    @Query("SELECT i FROM Image i WHERE i.parentId IN :parentIds AND i.type = :type")
+    List<Image> findAllByParentIdsAndType(@Param("parentIds") List<UUID> parentIds, @Param("type") ImageType type);
+
+    @Query("SELECT i FROM Image i WHERE i.parentId IN :parentIds AND i.type = :type AND i.isProfile = true")
+    List<Image> findProfileImagesByParentIds(@Param("parentIds") List<UUID> parentIds, @Param("type") ImageType type);
+
+    Optional<Image> findByIdAndParentIdAndType(UUID id, UUID parentId, ImageType type);
+
+    List<Image> findAllByParentIdAndType(UUID parentId, ImageType type);
 }
