@@ -20,9 +20,9 @@ app:
       imgbb:
         api-key: ${IMGBB_API_KEY}
         endpoint: ${IMGBB_ENDPOINT}
-      limit:
-        restaurant: ${RESTAURANT_IMAGE_LIMIT}
-        dish: ${DISH_IMAGE_LIMIT}
+    limit:
+      restaurant: ${RESTAURANT_IMAGE_LIMIT}
+      dish: ${DISH_IMAGE_LIMIT}
 
 management:
   endpoints:
