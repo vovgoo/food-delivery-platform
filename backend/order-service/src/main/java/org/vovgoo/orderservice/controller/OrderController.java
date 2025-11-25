@@ -32,7 +32,8 @@ public class OrderController {
 
     @Operation(
             summary = "Place new order",
-            description = "Allows an authenticated user to create a new order."
+            description = "Allows an authenticated user to create a new order.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Order created successfully",
@@ -56,7 +57,8 @@ public class OrderController {
 
     @Operation(
             summary = "Get orders",
-            description = "Returns all orders of the authenticated user (or all orders for admin)."
+            description = "Returns all orders of the authenticated user (or all orders for admin).",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Orders retrieved successfully",
@@ -75,7 +77,8 @@ public class OrderController {
 
     @Operation(
             summary = "Get order by ID",
-            description = "Returns details of an order. Users can view only their own orders. Admin can view any order."
+            description = "Returns details of an order. Users can view only their own orders. Admin can view any order.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Order retrieved successfully",
@@ -97,7 +100,8 @@ public class OrderController {
 
     @Operation(
             summary = "Update order status",
-            description = "Allows admin users to update order status."
+            description = "Allows admin users to update order status.",
+            security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Order status updated",
