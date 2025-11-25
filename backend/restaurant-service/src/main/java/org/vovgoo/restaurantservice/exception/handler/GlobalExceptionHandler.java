@@ -7,12 +7,11 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.restaurantservice.exception.custom.dish.DishImageNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.dish.DishNotBelongsToRestaurantException;
 import org.vovgoo.restaurantservice.exception.custom.dish.DishNotFoundException;
+import org.vovgoo.restaurantservice.exception.custom.image.ImageNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageReadException;
 import org.vovgoo.restaurantservice.exception.custom.image.ImageUploadException;
-import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantImageNotFoundException;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.exception.FieldErrors;
@@ -24,9 +23,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             RestaurantNotFoundException.class,
-            RestaurantImageNotFoundException.class,
             DishNotFoundException.class,
-            DishImageNotFoundException.class
+            ImageNotFoundException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)

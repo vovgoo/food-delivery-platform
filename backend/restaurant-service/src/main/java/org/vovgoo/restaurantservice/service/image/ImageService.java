@@ -1,7 +1,9 @@
 package org.vovgoo.restaurantservice.service.image;
 
-import org.springframework.web.multipart.MultipartFile;
+import org.vovgoo.restaurantservice.dto.image.internal.ImageRequest;
+import org.vovgoo.restaurantservice.entity.Image;
 
 public interface ImageService {
-    String uploadImage(MultipartFile file);
+    Image upload(ImageRequest request);
+    void remove(ImageRequest request);
 }
