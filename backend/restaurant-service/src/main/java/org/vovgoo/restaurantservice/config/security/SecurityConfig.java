@@ -31,14 +31,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/restaurants", "/api/v1/restaurants/**").permitAll()
                         .requestMatchers(
                                 "/api/v1/restaurants",
-                                "/api/v1/restaurants/**",
-                                "/api/v1/restaurants/**/dishes",
-                                "/api/v1/restaurants/**/dishes/**",
-                                "/api/v1/restaurants/**/images",
-                                "/api/v1/restaurants/**/images/**",
-                                "/api/v1/restaurants/**/images/profile",
-                                "/api/v1/restaurants/**/dishes/**/images",
-                                "/api/v1/restaurants/**/dishes/**/profile"
+                                "/api/v1/restaurants/{restaurantId}",
+                                "/api/v1/restaurants/{restaurantId}/dishes",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}",
+                                "/api/v1/restaurants/{restaurantId}/images",
+                                "/api/v1/restaurants/{restaurantId}/images/{imageId}",
+                                "/api/v1/restaurants/{restaurantId}/images/profile",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}/images",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}/profile"
                         ).hasRole("ADMIN")
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/internal/**").hasRole("INTERNAL")
@@ -60,14 +60,14 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/v1/restaurants", "/api/v1/restaurants/**").permitAll()
                         .requestMatchers(
                                 "/api/v1/restaurants",
-                                "/api/v1/restaurants/**",
-                                "/api/v1/restaurants/**/dishes",
-                                "/api/v1/restaurants/**/dishes/**",
-                                "/api/v1/restaurants/**/images",
-                                "/api/v1/restaurants/**/images/**",
-                                "/api/v1/restaurants/**/images/profile",
-                                "/api/v1/restaurants/**/dishes/**/images",
-                                "/api/v1/restaurants/**/dishes/**/profile"
+                                "/api/v1/restaurants/{restaurantId}",
+                                "/api/v1/restaurants/{restaurantId}/dishes",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}",
+                                "/api/v1/restaurants/{restaurantId}/images",
+                                "/api/v1/restaurants/{restaurantId}/images/{imageId}",
+                                "/api/v1/restaurants/{restaurantId}/images/profile",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}/images",
+                                "/api/v1/restaurants/{restaurantId}/dishes/{dishId}/profile"
                         ).hasRole("ADMIN")
                         .requestMatchers("/internal/**").hasRole("INTERNAL")
                         .anyRequest().authenticated()
