@@ -1,4 +1,4 @@
-package org.vovgoo.orderservice.entity.enums;
+package org.vovgoo.enums.order;
 
 public enum OrderStatus {
     CREATED,

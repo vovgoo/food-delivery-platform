@@ -1,8 +1,8 @@
 package org.vovgoo.orderservice.domain.kafka.key;
 
 import org.vovgoo.orderservice.config.kafka.KafkaConfig;
-import org.vovgoo.orderservice.domain.kafka.event.OrderCreatedEvent;
-import org.vovgoo.orderservice.domain.kafka.event.OrderStatusChangedEvent;
+import org.vovgoo.domain.kafka.event.OrderCreatedEvent;
+import org.vovgoo.domain.kafka.event.OrderStatusChangedEvent;
 
 public final class KafkaEvents {
 

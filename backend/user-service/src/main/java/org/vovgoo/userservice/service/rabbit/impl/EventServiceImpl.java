@@ -2,9 +2,9 @@ package org.vovgoo.userservice.service.rabbit.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.userservice.domain.rabbit.event.EmailChangeEvent;
-import org.vovgoo.userservice.domain.rabbit.event.PhoneChangeEvent;
-import org.vovgoo.userservice.domain.rabbit.event.SignUpPhoneEvent;
+import org.vovgoo.domain.rabbit.event.EmailChangeEvent;
+import org.vovgoo.domain.rabbit.event.PhoneChangeEvent;
+import org.vovgoo.domain.rabbit.event.SignUpPhoneEvent;
 import org.vovgoo.userservice.domain.rabbit.key.EventKeys;
 import org.vovgoo.userservice.service.rabbit.EventService;
 

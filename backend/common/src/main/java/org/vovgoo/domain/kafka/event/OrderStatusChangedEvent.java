@@ -1,7 +1,7 @@
-package org.vovgoo.orderservice.domain.kafka.event;
+package org.vovgoo.domain.kafka.event;
 
 import lombok.Builder;
-import org.vovgoo.orderservice.entity.enums.OrderStatus;
+import org.vovgoo.enums.order.OrderStatus;
 
 import java.util.UUID;
 

@@ -6,7 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.orderservice.entity.enums.OrderStatus;
+import org.vovgoo.enums.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

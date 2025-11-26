@@ -6,7 +6,7 @@ import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;
 import org.vovgoo.orderservice.dto.payment.response.PaymentResponse;
 import org.vovgoo.orderservice.dto.restaurant.response.RestaurantResponse;
 import org.vovgoo.orderservice.dto.user.response.UserResponse;
-import org.vovgoo.orderservice.entity.enums.OrderStatus;
+import org.vovgoo.enums.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
