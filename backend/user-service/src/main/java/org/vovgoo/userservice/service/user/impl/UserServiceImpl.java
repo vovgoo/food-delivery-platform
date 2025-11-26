@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.dto.user.UserInternalResponse;
 import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.user.exception.UserActiveException;
+import org.vovgoo.user.exception.UserDeactivatedException;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
@@ -33,7 +34,6 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    @CheckUserStatus
     public UserResponse getProfile() {
         User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
@@ -46,7 +46,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public UserResponse updateUserProfile(UpdateUserProfileRequest updateUserProfileRequest) {
         User user = userRepository.findByIdWithRoles(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
@@ -64,7 +63,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void changePassword(ChangePasswordRequest changePasswordRequest) {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
@@ -84,10 +82,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void deactivateAccount() {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
+
+        if(user.getStatus().equals(UserStatus.DEACTIVATED)) {
+            throw new UserDeactivatedException();
+        }
 
         user.setStatus(UserStatus.DEACTIVATED);
 
@@ -96,10 +97,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    @CheckUserStatus(forbidden = {UserStatus.BLOCKED, UserStatus.ACTIVE})
     public void reactivateAccount() {
         User user = userRepository.findById(CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(UserNotFoundException::new);
+
+        if(user.getStatus().equals(UserStatus.ACTIVE)) {
+            throw new UserActiveException();
+        }
 
         user.setStatus(UserStatus.ACTIVE);
 
