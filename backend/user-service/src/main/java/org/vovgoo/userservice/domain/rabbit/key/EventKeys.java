@@ -1,9 +1,9 @@
 package org.vovgoo.userservice.domain.rabbit.key;
 
 import org.vovgoo.userservice.config.rabbit.RabbitMQConfig;
-import org.vovgoo.userservice.domain.rabbit.event.EmailChangeEvent;
-import org.vovgoo.userservice.domain.rabbit.event.PhoneChangeEvent;
-import org.vovgoo.userservice.domain.rabbit.event.SignUpPhoneEvent;
+import org.vovgoo.domain.rabbit.event.EmailChangeEvent;
+import org.vovgoo.domain.rabbit.event.PhoneChangeEvent;
+import org.vovgoo.domain.rabbit.event.SignUpPhoneEvent;
 
 import java.time.Duration;
 

@@ -12,7 +12,7 @@ import org.vovgoo.orderservice.dto.orderItem.request.AddOrderItemRequest;
 import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;
 import org.vovgoo.orderservice.entity.Order;
 import org.vovgoo.orderservice.entity.OrderItem;
-import org.vovgoo.orderservice.entity.enums.OrderStatus;
+import org.vovgoo.enums.order.OrderStatus;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.mapper.OrderItemMapper;
 import org.vovgoo.orderservice.mapper.OrderMapper;

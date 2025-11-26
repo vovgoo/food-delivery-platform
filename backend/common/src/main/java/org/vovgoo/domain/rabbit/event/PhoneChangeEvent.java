@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.domain.rabbit.event;
+package org.vovgoo.domain.rabbit.event;
 
 import lombok.Builder;
 
