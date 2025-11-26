@@ -19,7 +19,7 @@ import org.vovgoo.userservice.dto.security.jwt.response.JwtResponse;
 import org.vovgoo.userservice.dto.security.jwt.internal.JwtPair;
 import org.vovgoo.userservice.service.security.auth.AuthService;
 import org.vovgoo.userservice.service.security.auth.SignUpService;
-import org.vovgoo.userservice.utils.CookieUtils;
+import org.vovgoo.userservice.service.security.cookie.JwtCookieService;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -29,6 +29,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final SignUpService signUpService;
+    private final JwtCookieService jwtCookieService;
 
     @Operation(summary = "User sign-in", description = "Authenticate user by phone and password")
     @ApiResponses(value = {
@@ -42,7 +43,7 @@ public class AuthController {
     @PostMapping("/signIn")
     public ResponseEntity<JwtResponse> signIn(@Valid @RequestBody SignInRequest request, HttpServletResponse response) {
         JwtPair jwtPair = authService.signIn(request);
-        CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
+        jwtCookieService.addRefreshToken(response, jwtPair.refreshToken());
         return ResponseEntity.ok(new JwtResponse(jwtPair.accessToken()));
     }
 
@@ -82,7 +83,7 @@ public class AuthController {
     @PostMapping("/confirmSignUp")
     public ResponseEntity<JwtResponse> confirmSignUp(@Valid @RequestBody ConfirmSignUpRequest request, HttpServletResponse response) {
         JwtPair jwtPair = signUpService.confirmSignUp(request);
-        CookieUtils.addRefreshTokenCookie(response, jwtPair.refreshToken());
+        jwtCookieService.addRefreshToken(response, jwtPair.refreshToken());
         return ResponseEntity.status(HttpStatus.CREATED).body(new JwtResponse(jwtPair.accessToken()));
     }
 
@@ -99,7 +100,7 @@ public class AuthController {
     })
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refreshToken(HttpServletRequest request) {
-        String refreshToken = CookieUtils.extractRefreshToken(request);
+        String refreshToken = jwtCookieService.extractRefreshToken(request);
         if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
