@@ -17,7 +17,7 @@ import org.vovgoo.userservice.entity.User;
 import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.mapper.AddressMapper;
 import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;

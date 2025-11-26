@@ -13,7 +13,7 @@ import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.rabbit.EventService;

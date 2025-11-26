@@ -13,7 +13,7 @@ import org.vovgoo.userservice.dto.user.request.ConfirmChangePhoneRequest;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.ChangePhoneRequestNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.InvalidOtpException;
 import org.vovgoo.userservice.exception.custom.verification.OtpAttemptsExceededException;
