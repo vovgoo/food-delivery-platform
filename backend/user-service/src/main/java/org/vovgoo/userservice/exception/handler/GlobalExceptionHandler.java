@@ -16,7 +16,6 @@ import org.vovgoo.user.exception.UserDeactivatedException;
 import org.vovgoo.userservice.exception.custom.user.UserActiveException;
 import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
-import org.vovgoo.userservice.exception.custom.messaging.RabbitEventSerializationException;
 import org.vovgoo.userservice.exception.custom.messaging.RabbitEventTypeMismatchException;
 import org.vovgoo.userservice.exception.custom.messaging.RedisSerializationException;
 import org.vovgoo.userservice.exception.custom.role.RoleNotFoundException;
@@ -106,7 +105,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            RabbitEventSerializationException.class,
             RabbitEventTypeMismatchException.class,
             RedisSerializationException.class,
             TokenStrategyNotFoundException.class,
