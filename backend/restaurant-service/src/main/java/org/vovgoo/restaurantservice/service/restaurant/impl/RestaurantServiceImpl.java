@@ -23,7 +23,6 @@ import org.vovgoo.restaurantservice.repository.ImageRepository;
 import org.vovgoo.restaurantservice.repository.RestaurantRepository;
 import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
-import org.vovgoo.user.aspect.CheckUserStatus;
 
 import java.util.Collections;
 import java.util.List;
@@ -71,7 +70,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public RestaurantResponse create(RestaurantCreateRequest request) {
 
         Restaurant restaurant = Restaurant.builder()
@@ -95,7 +93,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public RestaurantResponse update(UUID restaurantId, RestaurantUpdateRequest request) {
 
         Restaurant restaurant = restaurantRepository.findByIdNotClosed(restaurantId)
@@ -122,7 +119,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void delete(UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
@@ -132,7 +128,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void uploadImage(UUID restaurantId, MultipartFile file) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
@@ -142,7 +137,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void deleteImage(UUID restaurantId, UUID imageId) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
@@ -152,7 +146,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void setProfileImage(UUID restaurantId, MultipartFile file) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
@@ -162,7 +155,6 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void removeProfileImage(UUID restaurantId) {
         Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);

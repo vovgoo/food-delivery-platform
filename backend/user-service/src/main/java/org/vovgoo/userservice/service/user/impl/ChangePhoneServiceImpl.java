@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.userservice.config.verification.VerificationProperty;
 import org.vovgoo.userservice.domain.redis.phone.change.PhoneChangeAttemptsKey;
 import org.vovgoo.userservice.domain.redis.phone.change.PhoneChangeCodeKey;
@@ -14,7 +13,7 @@ import org.vovgoo.userservice.dto.user.request.ConfirmChangePhoneRequest;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.PhoneAlreadyExistsException;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.ChangePhoneRequestNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.InvalidOtpException;
 import org.vovgoo.userservice.exception.custom.verification.OtpAttemptsExceededException;
@@ -38,7 +37,6 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
     private final VerificationProperty verificationProperty;
 
     @Override
-    @CheckUserStatus
     public void changePhone(ChangePhoneRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -64,7 +62,6 @@ public class ChangePhoneServiceImpl implements ChangePhoneService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void confirmChangePhone(ConfirmChangePhoneRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 

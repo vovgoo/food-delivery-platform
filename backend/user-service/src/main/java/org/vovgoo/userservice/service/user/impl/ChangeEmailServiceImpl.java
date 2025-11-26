@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.userservice.config.verification.VerificationProperty;
 import org.vovgoo.userservice.domain.redis.email.change.EmailChangeAttemptsKey;
 import org.vovgoo.userservice.domain.redis.email.change.EmailChangeRequestKey;
@@ -14,7 +13,7 @@ import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyCurrentException;
 import org.vovgoo.userservice.exception.custom.user.EmailAlreadyExistsException;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.exception.custom.verification.*;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.rabbit.EventService;
@@ -35,7 +34,6 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
     private final VerificationProperty verificationProperty;
 
     @Override
-    @CheckUserStatus
     public void changeEmail(ChangeEmailRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -61,7 +59,6 @@ public class ChangeEmailServiceImpl implements ChangeEmailService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void confirmChangeEmail(ConfirmChangeEmailRequest request) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 

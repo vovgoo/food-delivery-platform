@@ -18,7 +18,7 @@ import org.vovgoo.orderservice.mapper.OrderItemMapper;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.service.address.AddressClientService;
 import org.vovgoo.orderservice.service.restaurant.RestaurantClientService;
-import org.vovgoo.user.client.InternalUserClient;
+import org.vovgoo.user.client.UserClientService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,11 +30,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderFacade {
 
-    private final InternalUserClient internalUserClient;
     private final AddressClientService addressClientService;
     private final RestaurantClientService restaurantClientService;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
+    private final UserClientService userClientService;
 
     public Order buildOrder(UUID userId, CreateOrderRequest createOrderRequest) {
         addressClientService.validateAddress(userId, createOrderRequest.deliveryAddress());
@@ -79,7 +79,7 @@ public class OrderFacade {
     }
 
     public OrderResponse assembleOrderResponse(Order order) {
-        UserInternalResponse user = internalUserClient.getUser(order.getUserId());
+        UserInternalResponse user = userClientService.getUser(order.getUserId());
         AddressInternalResponse address = addressClientService.getAddress(order.getUserId(), order.getDeliveryAddress());
         RestaurantInternalResponse restaurant = restaurantClientService.getRestaurant(order.getRestaurantId());
         List<DishInternalResponse> dishes = restaurantClientService.getDishesByRestaurant(

@@ -10,27 +10,17 @@ import org.vovgoo.dto.exception.ExceptionResponse;
 @RestControllerAdvice
 public class UserExceptionHandler {
 
-    @ExceptionHandler({
-            UserBlockedException.class,
-            UserDeactivatedException.class,
-            UserNotFoundException.class
-    })
-    public ResponseEntity<ExceptionResponse<String>> handleUserStatusForbidden(RuntimeException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.FORBIDDEN, request.getRequestURI()));
-    }
-
-    @ExceptionHandler({
-            UserActiveException.class
-    })
-    public ResponseEntity<ExceptionResponse<String>> handleConflictActive(RuntimeException ex, HttpServletRequest request) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.CONFLICT, request.getRequestURI()));
-    }
-
     @ExceptionHandler(UserServiceException.class)
     public ResponseEntity<ExceptionResponse<String>> handleUserServiceError(UserServiceException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, request.getRequestURI()));
+    }
+
+    @ExceptionHandler({
+            UserNotFoundException.class,
+    })
+    public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.NOT_FOUND, request.getRequestURI()));
     }
 }

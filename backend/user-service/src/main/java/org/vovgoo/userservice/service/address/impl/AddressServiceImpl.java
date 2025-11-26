@@ -9,7 +9,6 @@ import org.vovgoo.dto.address.AddressInternalResponse;
 import org.vovgoo.dto.pageable.PageParams;
 import org.vovgoo.dto.pageable.PageResponse;
 import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.user.aspect.CheckUserStatus;
 import org.vovgoo.userservice.config.address.AddressLimitProperties;
 import org.vovgoo.userservice.dto.address.request.CreateAddressRequest;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
@@ -18,7 +17,7 @@ import org.vovgoo.userservice.entity.User;
 import org.vovgoo.enums.address.AddressStatus;
 import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
-import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
+import org.vovgoo.user.exception.UserNotFoundException;
 import org.vovgoo.userservice.mapper.AddressMapper;
 import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;
@@ -37,7 +36,6 @@ public class AddressServiceImpl implements AddressService {
     private final AddressMapper addressMapper;
 
     @Override
-    @CheckUserStatus
     public PageResponse<AddressResponse> getAll(PageParams pageParams) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -51,7 +49,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public AddressResponse create(CreateAddressRequest createAddressRequest) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -92,7 +89,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void remove(UUID id) {
         Address address = addressRepository.findByIdAndUserId(id, CurrentUserUtils.getCurrentUserId())
                 .orElseThrow(AddressNotFound::new);
@@ -105,7 +101,6 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     @Transactional
-    @CheckUserStatus
     public void setDefault(UUID id) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 

@@ -25,7 +25,6 @@ import org.vovgoo.orderservice.service.order.OrderService;
 import org.vovgoo.orderservice.service.order.facade.OrderFacade;
 import org.vovgoo.orderservice.service.payment.PaymentService;
 import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.user.aspect.CheckUserStatus;
 
 import java.util.UUID;
 
@@ -41,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
 
     @Override
-    @CheckUserStatus
     @Transactional
     public OrderResponse placeOrder(CreateOrderRequest createOrderRequest) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
@@ -69,7 +67,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CheckUserStatus
     public PageResponse<OrderShortResponse> getAllOrders(PageParams pageParams) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -89,7 +86,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CheckUserStatus
     public OrderResponse getOrderById(UUID orderId) {
         UUID userId = CurrentUserUtils.getCurrentUserId();
 
@@ -104,7 +100,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @CheckUserStatus
     @Transactional
     public OrderResponse updateOrderStatus(UUID orderId, UpdateOrderStatusRequest updateOrderStatusRequest) {
         Order order = orderRepository.findById(orderId)
