@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.vovgoo.dto.exception.ExceptionResponse;
 import org.vovgoo.dto.exception.FieldErrors;
+import org.vovgoo.user.exception.UserDeactivatedException;
 import org.vovgoo.userservice.exception.custom.user.UserActiveException;
 import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
@@ -55,7 +56,10 @@ public class GlobalExceptionHandler {
                 .body(ExceptionResponse.of("Требуется авторизация", HttpStatus.UNAUTHORIZED, request.getRequestURI()));
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler({
+            AccessDeniedException.class,
+            UserDeactivatedException.class
+    })
     public ResponseEntity<ExceptionResponse<String>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ExceptionResponse.of("Доступ запрещен", HttpStatus.FORBIDDEN, request.getRequestURI()));
