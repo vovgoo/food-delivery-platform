@@ -25,22 +25,19 @@ public class InternalHeaderAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        if (!request.getRequestURI().startsWith("/internal")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String service = request.getHeader("X-Service-Name");
         String token = request.getHeader("X-Internal-Token");
 
-        if (internalServiceTokens.getSelf().equals(token)) {
-            UsernamePasswordAuthenticationToken auth =
-                    new UsernamePasswordAuthenticationToken(service, null,
-                            List.of(new SimpleGrantedAuthority("ROLE_INTERNAL")));
-            SecurityContextHolder.getContext().setAuthentication(auth);
-        } else {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
-            return;
+        if (service != null && !service.isEmpty() &&  token != null && !token.isEmpty()) {
+            if (internalServiceTokens.getSelf().equals(token)) {
+                UsernamePasswordAuthenticationToken auth =
+                        new UsernamePasswordAuthenticationToken(service, null,
+                                List.of(new SimpleGrantedAuthority("ROLE_INTERNAL")));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                return;
+            }
         }
 
         filterChain.doFilter(request, response);
