@@ -21,5 +21,5 @@ public interface InternalRestaurantClient {
     RestaurantInternalResponse getRestaurant(@PathVariable("restaurantId") UUID restaurantId);
 
     @GetMapping("/{restaurantId}/dishes")
-    List<DishInternalResponse> getDishesByRestaurant(@PathVariable("restaurantId") UUID restaurantId, @RequestParam List<UUID> dishIds);
+    List<DishInternalResponse> getDishesByRestaurant(@PathVariable("restaurantId") UUID restaurantId, @RequestParam("dishIds") List<UUID> dishIds);
 }
