@@ -11,7 +11,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.vovgoo.common.config.InternalServiceTokens;
+import org.vovgoo.common.config.internal.InternalServiceTokens;
 
 import java.io.IOException;
 import java.util.List;
