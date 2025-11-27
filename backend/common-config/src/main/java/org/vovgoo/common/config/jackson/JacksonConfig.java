@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.config.jackson;
+package org.vovgoo.common.config.jackson;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
