@@ -1,4 +1,4 @@
-package org.vovgoo.userservice.controller;
+package org.vovgoo.userservice.controller.internal;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
