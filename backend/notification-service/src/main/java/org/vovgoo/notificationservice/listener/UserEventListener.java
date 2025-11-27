@@ -31,6 +31,6 @@ public class UserEventListener {
 
     @RabbitListener(queues = UserRabbitEventKeys.EMAIL_CHANGE_QUEUE)
     public void handleEmailChange(EmailChangeEvent event) {
-        emailSender.send(event.email(), "Смена почты", String.format("Для смены почты перейдите по ссылке: %s%s", frontendProperty.getEmailChangeRoute(), event.token()));
+        emailSender.send(event.email(), "Смена почты", String.format("Для смены почты перейдите по ссылке: %s", frontendProperty.buildEmailChangeLink(event.token())));
     }
 }
