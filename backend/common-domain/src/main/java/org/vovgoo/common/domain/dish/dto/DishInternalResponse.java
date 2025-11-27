@@ -12,4 +12,3 @@ public record DishInternalResponse(
         BigDecimal price,
         DishStatus status
 ) {}
-
