@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.vovgoo.dto.exception.ExceptionResponse;
+import org.vovgoo.common.domain.dto.exception.ExceptionResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;

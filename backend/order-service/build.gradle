@@ -23,7 +23,11 @@ ext {
 }
 
 dependencies {
-    implementation project(':backend:common')
+    implementation project(":backend:common-config")
+    implementation project(":backend:common-domain")
+    implementation project(":backend:common-client")
+    implementation project(":backend:common-security")
+    implementation project(":backend:common-event")
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

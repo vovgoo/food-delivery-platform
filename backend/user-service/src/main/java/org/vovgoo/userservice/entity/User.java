@@ -5,10 +5,9 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.enums.user.UserStatus;
-import org.vovgoo.userservice.validators.age.min.MinAge;
-import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
-import org.vovgoo.validators.phone.Phone;
+import org.vovgoo.common.domain.user.enums.UserStatus;
+import org.vovgoo.common.domain.validation.age.min.MinAge;
+import org.vovgoo.common.domain.validation.phone.Phone;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

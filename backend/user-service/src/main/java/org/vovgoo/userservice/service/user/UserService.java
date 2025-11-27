@@ -1,6 +1,6 @@
 package org.vovgoo.userservice.service.user;
 
-import org.vovgoo.dto.user.UserInternalResponse;
+import org.vovgoo.common.domain.user.dto.UserInternalResponse;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 

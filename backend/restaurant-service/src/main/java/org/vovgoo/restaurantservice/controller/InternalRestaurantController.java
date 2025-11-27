@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.vovgoo.dto.dish.DishInternalResponse;
-import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
+import org.vovgoo.common.domain.dish.dto.DishInternalResponse;
+import org.vovgoo.common.domain.restaurant.dto.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.service.dish.DishService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 

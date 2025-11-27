@@ -1,8 +1,8 @@
 package org.vovgoo.orderservice.dto.order.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.vovgoo.common.domain.order.enums.OrderStatus;
 import org.vovgoo.orderservice.dto.payment.response.PaymentResponse;
-import org.vovgoo.enums.order.OrderStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

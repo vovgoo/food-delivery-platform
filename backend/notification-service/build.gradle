@@ -23,7 +23,8 @@ ext {
 }
 
 dependencies {
-    implementation project(':backend:common')
+    implementation project(":backend:common-domain")
+    implementation project(":backend:common-event")
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.springframework.boot:spring-boot-starter-amqp'

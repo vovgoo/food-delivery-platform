@@ -3,8 +3,8 @@ package org.vovgoo.restaurantservice.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.vovgoo.common.domain.image.enums.ImageType;
 import org.vovgoo.restaurantservice.entity.Image;
-import org.vovgoo.restaurantservice.entity.enums.ImageType;
 
 import java.util.List;
 import java.util.Optional;

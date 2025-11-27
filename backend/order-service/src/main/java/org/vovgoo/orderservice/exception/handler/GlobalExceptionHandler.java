@@ -9,16 +9,16 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.dto.exception.ExceptionResponse;
-import org.vovgoo.dto.exception.FieldErrors;
+import org.vovgoo.common.domain.dto.exception.ExceptionResponse;
+import org.vovgoo.common.domain.dto.exception.FieldErrors;
 import org.vovgoo.orderservice.exception.custom.address.AddressDeletedException;
-import org.vovgoo.orderservice.exception.custom.address.AddressNotFoundException;
-import org.vovgoo.orderservice.exception.custom.address.AddressServiceException;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.exception.custom.kafka.KafkaEventTypeMismatchException;
 import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
-import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantNotFoundException;
-import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantServiceException;
+import org.vovgoo.orderservice.exception.custom.restaurant.RestaurantInactiveException;
+
+import java.util.List;
+import java.util.Objects;
 
 
 @RestControllerAdvice
@@ -26,8 +26,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             OrderNotFoundException.class,
-            RestaurantNotFoundException.class,
-            AddressNotFoundException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleNotFound(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -36,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             DishNotAvailableException.class,
+            RestaurantInactiveException.class,
             AddressDeletedException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleBadRequest(RuntimeException ex, HttpServletRequest request) {
@@ -45,7 +44,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse<FieldErrors>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
+
+        List<FieldErrors.FieldErrorDetail> fieldErrorDetails = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> FieldErrors.FieldErrorDetail.builder()
+                        .field(err.getField())
+                        .messages(List.of(Objects.requireNonNull(err.getDefaultMessage())))
+                        .build())
+                .toList();
+
+        FieldErrors fieldErrors = FieldErrors.of(fieldErrorDetails);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }
@@ -63,8 +71,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            AddressServiceException.class,
-            RestaurantServiceException.class,
             KafkaEventTypeMismatchException.class,
             KafkaException.class
     })

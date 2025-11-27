@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.validator.constraints.URL;
-import org.vovgoo.restaurantservice.entity.enums.ImageType;
+import org.vovgoo.common.domain.image.enums.ImageType;
 
 import java.util.UUID;
 

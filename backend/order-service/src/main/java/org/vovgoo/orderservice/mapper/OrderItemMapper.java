@@ -2,7 +2,7 @@ package org.vovgoo.orderservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.dish.DishInternalResponse;
+import org.vovgoo.common.domain.dish.dto.DishInternalResponse;
 import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;
 import org.vovgoo.orderservice.entity.OrderItem;
 

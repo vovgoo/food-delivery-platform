@@ -3,9 +3,8 @@ package org.vovgoo.userservice.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.Type;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.enums.user.RoleType;
+import org.vovgoo.common.domain.user.enums.RoleType;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,8 +1,8 @@
 package org.vovgoo.orderservice.dto.payment.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.vovgoo.orderservice.entity.enums.PaymentMethod;
-import org.vovgoo.orderservice.entity.enums.PaymentStatus;
+import org.vovgoo.common.domain.payment.enums.PaymentMethod;
+import org.vovgoo.common.domain.payment.enums.PaymentStatus;
 
 import java.util.UUID;
 

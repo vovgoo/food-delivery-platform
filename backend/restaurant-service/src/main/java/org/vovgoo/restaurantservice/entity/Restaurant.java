@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
 import org.hibernate.validator.constraints.URL;
-import org.vovgoo.enums.restaurant.RestaurantStatus;
-import org.vovgoo.validators.phone.Phone;
+import org.vovgoo.common.domain.restaurant.enums.RestaurantStatus;
+import org.vovgoo.common.domain.validation.phone.Phone;
 
 import java.time.LocalTime;
 import java.util.ArrayList;

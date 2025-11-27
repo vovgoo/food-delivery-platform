@@ -2,9 +2,9 @@ package org.vovgoo.orderservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.address.AddressInternalResponse;
-import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
-import org.vovgoo.dto.user.UserInternalResponse;
+import org.vovgoo.common.domain.address.dto.AddressInternalResponse;
+import org.vovgoo.common.domain.restaurant.dto.RestaurantInternalResponse;
+import org.vovgoo.common.domain.user.dto.UserInternalResponse;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
 import org.vovgoo.orderservice.dto.order.response.OrderShortResponse;
 import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;

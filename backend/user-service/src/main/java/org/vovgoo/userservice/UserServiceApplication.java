@@ -2,8 +2,11 @@ package org.vovgoo.userservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.vovgoo.common.config.InternalServiceTokens;
 
-@SpringBootApplication(scanBasePackages = {"org.vovgoo.userservice", "org.vovgoo.config", "org.vovgoo.security", "org.vovgoo.user"})
+@SpringBootApplication(scanBasePackages = {"org.vovgoo.userservice", "org.vovgoo.common.client", "org.vovgoo.common.security"})
+@EnableConfigurationProperties(InternalServiceTokens.class)
 public class UserServiceApplication {
 
     public static void main(String[] args) {

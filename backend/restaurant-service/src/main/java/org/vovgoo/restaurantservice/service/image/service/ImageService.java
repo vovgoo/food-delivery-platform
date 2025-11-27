@@ -1,7 +1,7 @@
 package org.vovgoo.restaurantservice.service.image.service;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.vovgoo.restaurantservice.entity.enums.ImageType;
+import org.vovgoo.common.domain.image.enums.ImageType;
 
 import java.util.UUID;
 

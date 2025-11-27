@@ -2,7 +2,7 @@ package org.vovgoo.orderservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.address.AddressInternalResponse;
+import org.vovgoo.common.domain.address.dto.AddressInternalResponse;
 import org.vovgoo.orderservice.dto.address.response.AddressResponse;
 
 @Mapper(componentModel = "spring")

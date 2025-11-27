@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
-import org.vovgoo.validators.phone.Phone;
+import org.vovgoo.common.domain.validation.phone.Phone;
 
 import java.time.LocalTime;
 

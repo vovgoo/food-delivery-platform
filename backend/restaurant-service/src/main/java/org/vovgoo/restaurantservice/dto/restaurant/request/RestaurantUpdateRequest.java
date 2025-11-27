@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.validator.constraints.URL;
-import org.vovgoo.enums.restaurant.RestaurantStatus;
-import org.vovgoo.restaurantservice.validation.restaurant.status.AllowedRestaurantStatus;
-import org.vovgoo.validators.phone.Phone;
+import org.vovgoo.common.domain.restaurant.enums.RestaurantStatus;
+import org.vovgoo.common.domain.validation.phone.Phone;
+import org.vovgoo.common.domain.validation.restaurant.status.AllowedRestaurantStatus;
 
 import java.time.LocalTime;
 

@@ -2,7 +2,7 @@ package org.vovgoo.orderservice.service.payment.factory;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.vovgoo.orderservice.entity.enums.PaymentMethod;
+import org.vovgoo.common.domain.payment.enums.PaymentMethod;
 import org.vovgoo.orderservice.service.payment.handlers.PaymentHandler;
 
 import java.util.List;

@@ -1,6 +1,10 @@
 rootProject.name = 'food-delivery-platform'
 
-include 'backend:common'
+include 'backend:common-domain'
+include 'backend:common-security'
+include 'backend:common-event'
+include 'backend:common-client'
+include 'backend:common-config'
 include 'backend:user-service'
 include 'backend:restaurant-service'
 include 'backend:order-service'

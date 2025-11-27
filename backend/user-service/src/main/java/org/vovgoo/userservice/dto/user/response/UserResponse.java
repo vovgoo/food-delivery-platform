@@ -1,7 +1,7 @@
 package org.vovgoo.userservice.dto.user.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.common.domain.user.enums.UserStatus;
 import org.vovgoo.userservice.dto.address.response.AddressResponse;
 import org.vovgoo.userservice.dto.role.response.RoleResponse;
 

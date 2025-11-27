@@ -6,8 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.orderservice.entity.enums.PaymentMethod;
-import org.vovgoo.orderservice.entity.enums.PaymentStatus;
+import org.vovgoo.common.domain.payment.enums.PaymentMethod;
+import org.vovgoo.common.domain.payment.enums.PaymentStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

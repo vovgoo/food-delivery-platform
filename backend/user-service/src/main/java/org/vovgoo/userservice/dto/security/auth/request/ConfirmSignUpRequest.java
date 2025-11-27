@@ -3,7 +3,7 @@ package org.vovgoo.userservice.dto.security.auth.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import org.vovgoo.validators.phone.Phone;
+import org.vovgoo.common.domain.validation.phone.Phone;
 
 public record ConfirmSignUpRequest(
 

@@ -2,7 +2,7 @@ package org.vovgoo.restaurantservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.dish.DishInternalResponse;
+import org.vovgoo.common.domain.dish.dto.DishInternalResponse;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 import org.vovgoo.restaurantservice.entity.Image;

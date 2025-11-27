@@ -2,23 +2,23 @@ package org.vovgoo.orderservice.service.order.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.dto.address.AddressInternalResponse;
-import org.vovgoo.dto.dish.DishInternalResponse;
-import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
-import org.vovgoo.dto.user.UserInternalResponse;
+import org.vovgoo.common.client.user.UserClientService;
+import org.vovgoo.common.domain.address.dto.AddressInternalResponse;
+import org.vovgoo.common.domain.dish.dto.DishInternalResponse;
+import org.vovgoo.common.domain.order.enums.OrderStatus;
+import org.vovgoo.common.domain.restaurant.dto.RestaurantInternalResponse;
+import org.vovgoo.common.domain.user.dto.UserInternalResponse;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
 import org.vovgoo.orderservice.dto.orderItem.request.AddOrderItemRequest;
 import org.vovgoo.orderservice.dto.orderItem.response.OrderItemResponse;
 import org.vovgoo.orderservice.entity.Order;
 import org.vovgoo.orderservice.entity.OrderItem;
-import org.vovgoo.enums.order.OrderStatus;
 import org.vovgoo.orderservice.exception.custom.dish.DishNotAvailableException;
 import org.vovgoo.orderservice.mapper.OrderItemMapper;
 import org.vovgoo.orderservice.mapper.OrderMapper;
-import org.vovgoo.orderservice.service.address.AddressClientService;
-import org.vovgoo.orderservice.service.restaurant.RestaurantClientService;
-import org.vovgoo.user.client.UserClientService;
+import org.vovgoo.orderservice.service.address.AddressService;
+import org.vovgoo.orderservice.service.restaurant.RestaurantService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,8 +30,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrderFacade {
 
-    private final AddressClientService addressClientService;
-    private final RestaurantClientService restaurantClientService;
+    private final AddressService addressClientService;
+    private final RestaurantService restaurantClientService;
     private final OrderItemMapper orderItemMapper;
     private final OrderMapper orderMapper;
     private final UserClientService userClientService;
@@ -39,7 +39,7 @@ public class OrderFacade {
     public Order buildOrder(UUID userId, CreateOrderRequest createOrderRequest) {
         addressClientService.validateAddress(userId, createOrderRequest.deliveryAddress());
         restaurantClientService.validateRestaurant(createOrderRequest.restaurantId());
-        List<DishInternalResponse> dishes = restaurantClientService.getAvailableDishesByRestaurant(
+        List<DishInternalResponse> dishes = restaurantClientService.getAvailableDishes(
                 createOrderRequest.restaurantId(),
                 createOrderRequest.items().stream().map(AddOrderItemRequest::dishId).toList()
         );

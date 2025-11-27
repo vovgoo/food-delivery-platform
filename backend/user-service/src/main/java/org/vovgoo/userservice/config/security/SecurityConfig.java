@@ -12,8 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.vovgoo.security.filters.HeaderAuthenticationFilter;
-import org.vovgoo.security.filters.InternalHeaderAuthenticationFilter;
+import org.vovgoo.common.security.filter.HeaderAuthenticationFilter;
+import org.vovgoo.common.security.filter.InternalHeaderAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity
