@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.vovgoo.common.domain.user.enums.RoleType;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CurrentUserUtils {
@@ -30,6 +31,6 @@ public class CurrentUserUtils {
         Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
         return authorities.stream()
                 .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals(RoleType.ADMIN.getAuthority()));
+                .anyMatch(role -> Objects.equals(role, RoleType.ADMIN.getAuthority()));
     }
 }
