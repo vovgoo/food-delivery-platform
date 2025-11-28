@@ -1,4 +1,4 @@
-package org.vovgoo.restaurantservice.controller;
+package org.vovgoo.restaurantservice.controller.restaurant;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
