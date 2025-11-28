@@ -1,7 +1,7 @@
 package org.vovgoo.orderservice.dto.user.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.common.domain.user.enums.UserStatus;
 
 import java.time.LocalDate;
 import java.util.UUID;

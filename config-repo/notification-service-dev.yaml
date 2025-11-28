@@ -30,7 +30,9 @@ spring:
 
 app:
   frontend:
-    email-change-route: ${FRONTEND_EMAIL_CHANGE_ROUTE:http://localhost:3000/confirm-change-email?token=}
+    host: ${FRONTEND_HOST:http://localhost:3000}
+    routes:
+      email-change: ${FRONTEND_EMAIL_CHANGE_ROUTE:/confirm-change-email}
 
 management:
   endpoints:

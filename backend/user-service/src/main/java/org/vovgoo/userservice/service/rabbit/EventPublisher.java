@@ -1,7 +1,7 @@
 package org.vovgoo.userservice.service.rabbit;
 
-import org.vovgoo.userservice.domain.rabbit.key.EventKey;
+import org.vovgoo.common.event.key.RabbitEventKey;
 
 public interface EventPublisher {
-    <T> void publish(EventKey<T> eventKey, T payload);
+    <T> void publish(RabbitEventKey<T> eventKey, T payload);
 }

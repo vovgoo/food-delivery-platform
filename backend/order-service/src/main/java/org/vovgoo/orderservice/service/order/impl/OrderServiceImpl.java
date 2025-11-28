@@ -6,9 +6,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vovgoo.dto.pageable.PageParams;
-import org.vovgoo.dto.pageable.PageResponse;
-import org.vovgoo.orderservice.domain.kafka.key.KafkaEvents;
+import org.vovgoo.common.domain.dto.pageable.PageParams;
+import org.vovgoo.common.domain.dto.pageable.PageResponse;
+import org.vovgoo.common.event.order.kafka.OrderKafkaEventKeys;
+import org.vovgoo.common.event.order.kafka.event.OrderCreatedEvent;
+import org.vovgoo.common.event.order.kafka.event.OrderStatusChangedEvent;
+import org.vovgoo.common.security.utils.CurrentUserUtils;
 import org.vovgoo.orderservice.dto.order.request.CreateOrderRequest;
 import org.vovgoo.orderservice.dto.order.request.UpdateOrderStatusRequest;
 import org.vovgoo.orderservice.dto.order.response.OrderResponse;
@@ -19,12 +22,9 @@ import org.vovgoo.orderservice.exception.custom.order.OrderNotFoundException;
 import org.vovgoo.orderservice.mapper.OrderMapper;
 import org.vovgoo.orderservice.repository.OrderRepository;
 import org.vovgoo.orderservice.service.kafka.KafkaEventPublisher;
-import org.vovgoo.domain.kafka.event.OrderCreatedEvent;
-import org.vovgoo.domain.kafka.event.OrderStatusChangedEvent;
 import org.vovgoo.orderservice.service.order.OrderService;
 import org.vovgoo.orderservice.service.order.facade.OrderFacade;
 import org.vovgoo.orderservice.service.payment.PaymentService;
-import org.vovgoo.security.utils.CurrentUserUtils;
 
 import java.util.UUID;
 
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
                 .totalPrice(orderResponse.totalPrice())
                 .build();
 
-        kafkaEventPublisher.publish(KafkaEvents.ORDER_CREATED, orderCreatedEvent);
+        kafkaEventPublisher.publish(OrderKafkaEventKeys.ORDER_CREATED, orderCreatedEvent);
 
         return orderResponse;
     }
@@ -117,7 +117,7 @@ public class OrderServiceImpl implements OrderService {
                 .orderStatus(orderResponse.status())
                 .build();
 
-        kafkaEventPublisher.publish(KafkaEvents.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
+        kafkaEventPublisher.publish(OrderKafkaEventKeys.ORDER_STATUS_CHANGED, orderStatusChangedEvent);
 
         return orderResponse;
     }

@@ -1,13 +1,13 @@
 package org.vovgoo.restaurantservice.service.restaurant;
 
 import org.springframework.web.multipart.MultipartFile;
-import org.vovgoo.dto.restaurant.RestaurantInternalResponse;
+import org.vovgoo.common.domain.dto.pageable.PageParams;
+import org.vovgoo.common.domain.dto.pageable.PageResponse;
+import org.vovgoo.common.domain.restaurant.dto.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
-import org.vovgoo.dto.pageable.PageParams;
-import org.vovgoo.dto.pageable.PageResponse;
 
 import java.util.UUID;
 

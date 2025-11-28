@@ -3,7 +3,7 @@ package org.vovgoo.userservice.dto.user.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
-import org.vovgoo.userservice.validators.email.domain.AllowedEmailDomain;
+import org.vovgoo.common.client.validation.email.domain.AllowedEmailDomain;
 
 @Schema(description = "Request to change user's email")
 public record ChangeEmailRequest(

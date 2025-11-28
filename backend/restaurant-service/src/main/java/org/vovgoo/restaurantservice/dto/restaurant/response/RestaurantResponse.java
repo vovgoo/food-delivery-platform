@@ -1,8 +1,8 @@
 package org.vovgoo.restaurantservice.dto.restaurant.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.vovgoo.common.domain.restaurant.enums.RestaurantStatus;
 import org.vovgoo.restaurantservice.dto.image.response.ImageResponse;
-import org.vovgoo.enums.restaurant.RestaurantStatus;
 
 import java.time.LocalTime;
 import java.util.List;

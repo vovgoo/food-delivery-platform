@@ -2,8 +2,9 @@ package org.vovgoo.restaurantservice.dto.dish.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import org.vovgoo.enums.dish.DishStatus;
-import org.vovgoo.restaurantservice.validation.dish.status.AllowedDishStatus;
+import org.vovgoo.common.domain.dish.enums.DishStatus;
+import org.vovgoo.common.domain.validation.dish.status.AllowedDishStatus;
+
 import java.math.BigDecimal;
 
 @Schema(description = "Request for updating an existing dish")

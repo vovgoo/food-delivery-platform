@@ -4,22 +4,22 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.vovgoo.dto.user.UserInternalResponse;
-import org.vovgoo.security.utils.CurrentUserUtils;
-import org.vovgoo.enums.user.UserStatus;
+import org.vovgoo.common.domain.user.enums.UserStatus;
+import org.vovgoo.common.security.exception.custom.UserDeactivatedException;
+import org.vovgoo.common.security.utils.CurrentUserUtils;
 import org.vovgoo.userservice.exception.custom.user.UserActiveException;
-import org.vovgoo.user.exception.UserDeactivatedException;
 import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;
 import org.vovgoo.userservice.exception.custom.user.PasswordAlreadyUsedException;
 import org.vovgoo.userservice.exception.custom.user.PasswordMismatchException;
-import org.vovgoo.user.exception.UserNotFoundException;
+import org.vovgoo.userservice.exception.custom.user.UserNotFoundException;
 import org.vovgoo.userservice.mapper.UserMapper;
 import org.vovgoo.userservice.repository.AddressRepository;
 import org.vovgoo.userservice.repository.UserRepository;
 import org.vovgoo.userservice.service.user.UserService;
+import org.vovgoo.common.domain.user.dto.UserInternalResponse;
 
 import java.util.UUID;
 

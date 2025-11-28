@@ -2,7 +2,7 @@ package org.vovgoo.orderservice.dto.order.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
-import org.vovgoo.enums.order.OrderStatus;
+import org.vovgoo.common.domain.order.enums.OrderStatus;
 
 @Schema(description = "Request to update the status of an order")
 public record UpdateOrderStatusRequest(

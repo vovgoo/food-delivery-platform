@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.enums.dish.DishStatus;
+import org.vovgoo.common.domain.dish.enums.DishStatus;
 
 import java.math.BigDecimal;
 import java.util.UUID;

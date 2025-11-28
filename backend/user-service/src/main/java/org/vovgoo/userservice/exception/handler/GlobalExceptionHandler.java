@@ -10,9 +10,9 @@ import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.vovgoo.dto.exception.ExceptionResponse;
-import org.vovgoo.dto.exception.FieldErrors;
-import org.vovgoo.user.exception.UserDeactivatedException;
+import org.vovgoo.common.domain.dto.exception.ExceptionResponse;
+import org.vovgoo.common.domain.dto.exception.FieldErrors;
+import org.vovgoo.common.security.exception.custom.UserDeactivatedException;
 import org.vovgoo.userservice.exception.custom.user.UserActiveException;
 import org.vovgoo.userservice.exception.custom.address.AddressLimitExceededException;
 import org.vovgoo.userservice.exception.custom.address.AddressNotFound;
@@ -25,12 +25,16 @@ import org.vovgoo.userservice.exception.custom.jwt.TokenStrategyNotFoundExceptio
 import org.vovgoo.userservice.exception.custom.user.*;
 import org.vovgoo.userservice.exception.custom.verification.*;
 
+import java.util.List;
+import java.util.Objects;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler({
             AddressNotFound.class,
             RoleNotFoundException.class,
+            UserNotFoundException.class,
             EntityNotFoundException.class,
             OtpNotFoundException.class,
             TokenNotFoundException.class,
@@ -66,7 +70,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ExceptionResponse<FieldErrors>> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest request) {
-        FieldErrors fieldErrors = new FieldErrors(ex.getBindingResult().getFieldErrors());
+        List<FieldErrors.FieldErrorDetail> fieldErrorDetails = ex.getBindingResult().getFieldErrors().stream()
+                .map(err -> FieldErrors.FieldErrorDetail.builder()
+                        .field(err.getField())
+                        .messages(List.of(Objects.requireNonNull(err.getDefaultMessage())))
+                        .build())
+                .toList();
+
+        FieldErrors fieldErrors = FieldErrors.of(fieldErrorDetails);
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(ExceptionResponse.of(fieldErrors, HttpStatus.BAD_REQUEST, request.getRequestURI()));
     }

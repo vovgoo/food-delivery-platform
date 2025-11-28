@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.vovgoo.security.filters.HeaderAuthenticationFilter;
-import org.vovgoo.security.filters.InternalHeaderAuthenticationFilter;
+import org.vovgoo.common.security.filter.HeaderAuthenticationFilter;
+import org.vovgoo.common.security.filter.InternalHeaderAuthenticationFilter;
 
 @Configuration
 @EnableMethodSecurity

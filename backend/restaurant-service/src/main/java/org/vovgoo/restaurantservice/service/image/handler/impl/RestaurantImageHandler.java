@@ -3,9 +3,9 @@ package org.vovgoo.restaurantservice.service.image.handler.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.vovgoo.common.domain.image.enums.ImageType;
 import org.vovgoo.restaurantservice.config.image.ImageLimitProperties;
 import org.vovgoo.restaurantservice.entity.Restaurant;
-import org.vovgoo.restaurantservice.entity.enums.ImageType;
 import org.vovgoo.restaurantservice.service.image.handler.ImageHandler;
 import org.vovgoo.restaurantservice.service.image.service.ImageService;
 

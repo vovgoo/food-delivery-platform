@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.JdbcType;
 import org.hibernate.dialect.PostgreSQLEnumJdbcType;
-import org.vovgoo.enums.address.AddressStatus;
+import org.vovgoo.common.domain.address.enums.AddressStatus;
 
 import java.util.UUID;
 

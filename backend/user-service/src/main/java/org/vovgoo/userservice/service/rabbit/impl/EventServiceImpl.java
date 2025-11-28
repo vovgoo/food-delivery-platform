@@ -2,10 +2,10 @@ package org.vovgoo.userservice.service.rabbit.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.vovgoo.domain.rabbit.event.EmailChangeEvent;
-import org.vovgoo.domain.rabbit.event.PhoneChangeEvent;
-import org.vovgoo.domain.rabbit.event.SignUpPhoneEvent;
-import org.vovgoo.userservice.domain.rabbit.key.EventKeys;
+import org.vovgoo.common.event.user.rabbit.UserRabbitEventKeys;
+import org.vovgoo.common.event.user.rabbit.event.EmailChangeEvent;
+import org.vovgoo.common.event.user.rabbit.event.PhoneChangeEvent;
+import org.vovgoo.common.event.user.rabbit.event.SignUpPhoneEvent;
 import org.vovgoo.userservice.service.rabbit.EventService;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class EventServiceImpl implements EventService {
                 .phone(phone)
                 .otp(otp)
                 .build();
-        eventPublisherImpl.publish(EventKeys.PHONE_CHANGE, event);
+        eventPublisherImpl.publish(UserRabbitEventKeys.PHONE_CHANGE, event);
     }
 
     public void publishEmailChangeEvent(String email, UUID token) {
@@ -29,7 +29,7 @@ public class EventServiceImpl implements EventService {
                 .email(email)
                 .token(token)
                 .build();
-        eventPublisherImpl.publish(EventKeys.EMAIL_CHANGE, event);
+        eventPublisherImpl.publish(UserRabbitEventKeys.EMAIL_CHANGE, event);
     }
 
     public void publishSignUpEvent(String phone, String otp) {
@@ -37,6 +37,6 @@ public class EventServiceImpl implements EventService {
                 .phone(phone)
                 .otp(otp)
                 .build();
-        eventPublisherImpl.publish(EventKeys.SIGNUP_PHONE, event);
+        eventPublisherImpl.publish(UserRabbitEventKeys.SIGNUP_PHONE, event);
     }
 }

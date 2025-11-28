@@ -2,7 +2,7 @@ package org.vovgoo.userservice.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.vovgoo.dto.user.UserInternalResponse;
+import org.vovgoo.common.domain.user.dto.UserInternalResponse;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.entity.Address;
 import org.vovgoo.userservice.entity.User;

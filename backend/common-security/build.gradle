@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.vovgoo'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":backend:common-config")
+    implementation project(":backend:common-domain")
+    implementation project(":backend:common-client")
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.1'
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    compileOnly 'jakarta.validation:jakarta.validation-api:3.1.1'
+    compileOnly 'org.springframework:spring-web:7.0.1'
+
+    compileOnly 'org.springframework.security:spring-security-core:7.0.0'
+
+    compileOnly 'org.projectlombok:lombok:1.18.38'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+}
+
+test {
+    useJUnitPlatform()
+}
