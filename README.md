@@ -45,21 +45,6 @@ Modular microservice ecosystem delivering the full food-ordering journey: user o
 
 ---
 
-## 🔍 Service Deep Dive
-
-| Service | Core Duties | Data & Infra | Sync Dependencies | Async Dependencies | Security Highlights | Notes |
-| --- | --- | --- | --- | --- | --- | --- |
-| **API Gateway** | JWT verification, header relay, rate limiting, Swagger aggregation | Redis (`redis-api-gateway`), Config Server | Config Server, Eureka, user-service (JWKS) | — | WebFlux `SecurityWebFilterChain`, `JwtHeaderRelayFilter`, per-route `RedisRateLimiter` | Needs `X-Forwarded-For` support; rate configs hard-coded |
-| **User Service** | Sign-up/login/refresh, profile & address book, OTP via Redis/Rabbit, JWKS endpoint | PostgreSQL (`userdb`), Redis (`redis-user`), RabbitMQ | Config Server, Eureka | Rabbit queues (`signup.phone`, `phone.change`, `email.change`) | Dual dev/prod security chains, RSA JWT issuing, shared header filters | RSA keys/internal tokens stored in repo, no in-service throttling, shared Redis namespace |
-| **Restaurant Service** | Manage restaurants/dishes/images, expose internal endpoints for order validation | PostgreSQL (`restaurantdb`), Imgbb API | Config Server, Eureka | — | HTTP ACL for `ADMIN`/`INTERNAL`, header filters | Imgbb key in config, no fallback; limited domain-level authorization |
-| **Order Service** | Orchestrate order lifecycle, payment strategies, Feign validation, Kafka events | PostgreSQL (`orderdb`), Kafka | Config Server, Eureka, user/restaurant services | Kafka topics (`order.created`, `order.status.changed`) | Header/internal filters, RBAC by HTTP method | Internal token duplication, no outbox/idempotency, no circuit breaker |
-| **Notification Service** | Listen to Rabbit/Kafka and send email/SMS | Kafka, RabbitMQ, SMTP (Mailhog) | Config Server, Eureka | Kafka + Rabbit | No HTTP surface; listener-only | SMS stub via email, no DLQ/retry |
-| **Config Server** | Serve YAML configs | Local FS (`config-repo`) | — | — | No auth | Exposes secrets if internet-facing |
-| **Eureka Server** | Discovery | In-memory | — | — | UI unauthenticated | Needs TLS + restricted access |
-| **Common Module** | DTOs, enums, filters, validators | — | Imported by services | — | Implements shared security filters | Duplicate `common-*` modules need cleanup |
-
----
-
 ## 📦 Repository Structure Highlights
 1. **`backend/`** — Gradle multi-module project; each service has `build.gradle`, Dockerfile, and Liquibase changelog.
 2. **`config-repo/`** — Configuration source for Config Server; contains sensitive data (DB creds, RSA keys, internal tokens). Keep private!
