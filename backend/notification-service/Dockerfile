@@ -2,11 +2,11 @@ FROM gradle:8-jdk21 AS builder
 WORKDIR /app
 
 COPY --chown=gradle:gradle . /app
-RUN gradle clean bootJar --no-daemon
+RUN gradle clean backend:notification-service:bootJar --no-daemon
 
 FROM eclipse-temurin:21-jre-alpine AS runtime
 WORKDIR /app
 
-COPY --from=builder /app/build/libs/*.jar app.jar
+COPY --from=builder /app/backend/notification-service/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java","-jar","app.jar"]

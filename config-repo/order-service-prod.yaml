@@ -20,7 +20,7 @@ app:
     tokens:
       user-service: ${USER_SERVICE_INTERNAL_TOKEN}
       restaurant-service: ${RESTAURANT_SERVICE_INTERNAL_TOKEN}
-    self: ${USER_SERVICE_INTERNAL_TOKEN}
+    self: ${ORDER_SERVICE_INTERNAL_TOKEN}
 
 management:
   endpoints:
@@ -29,7 +29,7 @@ management:
         include: health,info
   endpoint:
     health:
-      show-details: always
+      show-details: never
 
 springdoc:
   swagger-ui:

@@ -21,7 +21,7 @@ app:
     tokens:
       user-service: ${USER_SERVICE_INTERNAL_TOKEN:user-service-secret-token}
       restaurant-service: ${RESTAURANT_SERVICE_INTERNAL_TOKEN:restaurant-service-secret-token}
-    self: ${USER_SERVICE_INTERNAL_TOKEN:order-service-secret-token}
+    self: ${ORDER_SERVICE_INTERNAL_TOKEN:order-service-secret-token}
 
 management:
   endpoints:

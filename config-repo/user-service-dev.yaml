@@ -1,6 +1,5 @@
 server:
   port: ${SERVER_PORT:8081}
-
 spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5433/userdb}
@@ -16,11 +15,12 @@ spring:
     username: ${RABBITMQ_USERNAME:admin}
     password: ${RABBITMQ_PASSWORD:admin}
     virtual-host: ${RABBITMQ_VHOST:/}
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6379}
-    password: ${REDIS_PASSWORD:}
-    database: ${REDIS_DB:0}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DB:0}
 
 app:
   internal-services:
