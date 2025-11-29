@@ -2,11 +2,12 @@ server:
   port: ${SERVER_PORT:8080}
 
 spring:
-  redis:
-    host: ${REDIS_HOST:localhost}
-    port: ${REDIS_PORT:6380}
-    password: ${REDIS_PASSWORD:}
-    database: ${REDIS_DB:0}
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      database: ${REDIS_DB:0}
   cloud:
     gateway:
       routes:
@@ -79,6 +80,7 @@ spring:
           uri: lb://restaurant-service
           predicates:
             - Path=/api/v1/restaurants/**
+
         - id: restaurant-service-docs
           uri: lb://restaurant-service
           predicates:
@@ -90,6 +92,7 @@ spring:
           uri: lb://order-service
           predicates:
             - Path=/api/v1/orders/**
+
         - id: order-service-docs
           uri: lb://order-service
           predicates:
