@@ -21,7 +21,7 @@ public record CreateOrderRequest(
         @NotNull(message = "Идентификатор адреса не может быть пустым")
         UUID deliveryAddress,
 
-        @Schema(description = "List of order items", example = "[{\"productId\":\"770e8400-e29b-41d4-a716-446655440222\",\"quantity\":2}]")
+        @Schema(description = "List of order items", example = "[{\"dishId\":\"770e8400-e29b-41d4-a716-446655440222\",\"quantity\":2}]")
         @NotEmpty(message = "Список блюд не может быть пустым")
         @Valid
         List<AddOrderItemRequest> items,
