@@ -7,12 +7,14 @@ import org.vovgoo.common.domain.dto.pageable.PageResponse;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
 import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
+import org.vovgoo.restaurantservice.dto.dish.response.DishShortResponse;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface DishService {
-    PageResponse<DishResponse> listByRestaurant(UUID restaurantId, PageParams pageParams);
+    PageResponse<DishShortResponse> listByRestaurant(UUID restaurantId, PageParams pageParams);
+    DishResponse getById(UUID restaurantId, UUID dishId);
     DishResponse create(UUID restaurantId, DishCreateRequest request);
     DishResponse update(UUID restaurantId, UUID dishId, DishUpdateRequest request);
     void delete(UUID restaurantId, UUID dishId);

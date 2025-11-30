@@ -17,9 +17,6 @@ public interface DishRepository extends JpaRepository<Dish, UUID> {
     Page<Dish> findAllByRestaurantId(@Param("restaurantId") UUID restaurantId, Pageable pageable);
 
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
-    Optional<Dish> findByRestaurantIdAndDishIdAndStatusNotRemoved(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
-
-    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
     Optional<Dish> findByRestaurantIdAndDishId(@Param("restaurantId") UUID restaurantId, @Param("dishId") UUID dishId);
 
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id IN :dishIds AND d.status <> 'REMOVED'")

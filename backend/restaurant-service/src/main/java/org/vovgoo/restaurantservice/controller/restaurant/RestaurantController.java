@@ -20,6 +20,7 @@ import org.vovgoo.common.domain.dto.pageable.PageResponse;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
 import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
+import org.vovgoo.restaurantservice.dto.dish.response.DishShortResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
@@ -33,7 +34,6 @@ import java.util.UUID;
 @RequestMapping("/api/v1/restaurants")
 @RequiredArgsConstructor
 @Tag(name = "Restaurants", description = "Restaurant and dish management")
-@SecurityRequirement(name = "bearerAuth")
 public class RestaurantController {
 
     private final RestaurantService restaurantService;
@@ -77,12 +77,28 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping("/{restaurantId}/dishes")
-    public ResponseEntity<PageResponse<DishResponse>> listDishes(@PathVariable UUID restaurantId,
-                                                                 @Valid PageParams pageParams) {
+    public ResponseEntity<PageResponse<DishShortResponse>> listDishes(@PathVariable UUID restaurantId,
+                                                                      @Valid PageParams pageParams) {
         return ResponseEntity.ok(dishService.listByRestaurant(restaurantId, pageParams));
     }
 
-    @Operation(summary = "Create a new restaurant", description = "Create a new restaurant (Admin only)")
+    @Operation(summary = "Retrieve dish by id and restaurant id", description = "Retrieve dish by id and restaurant id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Dish retrieved successfully",
+                    content = @Content(schema = @Schema(implementation = DishResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Restaurant or dish not found",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    @GetMapping("/{restaurantId}/dishes/{dishId}")
+    public ResponseEntity<DishResponse> getDish(@PathVariable UUID restaurantId, @PathVariable UUID dishId) {
+        return ResponseEntity.ok(dishService.getById(restaurantId, dishId));
+    }
+
+    @Operation(summary = "Create a new restaurant", description = "Create a new restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Restaurant created successfully",
                     content = @Content(schema = @Schema(implementation = RestaurantResponse.class))),
@@ -102,7 +118,7 @@ public class RestaurantController {
                 .body(restaurantService.create(restaurantCreateRequest));
     }
 
-    @Operation(summary = "Update a restaurant", description = "Update restaurant information (Admin only)")
+    @Operation(summary = "Update a restaurant", description = "Update restaurant information (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Restaurant updated successfully",
                     content = @Content(schema = @Schema(implementation = RestaurantResponse.class))),
@@ -123,7 +139,7 @@ public class RestaurantController {
         return ResponseEntity.ok(restaurantService.update(restaurantId, restaurantUpdateRequest));
     }
 
-    @Operation(summary = "Delete a restaurant", description = "Soft delete a restaurant by setting its status to CLOSED (Admin only)")
+    @Operation(summary = "Delete a restaurant", description = "Soft delete a restaurant by setting its status to CLOSED (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Restaurant deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -141,7 +157,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Upload restaurant image", description = "Upload an image for a restaurant (Admin only)")
+    @Operation(summary = "Upload restaurant image", description = "Upload an image for a restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Image uploaded successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid input",
@@ -162,7 +178,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Remove restaurant image", description = "Delete an image from a restaurant (Admin only)")
+    @Operation(summary = "Remove restaurant image", description = "Delete an image from a restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Image removed successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -181,7 +197,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Set restaurant profile image", description = "Set a profile image for a restaurant (Admin only)")
+    @Operation(summary = "Set restaurant profile image", description = "Set a profile image for a restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Profile image set successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -200,7 +216,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Remove restaurant profile image", description = "Remove the profile image from a restaurant (Admin only)")
+    @Operation(summary = "Remove restaurant profile image", description = "Remove the profile image from a restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Profile image removed successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -218,7 +234,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Create a dish", description = "Create a new dish for a restaurant (Admin only)")
+    @Operation(summary = "Create a dish", description = "Create a new dish for a restaurant (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Dish created successfully",
                     content = @Content(schema = @Schema(implementation = DishResponse.class))),
@@ -240,7 +256,7 @@ public class RestaurantController {
                 .body(dishService.create(restaurantId, dishCreateRequest));
     }
 
-    @Operation(summary = "Update a dish", description = "Update an existing dish (Admin only)")
+    @Operation(summary = "Update a dish", description = "Update an existing dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Dish updated successfully",
                     content = @Content(schema = @Schema(implementation = DishResponse.class))),
@@ -260,7 +276,7 @@ public class RestaurantController {
         return ResponseEntity.ok(dishService.update(restaurantId, dishId, dishUpdateRequest));
     }
 
-    @Operation(summary = "Delete a dish", description = "Soft delete a dish (Admin only)")
+    @Operation(summary = "Delete a dish", description = "Soft delete a dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Dish deleted successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -278,7 +294,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Upload dish image", description = "Upload an image for a dish (Admin only)")
+    @Operation(summary = "Upload dish image", description = "Upload an image for a dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Dish image uploaded successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -296,7 +312,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Remove dish image", description = "Remove an image from a dish (Admin only)")
+    @Operation(summary = "Remove dish image", description = "Remove an image from a dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Dish image removed successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -314,7 +330,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Set dish profile image", description = "Set a profile image for a dish (Admin only)")
+    @Operation(summary = "Set dish profile image", description = "Set a profile image for a dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Profile image set successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
@@ -332,7 +348,7 @@ public class RestaurantController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Remove dish profile image", description = "Remove the profile image from a dish (Admin only)")
+    @Operation(summary = "Remove dish profile image", description = "Remove the profile image from a dish (Admin only)", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Profile image removed successfully"),
             @ApiResponse(responseCode = "401", description = "Unauthorized",
