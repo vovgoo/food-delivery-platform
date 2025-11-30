@@ -14,6 +14,7 @@ import org.vovgoo.common.domain.image.enums.ImageType;
 import org.vovgoo.restaurantservice.dto.dish.request.DishCreateRequest;
 import org.vovgoo.restaurantservice.dto.dish.request.DishUpdateRequest;
 import org.vovgoo.restaurantservice.dto.dish.response.DishResponse;
+import org.vovgoo.restaurantservice.dto.dish.response.DishShortResponse;
 import org.vovgoo.restaurantservice.entity.Dish;
 import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.Restaurant;
@@ -45,7 +46,7 @@ public class DishServiceImpl implements DishService {
     private final DishMapper dishMapper;
 
     @Override
-    public PageResponse<DishResponse> listByRestaurant(UUID restaurantId, PageParams pageParams) {
+    public PageResponse<DishShortResponse> listByRestaurant(UUID restaurantId, PageParams pageParams) {
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
         Page<Dish> dishesPage = dishRepository.findAllByRestaurantId(restaurantId, pageRequest);
 
@@ -56,10 +57,20 @@ public class DishServiceImpl implements DishService {
         Map<UUID, List<Image>> imagesMap = images.stream()
                 .collect(Collectors.groupingBy(Image::getParentId));
 
-        Page<DishResponse> dishResponses = dishesPage
-                .map(d -> dishMapper.toResponse(d, imagesMap.getOrDefault(d.getId(), Collections.emptyList())));
+        Page<DishShortResponse> dishResponses = dishesPage
+                .map(d -> dishMapper.toShortResponse(d, imagesMap.getOrDefault(d.getId(), Collections.emptyList())));
 
         return PageResponse.of(dishResponses);
+    }
+
+    @Override
+    public DishResponse getById(UUID restaurantId, UUID dishId) {
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
+                .orElseThrow(DishNotFoundException::new);
+
+        List<Image> images = imageRepository.findAllByParentIdAndType(dishId, ImageType.DISH);
+
+        return dishMapper.toResponse(dish, images);
     }
 
     @Override
@@ -116,7 +127,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public void delete(UUID restaurantId, UUID dishId) {
-        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
         dish.setStatus(DishStatus.REMOVED);
@@ -125,7 +136,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public void uploadImage(UUID restaurantId, UUID dishId, MultipartFile file) {
-        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
         imageFacadeService.uploadImage(dish, file);
@@ -134,7 +145,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public void deleteImage(UUID restaurantId, UUID dishId, UUID imageId) {
-        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
         imageFacadeService.removeImage(dish, imageId);
@@ -143,7 +154,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public void setProfileImage(UUID restaurantId, UUID dishId, MultipartFile file) {
-        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
         imageFacadeService.uploadProfileImage(dish, file);
@@ -152,7 +163,7 @@ public class DishServiceImpl implements DishService {
     @Override
     @Transactional
     public void removeProfileImage(UUID restaurantId, UUID dishId) {
-        Dish dish = dishRepository.findByRestaurantIdAndDishIdAndStatusNotRemoved(restaurantId, dishId)
+        Dish dish = dishRepository.findByRestaurantIdAndDishId(restaurantId, dishId)
                 .orElseThrow(DishNotFoundException::new);
 
         imageFacadeService.removeProfileImage(dish);
