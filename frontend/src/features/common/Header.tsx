@@ -49,7 +49,7 @@ const { data: user, isPending } = useQuery<UserResponse>({
   const form = useForm<{ search: string }>();
 
   return (
-    <header className="w-full flex px-10 py-5">
+    <header className="w-full flex py-5">
       <div className="w-full flex justify-between items-center">
         <Link to={AppRoutes.MAIN} className="flex items-center gap-x-5">
           <img src="/img/logo_black.png" alt="FDP" className="w-8 h-8" />
