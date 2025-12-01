@@ -25,31 +25,31 @@ import { Toaster } from "sonner";
 
 const App: React.FC = () => {
   return (
-    <>
+    <div className="bg-[#E9ECEF] w-full flex justify-center">
       <Toaster position="bottom-right"/>
-      <div className="bg-[#E9ECEF] min-h-dvh flex flex-col justify-between">
-      <Header/>
-        <Routes>
-          <Route path={AppRoutes.MAIN} element={<MainPage />} />
-          <Route path={AppRoutes.RESTAURANT} element={<RestaurantPage />} />
-          <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
-          <Route path={AppRoutes.CHANGE_EMAIL} element={<ChangeUserEmailPage />} />
-          <Route path={AppRoutes.CHANGE_PHONE} element={<ChangeUserPhonePage />} />
-          <Route path={AppRoutes.CREATE_ORDER} element={<CreateOrderPage />} />
-          <Route path={AppRoutes.ADMIN_DASHBOARD} element={<AdminDashboardPage />} />
-          <Route path={AppRoutes.ADMIN_RESTAURANTS} element={<AdminRestaurantsPage />} />
-          <Route path={AppRoutes.ADMIN_DISHES} element={<AdminDishesPage />} />
-          <Route path={AppRoutes.ADMIN_ORDERS} element={<AdminOrdersPage />} />
-          <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
-          <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
-          <Route path={AppRoutes.CONFIRM_SIGN_UP} element={<ConfirmSignUpPage />} />
-          <Route path={AppRoutes.USER_DEACTIVATE} element={<UserDeactivatePage />} />
-          <Route path={AppRoutes.USER_BLOCKED} element={<UserBlockedPage />} />
-          <Route path="*" element={<Navigate to={AppRoutes.MAIN} />} />
-        </Routes>
-        <Footer/>
+      <div className="min-h-dvh max-w-[1400px] w-full flex flex-col justify-between">
+        <Header/>
+          <Routes>
+            <Route path={AppRoutes.MAIN} element={<MainPage />} />
+            <Route path={AppRoutes.RESTAURANT} element={<RestaurantPage />} />
+            <Route path={AppRoutes.PROFILE} element={<ProfilePage />} />
+            <Route path={AppRoutes.CHANGE_EMAIL} element={<ChangeUserEmailPage />} />
+            <Route path={AppRoutes.CHANGE_PHONE} element={<ChangeUserPhonePage />} />
+            <Route path={AppRoutes.CREATE_ORDER} element={<CreateOrderPage />} />
+            <Route path={AppRoutes.ADMIN_DASHBOARD} element={<AdminDashboardPage />} />
+            <Route path={AppRoutes.ADMIN_RESTAURANTS} element={<AdminRestaurantsPage />} />
+            <Route path={AppRoutes.ADMIN_DISHES} element={<AdminDishesPage />} />
+            <Route path={AppRoutes.ADMIN_ORDERS} element={<AdminOrdersPage />} />
+            <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
+            <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />
+            <Route path={AppRoutes.CONFIRM_SIGN_UP} element={<ConfirmSignUpPage />} />
+            <Route path={AppRoutes.USER_DEACTIVATE} element={<UserDeactivatePage />} />
+            <Route path={AppRoutes.USER_BLOCKED} element={<UserBlockedPage />} />
+            <Route path="*" element={<Navigate to={AppRoutes.MAIN} />} />
+          </Routes>
+          <Footer/>
+      </div>
     </div>
-    </>
   );
 };
 
