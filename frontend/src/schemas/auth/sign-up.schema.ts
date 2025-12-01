@@ -15,10 +15,10 @@ export const signUpSchema = z.object({
   birthDate: z
     .string()
     .nonempty("День рождения обязательна")
-    .refine((value) => dayjs(value, "YYYY-MM-DD", true).isValid(), {
+    .refine((value) => value && dayjs(value, "YYYY-MM-DD", true).isValid(), {
       message: "Некорректная дата",
     })
-    .refine((value) => dayjs().diff(dayjs(value, "YYYY-MM-DD"), "year") >= 16, {
+    .refine((value) => value && dayjs().diff(dayjs(value, "YYYY-MM-DD"), "year") >= 16, {
       message: "Пользователь должен быть старше 16 лет",
     }),
 
@@ -29,7 +29,7 @@ export const signUpSchema = z.object({
     .max(100, "Пароль должен быть от 8 до 100 символов")
     .regex(
       passwordRegex,
-      "Пароль должен содержать латинские буквы, цифры и спецсимволы"
+      "Пароль должен содержать буквы, цифры и спецсимволы"
     ),
 
   confirmPassword: z.string().nonempty("Подтверждение пароля обязательно"),
