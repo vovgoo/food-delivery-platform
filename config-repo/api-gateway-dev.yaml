@@ -100,6 +100,10 @@ spring:
           filters:
             - RewritePath=/order-service/v3/api-docs, /v3/api-docs
 
+app:
+  frontend:
+    host: ${FRONTEND_HOST:http://localhost:5173}
+
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

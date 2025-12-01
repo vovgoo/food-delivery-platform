@@ -79,6 +79,10 @@ spring:
           predicates:
             - Path=/api/v1/orders/**
 
+app:
+  frontend:
+    host: ${FRONTEND_HOST}
+
 management:
   endpoints:
     web:
