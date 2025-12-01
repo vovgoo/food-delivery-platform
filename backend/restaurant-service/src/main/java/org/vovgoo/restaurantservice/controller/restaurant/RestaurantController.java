@@ -25,6 +25,7 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
+import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantShortResponse;
 import org.vovgoo.restaurantservice.service.dish.DishService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 
@@ -47,7 +48,7 @@ public class RestaurantController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping
-    public ResponseEntity<PageResponse<RestaurantResponse>> listRestaurants(
+    public ResponseEntity<PageResponse<RestaurantShortResponse>> listRestaurants(
             @Valid RestaurantSearchRequest restaurantSearchRequest,
             @Valid PageParams pageParams) {
         return ResponseEntity.ok(restaurantService.listRestaurants(restaurantSearchRequest, pageParams));

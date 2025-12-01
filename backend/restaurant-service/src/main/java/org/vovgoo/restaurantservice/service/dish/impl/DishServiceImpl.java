@@ -27,7 +27,6 @@ import org.vovgoo.restaurantservice.repository.RestaurantRepository;
 import org.vovgoo.restaurantservice.service.dish.DishService;
 import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -52,13 +51,13 @@ public class DishServiceImpl implements DishService {
 
         List<UUID> dishIds = dishesPage.map(Dish::getId).toList();
 
-        List<Image> images = imageRepository.findAllByParentIdsAndType(dishIds, ImageType.DISH);
+        List<Image> images = imageRepository.findProfileImagesByParentIds(dishIds, ImageType.DISH);
 
-        Map<UUID, List<Image>> imagesMap = images.stream()
-                .collect(Collectors.groupingBy(Image::getParentId));
+        Map<UUID, Image> imageMap = images.stream()
+                .collect(Collectors.toMap(Image::getParentId, img -> img));
 
         Page<DishShortResponse> dishResponses = dishesPage
-                .map(d -> dishMapper.toShortResponse(d, imagesMap.getOrDefault(d.getId(), Collections.emptyList())));
+                .map( dish -> dishMapper.toShortResponse(dish, imageMap.get(dish.getId())));
 
         return PageResponse.of(dishResponses);
     }
@@ -183,7 +182,7 @@ public class DishServiceImpl implements DishService {
                 .collect(Collectors.toMap(Image::getParentId, Function.identity()));
 
         return dishes.stream()
-                .map(d -> dishMapper.toShortResponse(d, profileImagesMap.get(d.getId())))
+                .map(d -> dishMapper.toInternalResponse(d, profileImagesMap.get(d.getId())))
                 .toList();
     }
 }

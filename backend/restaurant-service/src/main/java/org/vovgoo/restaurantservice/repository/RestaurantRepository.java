@@ -18,9 +18,6 @@ public interface RestaurantRepository extends JpaRepository<Restaurant, UUID> {
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.status <> 'CLOSED'")
     Optional<Restaurant> findByIdAndStatusNotClosed(@Param("id") UUID id);
 
-    @Query("SELECT r FROM Restaurant r WHERE r.id = :id AND r.status <> 'CLOSED'")
-    Optional<Restaurant> findByIdNotClosed(@Param("id") UUID id);
-
     @Query("SELECT r FROM Restaurant r WHERE r.id = :id")
     Optional<Restaurant> findByIdIgnoreStatus(@Param("id") UUID id);
 }
