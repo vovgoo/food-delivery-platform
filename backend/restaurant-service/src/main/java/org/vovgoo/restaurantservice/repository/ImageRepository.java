@@ -15,9 +15,6 @@ public interface ImageRepository extends JpaRepository<Image, UUID> {
     @Query("SELECT i FROM Image i WHERE i.parentId = :parentId AND i.type = :type AND i.isProfile = true")
     Optional<Image> findProfileImage(@Param("parentId") UUID parentId, @Param("type") ImageType type);
 
-    @Query("SELECT i FROM Image i WHERE i.parentId IN :parentIds AND i.type = :type")
-    List<Image> findAllByParentIdsAndType(@Param("parentIds") List<UUID> parentIds, @Param("type") ImageType type);
-
     @Query("SELECT i FROM Image i WHERE i.parentId IN :parentIds AND i.type = :type AND i.isProfile = true")
     List<Image> findProfileImagesByParentIds(@Param("parentIds") List<UUID> parentIds, @Param("type") ImageType type);
 

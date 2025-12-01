@@ -15,6 +15,7 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
+import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantShortResponse;
 import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.Restaurant;
 import org.vovgoo.restaurantservice.exception.custom.restaurant.RestaurantNotFoundException;
@@ -24,7 +25,6 @@ import org.vovgoo.restaurantservice.repository.RestaurantRepository;
 import org.vovgoo.restaurantservice.service.image.facade.ImageFacadeService;
 import org.vovgoo.restaurantservice.service.restaurant.RestaurantService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -41,26 +41,26 @@ public class RestaurantServiceImpl implements RestaurantService {
     private final RestaurantMapper restaurantMapper;
 
     @Override
-    public PageResponse<RestaurantResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams) {
+    public PageResponse<RestaurantShortResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams) {
         PageRequest pageRequest = PageRequest.of(pageParams.page(), pageParams.size());
         Page<Restaurant> restaurantPage = restaurantRepository.findByCuisineContainingIgnoreCase(searchRequest.cuisine(), pageRequest);
 
         List<UUID> pageIds = restaurantPage.map(Restaurant::getId).toList();
 
-        List<Image> images = imageRepository.findAllByParentIdsAndType(pageIds, ImageType.RESTAURANT);
+        List<Image> images = imageRepository.findProfileImagesByParentIds(pageIds, ImageType.RESTAURANT);
 
-        Map<UUID, List<Image>> imagesMap = images.stream()
-                .collect(Collectors.groupingBy(Image::getParentId));
+        Map<UUID, Image> imageMap = images.stream()
+                .collect(Collectors.toMap(Image::getParentId, img -> img));
 
-        Page<RestaurantResponse> restaurantsResponses = restaurantPage
-                .map(d -> restaurantMapper.toResponse(d, imagesMap.getOrDefault(d.getId(), Collections.emptyList())));
+        Page<RestaurantShortResponse> restaurantsResponses = restaurantPage
+                .map( restaurant -> restaurantMapper.toShortResponse(restaurant, imageMap.get(restaurant.getId())));
 
         return PageResponse.of(restaurantsResponses);
     }
 
     @Override
     public RestaurantResponse getById(UUID restaurantId) {
-        Restaurant restaurant = restaurantRepository.findByIdNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
         List<Image> images = imageRepository.findAllByParentIdAndType(restaurantId, ImageType.RESTAURANT);
@@ -95,7 +95,7 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Transactional
     public RestaurantResponse update(UUID restaurantId, RestaurantUpdateRequest request) {
 
-        Restaurant restaurant = restaurantRepository.findByIdNotClosed(restaurantId)
+        Restaurant restaurant = restaurantRepository.findByIdAndStatusNotClosed(restaurantId)
                 .orElseThrow(RestaurantNotFoundException::new);
 
         restaurant.setName(request.name());
@@ -170,6 +170,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         Image image = imageRepository.findProfileImage(restaurantId, ImageType.RESTAURANT)
                 .orElse(null);
 
-        return restaurantMapper.toShortResponse(restaurant, image);
+        return restaurantMapper.toInternalResponse(restaurant, image);
     }
 }

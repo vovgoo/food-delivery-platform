@@ -8,11 +8,12 @@ import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantSearchReque
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantCreateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.request.RestaurantUpdateRequest;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
+import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantShortResponse;
 
 import java.util.UUID;
 
 public interface RestaurantService {
-    PageResponse<RestaurantResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams);
+    PageResponse<RestaurantShortResponse> listRestaurants(RestaurantSearchRequest searchRequest, PageParams pageParams);
     RestaurantResponse getById(UUID restaurantId);
     RestaurantResponse create(RestaurantCreateRequest request);
     RestaurantResponse update(UUID restaurantId, RestaurantUpdateRequest request);

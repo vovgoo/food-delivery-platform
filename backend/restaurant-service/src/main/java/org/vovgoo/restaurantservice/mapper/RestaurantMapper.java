@@ -4,6 +4,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.vovgoo.common.domain.restaurant.dto.RestaurantInternalResponse;
 import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantResponse;
+import org.vovgoo.restaurantservice.dto.restaurant.response.RestaurantShortResponse;
 import org.vovgoo.restaurantservice.entity.Image;
 import org.vovgoo.restaurantservice.entity.Restaurant;
 
@@ -30,10 +31,25 @@ public interface RestaurantMapper {
 
     @Mapping(target = "id", source = "restaurant.id")
     @Mapping(target = "name", source = "restaurant.name")
+    @Mapping(target = "description", source = "restaurant.description")
+    @Mapping(target = "cuisine", source = "restaurant.cuisine")
+    @Mapping(target = "address", source = "restaurant.address")
+    @Mapping(target = "website", source = "restaurant.website")
+    @Mapping(target = "profileImage", source = "profileImage")
+    @Mapping(target = "phone", source = "restaurant.phone")
+    @Mapping(target = "openingTime", source = "restaurant.openingTime")
+    @Mapping(target = "closingTime", source = "restaurant.closingTime")
+    @Mapping(target = "deliveryAvailable", source = "restaurant.deliveryAvailable")
+    @Mapping(target = "parkingAvailable", source = "restaurant.parkingAvailable")
+    @Mapping(target = "status", source = "restaurant.status")
+    RestaurantShortResponse toShortResponse(Restaurant restaurant, Image profileImage);
+
+    @Mapping(target = "id", source = "restaurant.id")
+    @Mapping(target = "name", source = "restaurant.name")
     @Mapping(target = "cuisine", source = "restaurant.cuisine")
     @Mapping(target = "address", source = "restaurant.address")
     @Mapping(target = "phone", source = "restaurant.phone")
     @Mapping(target = "profileImageUrl", source = "profileImage.url")
     @Mapping(target = "status", source = "restaurant.status")
-    RestaurantInternalResponse toShortResponse(Restaurant restaurant, Image profileImage);
+    RestaurantInternalResponse toInternalResponse(Restaurant restaurant, Image profileImage);
 }
