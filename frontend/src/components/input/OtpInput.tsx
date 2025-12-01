@@ -20,13 +20,13 @@ export const OtpInput: React.FC<OtpInputProps> = ({ name, control, maxLength = 6
         <InputOTP maxLength={maxLength} value={field.value || ""} onChange={field.onChange}>
           <InputOTPGroup>
             {Array.from({ length: 3 }).map((_, i) => (
-              <InputOTPSlot key={i} index={i} />
+              <InputOTPSlot className="bg-white" key={i} index={i} />
             ))}
           </InputOTPGroup>
           <InputOTPSeparator />
           <InputOTPGroup>
             {Array.from({ length: 3 }).map((_, i) => (
-              <InputOTPSlot key={i + 3} index={i + 3} />
+              <InputOTPSlot className="bg-white" key={i + 3} index={i + 3} />
             ))}
           </InputOTPGroup>
         </InputOTP>
