@@ -18,24 +18,3 @@ export interface ConfirmSignUpRequest {
 export interface JwtResponse {
   accessToken: string;
 }
-
-export interface ChangePasswordRequest {
-  oldPassword: string;
-  newPassword: string;
-}
-
-export interface ChangeEmailRequest {
-  email: string;
-}
-
-export interface ConfirmChangeEmailRequest {
-  token: string;
-}
-
-export interface ChangePhoneRequest {
-  phone: string;
-}
-
-export interface ConfirmChangePhoneRequest {
-  code: string;
-}
