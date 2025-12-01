@@ -22,10 +22,16 @@ const Header: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
-  const { data: user, isPending } = useQuery<UserResponse>({ 
-    queryKey: ["me"], 
-    queryFn: () => userService.me(), 
-  });
+const { data: user, isPending } = useQuery<UserResponse>({
+  queryKey: ["me"],
+  queryFn: () =>
+    new Promise<UserResponse>((resolve, reject) => {
+      setTimeout(() => {
+        userService.me().then(resolve).catch(reject);
+      }, 2000); // 2 секунды задержки
+    }),
+});
+
 
   const logoutMutation = useMutation({
     mutationFn: () => userService.logout(),
@@ -53,14 +59,14 @@ const Header: React.FC = () => {
           <SearchInput name="search" control={form.control} placeholder="Поиск..." />
         </div>
         <div className="flex items-center gap-x-10">
-          {token && (
+         {token && (isPending || user?.defaultAddress) && (
             <div className="flex items-center gap-3 cursor-pointer">
               <HomeIcon className="w-5 h-5" />
               <div className="text-xs flex flex-col">
                 {isPending ? (
                   <>
-                    <Skeleton className="h-3 w-40 bg-gray-300 rounded-xs mb-1" />
-                    <Skeleton className="h-3 w-36 bg-gray-300 rounded-xs" />
+                    <Skeleton className="h-3 w-40 bg-gray-400 rounded-xs mb-1" />
+                    <Skeleton className="h-3 w-36 bg-gray-400 rounded-xs" />
                   </>
                 ) : user?.defaultAddress ? (
                   <>
@@ -71,9 +77,7 @@ const Header: React.FC = () => {
                       {user.defaultAddress.street}, {user.defaultAddress.house}, {user.defaultAddress.building}
                     </div>
                   </>
-                ) : (
-                  null
-                )}
+                ) : null}
               </div>
             </div>
           )}
@@ -84,7 +88,7 @@ const Header: React.FC = () => {
                 <MenubarTrigger className="flex items-center gap-2 cursor-pointer">
                   <UserIcon className="w-5 h-5" />
                   {isPending ? (
-                    <Skeleton className="h-4 w-24 bg-gray-300 rounded-xs" />
+                    <Skeleton className="h-4 w-24 bg-gray-400 rounded-xs" />
                   ) : (
                     user?.fullName || "Профиль"
                   )}
