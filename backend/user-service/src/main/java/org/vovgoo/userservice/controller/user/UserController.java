@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import org.vovgoo.userservice.dto.user.request.*;
 import org.vovgoo.userservice.dto.user.response.UserResponse;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangeEmailRequest;
 import org.vovgoo.userservice.dto.user.request.ConfirmChangePhoneRequest;
+import org.vovgoo.userservice.service.security.cookie.JwtCookieService;
 import org.vovgoo.userservice.service.user.ChangeEmailService;
 import org.vovgoo.userservice.service.user.ChangePhoneService;
 import org.vovgoo.userservice.service.user.UserService;
@@ -31,6 +33,7 @@ public class UserController {
     private final UserService userService;
     private final ChangeEmailService changeEmailService;
     private final ChangePhoneService changePhoneService;
+    private final JwtCookieService jwtCookieService;
 
     @Operation(summary = "Get user profile", description = "Retrieve the current authenticated user's profile")
     @ApiResponses(value = {
@@ -46,7 +49,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @GetMapping("/me")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponse> getProfile() {
         return ResponseEntity.ok(userService.getProfile());
     }
@@ -67,7 +69,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/profile")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserResponse> updateUserProfile(@Valid @RequestBody UpdateUserProfileRequest request) {
         return ResponseEntity.ok(userService.updateUserProfile(request));
     }
@@ -87,7 +88,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/password")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
         userService.changePassword(request);
         return ResponseEntity.noContent().build();
@@ -110,7 +110,6 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
     })
     @PutMapping("/me/phone")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> changePhone(@Valid @RequestBody ChangePhoneRequest request) {
         changePhoneService.changePhone(request);
         return ResponseEntity.noContent().build();
@@ -215,6 +214,18 @@ public class UserController {
     @PutMapping("/me/reactivate")
     public ResponseEntity<Void> reactivateAccount() {
         userService.reactivateAccount();
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Logout user", description = "Invalidate refresh token and remove cookie")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Successfully logged out"),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content(schema = @Schema(implementation = ExceptionResponse.class)))
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response) {
+        jwtCookieService.clearRefreshToken(response);
         return ResponseEntity.noContent().build();
     }
 }

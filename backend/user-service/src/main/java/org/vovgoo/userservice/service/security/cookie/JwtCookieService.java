@@ -35,4 +35,18 @@ public class JwtCookieService {
         }
         return null;
     }
+
+    public void clearRefreshToken(HttpServletResponse response) {
+        Cookie cookie = new Cookie("refreshToken", "");
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addHeader("Set-Cookie", cookie.getName() + "=" + cookie.getValue() +
+                "; Max-Age=" + cookie.getMaxAge() +
+                "; Path=" + cookie.getPath() +
+                "; HttpOnly" +
+                "; Secure" +
+                "; SameSite=Strict");
+    }
 }
