@@ -23,6 +23,7 @@ import {
   CardContent
 } from "@/components/ui/card";
 import { LinkButton } from "@/components/button/LinkButton";
+import { PhoneInput } from "@/components/input/PhoneInput";
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -103,10 +104,10 @@ export const SignUpForm: React.FC = () => {
                     render={({ field }) => (
                     <FormItem>
                         <FormControl>
-                        <TextInput
+                        <PhoneInput
                             name={field.name}
                             control={form.control}
-                            placeholder="Телефон"
+                            placeholder="Tелефон"
                             error={form.formState.errors.phone?.message}
                         />
                         </FormControl>

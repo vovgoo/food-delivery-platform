@@ -10,7 +10,6 @@ import { AppRoutes } from "@/routes";
 import { signInSchema, type SignInFormData } from "@/schemas";
 
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { TextInput } from "@/components/input/TextInput";
 import { PasswordInput } from "@/components/input/PasswordInput";
 import { SpinnerButton } from "@/components/button/SpinnerButton";
 
@@ -22,6 +21,7 @@ import {
   CardContent
 } from "@/components/ui/card";
 import { LinkButton } from "@/components/button/LinkButton";
+import { PhoneInput } from "@/components/input/PhoneInput";
 
 export const SignInForm: React.FC = () => {
   const navigate = useNavigate();
@@ -79,10 +79,10 @@ export const SignInForm: React.FC = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <TextInput
+                    <PhoneInput
                       name={field.name}
                       control={form.control}
-                      placeholder="Телефон"
+                      placeholder="Tелефон"
                       error={form.formState.errors.phone?.message}
                     />
                   </FormControl>
