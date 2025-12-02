@@ -61,18 +61,13 @@ export class ApiClient {
           return Promise.reject(error);
         }
 
-        if (status === 403) {
-           window.location.href = AppRoutes.MAIN;
-          return Promise.reject(error);
-        }
-
         if (status === 401 && originalRequest.url?.includes('/api/v1/auth/refresh')) {
           localStorage.removeItem('accessToken');
           window.location.href = AppRoutes.MAIN;
           return Promise.reject(error);
         }
 
-        if (status === 401 && !originalRequest._retry) {
+        if (status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/signIn')) {
           const access = localStorage.getItem('accessToken');
 
           if (!access) {
