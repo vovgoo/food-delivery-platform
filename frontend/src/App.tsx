@@ -16,8 +16,8 @@ import AdminDishesPage from "./pages/AdminDishesPage";
 import AdminOrdersPage from "./pages/AdminOrdersPage";
 
 import { AppRoutes } from "./routes";
-import UserDeactivatePage from "./pages/UserDeactivatePage";
-import UserBlockedPage from "./pages/UserBlockedPage";
+import UserDeactivatePage from "./pages/user/UserDeactivatePage";
+import UserBlockedPage from "./pages/user/UserBlockedPage";
 import Header from "./features/common/Header";
 import Footer from "./features/common/Footer";
 import { Toaster } from "sonner";
