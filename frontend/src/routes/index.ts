@@ -9,15 +9,14 @@ export const AppRoutes = {
   PROFILE_ORDERS: '/profile/orders',
   PROFILE_ADDRESSES: '/profile/addresses',
   PROFILE_SETTINGS: '/profile/settings',
+  CHANGE_EMAIL: '/profile/confirm/change-email',
+  CHANGE_PHONE: '/profile/confirm/change-phone',
 
 
   RESTAURANT: '/restaurant/:id',
   CREATE_ORDER: '/create-order',
-
   USER_DEACTIVATE: '/error/diactivate',
   USER_BLOCKED: '/error/blocked',
-  CHANGE_EMAIL: '/profile/change-email',
-  CHANGE_PHONE: '/profile/change-phone',
 
   ADMIN_DASHBOARD: '/admin',
   ADMIN_RESTAURANTS: '/admin/restaurants',
