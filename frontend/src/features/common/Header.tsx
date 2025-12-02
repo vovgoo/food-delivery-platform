@@ -3,7 +3,7 @@ import { AppRoutes } from "@/routes";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, LogOutIcon } from "lucide-react";
+import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon } from "lucide-react";
 import { toast } from "sonner";
 import { LinkButton } from "@/components/button/LinkButton";
 import {
@@ -16,22 +16,17 @@ import {
 import { userService, type UserResponse } from "@/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SearchInput } from "@/components/input/SearchInput";
+import { Separator } from "@/components/ui/separator";
 
 const Header: React.FC = () => {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   
-const { data: user, isPending } = useQuery<UserResponse>({
-  queryKey: ["me"],
-  queryFn: () =>
-    new Promise<UserResponse>((resolve, reject) => {
-      setTimeout(() => {
-        userService.me().then(resolve).catch(reject);
-      }, 2000); // 2 секунды задержки
-    }),
-});
-
+  const { data: user, isPending } = useQuery<UserResponse>({
+    queryKey: ["me"],
+    queryFn: () => userService.me()
+  });
 
   const logoutMutation = useMutation({
     mutationFn: () => userService.logout(),
@@ -98,6 +93,19 @@ const { data: user, isPending } = useQuery<UserResponse>({
                     <UserIcon className="w-4 h-4 mr-2" />
                     Профиль
                   </MenubarItem>
+                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_ADDRESSES)}>
+                    <MapPinIcon className="w-4 h-4 mr-2" />
+                    Адреса
+                  </MenubarItem>
+                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_ORDERS)}>
+                    <PackageIcon className="w-4 h-4 mr-2" />
+                    Заказы
+                  </MenubarItem>
+                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_SETTINGS)}>
+                    <SettingsIcon className="w-4 h-4 mr-2" />
+                    Настройки
+                  </MenubarItem>
+                  <Separator/>
                   <MenubarItem className="cursor-pointer" onClick={() => logoutMutation.mutate()}>
                     <LogOutIcon className="w-4 h-4 mr-2" />
                     Выйти
