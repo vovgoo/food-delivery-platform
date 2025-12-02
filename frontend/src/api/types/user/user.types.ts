@@ -19,11 +19,6 @@ export interface UserResponse {
   roles: RoleResponse[];
 }
 
-export interface UpdateUserProfileRequest {
-  fullName: string;
-  birthDate: string;
-}
-
 export type OrderUserResponse = {
   id: string;
   email: string;
@@ -32,6 +27,11 @@ export type OrderUserResponse = {
   birthDate: string;
   userStatus: UserStatus;
 };
+
+export interface UpdateUserProfileRequest {
+  fullName: string;
+  birthDate: string;
+}
 
 export interface ChangePasswordRequest {
   oldPassword: string;
