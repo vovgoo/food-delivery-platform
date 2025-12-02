@@ -7,16 +7,16 @@ import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon }
 import { toast } from "sonner";
 import { LinkButton } from "@/components/button/LinkButton";
 import {
-  Menubar,
-  MenubarContent,
-  MenubarItem,
-  MenubarMenu,
-  MenubarTrigger,
-} from "@/components/ui/menubar";
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { userService, type UserResponse } from "@/api";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SearchInput } from "@/components/input/SearchInput";
-import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 const Header: React.FC = () => {
   const token = localStorage.getItem("accessToken");
@@ -78,41 +78,42 @@ const Header: React.FC = () => {
           )}
 
           {token ? (
-            <Menubar>
-              <MenubarMenu>
-                <MenubarTrigger className="flex items-center gap-2 cursor-pointer">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="flex items-center gap-2 bg-white hover:bg-white text-black cursor-pointer">
                   <UserIcon className="w-5 h-5" />
                   {isPending ? (
-                    <Skeleton className="h-4 w-24 bg-gray-400 rounded-xs" />
+                    <Skeleton className="h-4 w-24 rounded-xs" />
                   ) : (
-                    user?.fullName || "Профиль"
+                      <h1 className="text-sm">{user?.fullName || "Профиль"}</h1>
                   )}
-                </MenubarTrigger>
-                <MenubarContent>
-                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE)}>
-                    <UserIcon className="w-4 h-4 mr-2" />
-                    Профиль
-                  </MenubarItem>
-                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_ADDRESSES)}>
-                    <MapPinIcon className="w-4 h-4 mr-2" />
-                    Адреса
-                  </MenubarItem>
-                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_ORDERS)}>
-                    <PackageIcon className="w-4 h-4 mr-2" />
-                    Заказы
-                  </MenubarItem>
-                  <MenubarItem className="cursor-pointer" onClick={() => navigate(AppRoutes.PROFILE_SETTINGS)}>
-                    <SettingsIcon className="w-4 h-4 mr-2" />
-                    Настройки
-                  </MenubarItem>
-                  <Separator/>
-                  <MenubarItem className="cursor-pointer" onClick={() => logoutMutation.mutate()}>
-                    <LogOutIcon className="w-4 h-4 mr-2" />
-                    Выйти
-                  </MenubarItem>
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE)}>
+                  <UserIcon className="w-4 h-4 mr-2" />
+                  Профиль
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE_ADDRESSES)}>
+                  <MapPinIcon className="w-4 h-4 mr-2" />
+                  Адреса
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE_ORDERS)}>
+                  <PackageIcon className="w-4 h-4 mr-2" />
+                  Заказы
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE_SETTINGS)}>
+                  <SettingsIcon className="w-4 h-4 mr-2" />
+                  Настройки
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => logoutMutation.mutate()}>
+                  <LogOutIcon className="w-4 h-4 mr-2" />
+                  Выйти
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           ) : (
             <LinkButton
               icon={<UserIcon className="w-5 h-5" />}
