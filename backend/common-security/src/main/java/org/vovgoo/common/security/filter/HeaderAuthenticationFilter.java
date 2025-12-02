@@ -33,7 +33,12 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
     private final ObjectMapper objectMapper;
 
     private static final List<String> DEACTIVATED_ALLOWED_PATHS = List.of(
-            "/api/v1/users/me/reactivate"
+            "/api/v1/users/me/reactivate",
+            "/api/v1/users/logout"
+    );
+
+    private static final List<String> BLOCKED_ALLOWED_PATHS = List.of(
+            "/api/v1/users/logout"
     );
 
     @Override
@@ -61,7 +66,8 @@ public class HeaderAuthenticationFilter extends OncePerRequestFilter {
     private void validateUserStatus(UUID userId, String path) {
         UserStatus status = userClientService.getUser(userId).userStatus();
 
-        if (status.equals(UserStatus.BLOCKED)) {
+        if (status.equals(UserStatus.BLOCKED) &&
+                BLOCKED_ALLOWED_PATHS.stream().noneMatch(path::startsWith)) {
             throw new UserBlockedException();
         }
 
