@@ -9,6 +9,10 @@ public class PhoneValidationUtil {
     private static final PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
     public static boolean isValid(String phone) {
+        if (!phone.matches("\\+\\d+")) {
+            return false;
+        }
+
         try {
             Phonenumber.PhoneNumber number = phoneUtil.parse(phone, null);
             return phoneUtil.isValidNumber(number);

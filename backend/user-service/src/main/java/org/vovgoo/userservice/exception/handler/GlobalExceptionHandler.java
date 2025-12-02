@@ -6,6 +6,7 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,12 +61,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler({
-            AccessDeniedException.class,
-            UserDeactivatedException.class
+            AccessDeniedException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ExceptionResponse.of("Доступ запрещен", HttpStatus.FORBIDDEN, request.getRequestURI()));
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionResponse<String>> handleBadCredentials(BadCredentialsException ex, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ExceptionResponse.of(ex.getMessage(), HttpStatus.UNAUTHORIZED, request.getRequestURI()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -100,7 +106,8 @@ public class GlobalExceptionHandler {
             EmailAlreadyExistsException.class,
             PhoneAlreadyExistsException.class,
             AddressLimitExceededException.class,
-            UserActiveException.class
+            UserActiveException.class,
+            UserDeactivatedException.class
     })
     public ResponseEntity<ExceptionResponse<String>> handleConflict(RuntimeException ex, HttpServletRequest request) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
