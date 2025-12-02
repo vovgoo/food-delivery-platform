@@ -1,6 +1,6 @@
 import axios, { type AxiosRequestConfig, type AxiosError, type AxiosHeaders } from 'axios';
 import { AppRoutes } from '@/routes';
-import { authService, userService } from '../services';
+import { authService } from '../services';
 
 export interface JwtResponse {
   accessToken: string;
