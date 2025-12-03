@@ -3,7 +3,7 @@ import { AppRoutes } from "@/routes";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon } from "lucide-react";
+import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { LinkButton } from "@/components/button/LinkButton";
 import {
@@ -91,6 +91,13 @@ const Header: React.FC = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
+                {user?.roles?.some(role => role.name === "ADMIN") && (
+                  <DropdownMenuItem onClick={() => navigate(AppRoutes.ADMIN_DASHBOARD)}>
+                    <ShieldCheck className="w-4 h-4 mr-2" />
+                    Админ панель
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE)}>
                   <UserIcon className="w-4 h-4 mr-2" />
                   Профиль
