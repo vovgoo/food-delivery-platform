@@ -1,6 +1,5 @@
 import React from "react";
 import { AppRoutes } from "@/routes";
-import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
 import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck } from "lucide-react";
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { userService, type UserResponse } from "@/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SearchInput } from "@/components/input/SearchInput";
 import { Button } from "@/components/ui/button";
 
 const Header: React.FC = () => {
@@ -41,7 +39,6 @@ const Header: React.FC = () => {
     },
   });
 
-  const form = useForm<{ search: string }>();
 
   return (
     <header className="w-full flex py-5">
@@ -50,9 +47,7 @@ const Header: React.FC = () => {
           <img src="/img/logo_black.png" alt="FDP" className="w-8 h-8" />
           <span className="text-2xl font-bold">Food Delivery</span>
         </Link>
-        <div className="w-[400px]">
-          <SearchInput name="search" control={form.control} placeholder="Поиск..." />
-        </div>
+
         <div className="flex items-center gap-x-10">
          {token && (isPending || user?.defaultAddress) && (
             <div className="flex items-center gap-3 cursor-pointer">
