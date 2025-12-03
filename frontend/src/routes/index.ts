@@ -1,5 +1,8 @@
 export const AppRoutes = {
   MAIN: '/',
+  RESTAURANT: '/restaurant/:restaurantId',
+  DISH: '/restaurant/:restaurantId/dish/:dishId',
+  CREATE_ORDER: '/create-order',
 
   SIGN_IN: '/auth/signIn',
   SIGN_UP: '/auth/signUp',
@@ -20,7 +23,4 @@ export const AppRoutes = {
   ADMIN_RESTAURANT: '/admin/restaurants/:restaurantId',
   ADMIN_DISH: '/admin/restaurants/:restaurantId/dishes/:dishId',
   ADMIN_ORDERS: '/admin/orders',
-
-  RESTAURANT: '/restaurant/:id',
-  CREATE_ORDER: '/create-order',
 } as const;
