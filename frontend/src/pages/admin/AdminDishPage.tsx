@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { restaurantService } from "@/api/services/restaurant/restaurant.service";
 import { dishService } from "@/api/services/dish/dish.service";
-import type { RestaurantResponse, DishShortResponse } from "@/api";
+import type { RestaurantResponse, DishResponse } from "@/api";
 import { AppRoutes } from "@/routes";
 import { toast } from "sonner";
 import { AdminDishBreadcrumb } from "@/components/dish/AdminDishBreadcrumb";
@@ -24,7 +24,7 @@ const AdminDishPage: React.FC = () => {
     },
   });
 
-  const {data: dish, isPending: isDishPending, isError: isDishError, error: dishError} = useQuery<DishShortResponse>({
+  const {data: dish, isPending: isDishPending, isError: isDishError, error: dishError} = useQuery<DishResponse>({
     queryKey: ["admin-dish", restaurantId, dishId],
     queryFn: () => dishService.get(restaurantId!, dishId!),
     enabled: !!restaurantId && !!dishId,
