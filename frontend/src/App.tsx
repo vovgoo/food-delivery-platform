@@ -10,10 +10,8 @@ import SignInPage from "./pages/auth/SignInPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import ConfirmSignUpPage from "./pages/auth/ConfirmSignUpPage";
 
-import AdminDashboardPage from "./pages/AdminDashboardPage";
-import AdminRestaurantsPage from "./pages/AdminRestaurantsPage";
-import AdminDishesPage from "./pages/AdminDishesPage";
-import AdminOrdersPage from "./pages/AdminOrdersPage";
+import AdminRestaurantsPage from "./pages/admin/AdminRestaurantsPage";
+import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
 
 import { AppRoutes } from "./routes";
 import UserDeactivatePage from "./pages/user/UserDeactivatePage";
@@ -25,6 +23,9 @@ import { ProfileLayout } from "./features/profile/ProfileLayout";
 import ProfileOrdersPage from "./pages/profile/ProfileOrdersPage";
 import ProfileAddressesPage from "./pages/profile/ProfileAddressesPage";
 import ProfileSettingsPage from "./pages/profile/ProfileSettingsPage";
+import { AdminLayout } from "./features/admin/AdminLayout";
+import AdminRestaurantPage from "./pages/admin/AdminRestaurantPage";
+import AdminDishPage from "./pages/admin/AdminDishPage";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -61,12 +62,16 @@ const App: React.FC = () => {
           <Route path={AppRoutes.CHANGE_EMAIL} element={<ChangeUserEmailPage />} />
           <Route path={AppRoutes.CHANGE_PHONE} element={<ChangeUserPhonePage />} />
           
+          <Route path={AppRoutes.ADMIN_DASHBOARD} element={<AdminLayout />}>
+            <Route path={AppRoutes.ADMIN_RESTAURANTS} element={<AdminRestaurantsPage />} />
+            <Route path={AppRoutes.ADMIN_RESTAURANT} element={<AdminRestaurantPage />} />
+            <Route path={AppRoutes.ADMIN_DISH} element={<AdminDishPage />} />
+            <Route path={AppRoutes.ADMIN_ORDERS} element={<AdminOrdersPage />} />
+            <Route index element={<Navigate to={AppRoutes.ADMIN_RESTAURANTS} replace />} />
+          </Route>
+
           <Route path={AppRoutes.RESTAURANT} element={<RestaurantPage />} />
           <Route path={AppRoutes.CREATE_ORDER} element={<CreateOrderPage />} />
-          <Route path={AppRoutes.ADMIN_DASHBOARD} element={<AdminDashboardPage />} />
-          <Route path={AppRoutes.ADMIN_RESTAURANTS} element={<AdminRestaurantsPage />} />
-          <Route path={AppRoutes.ADMIN_DISHES} element={<AdminDishesPage />} />
-          <Route path={AppRoutes.ADMIN_ORDERS} element={<AdminOrdersPage />} />
           <Route path="*" element={<Navigate to={AppRoutes.MAIN} />} />
         </Routes>
 
