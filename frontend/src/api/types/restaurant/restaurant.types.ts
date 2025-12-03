@@ -19,6 +19,22 @@ export interface RestaurantResponse {
   images?: ImageResponse[];
 }
 
+export interface RestaurantShortResponse {
+  id: string;
+  name: string;
+  description?: string;
+  cuisine: string;
+  address: string;
+  website?: string;
+  profileImage?: ImageResponse;
+  phone: string;
+  openingTime: string;
+  closingTime: string;
+  deliveryAvailable: boolean;
+  parkingAvailable: boolean;
+  status: RestaurantStatus;
+}
+
 export interface RestaurantCreateRequest {
   name: string;
   description?: string;
@@ -44,3 +60,7 @@ export type OrderRestaurantResponse = {
   phone: string;
   profileImageUrl: string;
 };
+
+export interface RestaurantSearchRequest {
+  cuisine?: string;
+}
