@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const RestaurantCardAdminSkeleton: React.FC = () => {
+export const RestaurantCardSkeleton: React.FC = () => {
   return (
     <Card className="p-0 animate-pulse flex flex-col overflow-hidden">
       <Skeleton className="w-full h-48 bg-gray-400 rounded-b-none" />
@@ -23,10 +23,7 @@ export const RestaurantCardAdminSkeleton: React.FC = () => {
           <Skeleton className="bg-gray-400 w-20 h-4 rounded" />
         </div>
 
-        <div className="flex flex-col gap-2 mt-4">
-          <Skeleton className="bg-gray-400 w-full h-9 rounded-md" />
-          <Skeleton className="bg-gray-400 w-full h-9 rounded-md" />
-        </div>
+        <Skeleton className="bg-gray-400 w-full h-9 rounded-md mt-4" />
       </CardContent>
     </Card>
   );
