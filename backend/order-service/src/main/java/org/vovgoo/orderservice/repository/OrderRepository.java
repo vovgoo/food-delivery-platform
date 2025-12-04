@@ -11,9 +11,9 @@ import java.util.UUID;
 
 public interface OrderRepository extends JpaRepository<Order,UUID> {
 
-    @Query("SELECT o FROM Order o LEFT JOIN FETCH o.items LEFT JOIN FETCH o.payment")
+    @Query("SELECT o FROM Order o ORDER BY o.orderDate DESC")
     Page<Order> findAllWithItemsAndPayment(Pageable pageable);
 
-    @Query("SELECT o FROM Order o LEFT JOIN FETCH o.items LEFT JOIN FETCH o.payment WHERE o.userId = :userId")
+    @Query("SELECT o FROM Order o WHERE o.userId = :userId ORDER BY o.orderDate DESC")
     Page<Order> findByUserIdWithItemsAndPayment(@Param("userId") UUID userId, Pageable pageable);
 }

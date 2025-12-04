@@ -4,6 +4,7 @@ import { Plus, Minus, ImageIcon } from "lucide-react";
 import { useDispatch } from "react-redux";
 import { removeItem, updateQuantity } from "@/store/slices/cartSlice";
 import type { DishResponse } from "@/api";
+import { Badge } from "../ui/badge";
 
 interface CartDishCardProps {
   restaurantId: string;
@@ -13,6 +14,8 @@ interface CartDishCardProps {
 
 const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantity }) => {
   const dispatch = useDispatch();
+
+  const isAvailable = dish.status === "AVAILABLE";
 
   return (
     <div className="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
@@ -27,6 +30,9 @@ const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantit
         <div className="flex flex-col">
           <span className="font-medium">{dish.name}</span>
           <span className="text-sm text-gray-600">{dish.price} BYN</span>
+          <Badge className={isAvailable ? "bg-green-500 text-white" : "bg-red-500 text-white"}>
+            {isAvailable ? "Доступно" : "Временно не доступно"}
+          </Badge>
         </div>
       </div>
 

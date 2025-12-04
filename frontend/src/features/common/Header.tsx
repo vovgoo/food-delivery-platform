@@ -95,12 +95,14 @@ const Header: React.FC = () => {
 
               <DropdownMenuContent align="end">
                 {user?.roles?.some(role => role.name === "ADMIN") && (
-                  <DropdownMenuItem onClick={() => navigate(AppRoutes.ADMIN_DASHBOARD)}>
-                    <ShieldCheck className="w-4 h-4 mr-2" />
-                    Админ панель
-                  </DropdownMenuItem>
+                  <>
+                    <DropdownMenuItem onClick={() => navigate(AppRoutes.ADMIN_DASHBOARD)}>
+                      <ShieldCheck className="w-4 h-4 mr-2" />
+                      Админ панель
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
                 )}
-                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE)}>
                   <UserIcon className="w-4 h-4 mr-2" />
                   Профиль

@@ -1,6 +1,6 @@
 import type { OrderUserResponse } from '../user';
 import type { OrderAddressResponse } from '../address';
-import type { PaymentResponse } from '../payment';
+import type { PaymentMethod, PaymentResponse } from '../payment';
 import type { OrderDishResponse } from '../dish';
 import type { OrderRestaurantResponse } from '../restaurant';
 
@@ -18,20 +18,24 @@ export interface AddOrderItemRequest {
   quantity: number;
 }
 
+export interface CreateOrderRequest {
+  restaurantId: string;
+  deliveryAddress: string;
+  items: AddOrderItemRequest[];
+  payment: {
+    paymentMethod: PaymentMethod;
+  };
+}
+
+export interface UpdateOrderStatusRequest {
+  status: OrderStatus;
+}
+
 export interface OrderItemResponse {
   id: string;
   dish: OrderDishResponse;
   quantity: number;
   price: number;
-}
-
-export interface CreateOrderRequest {
-  restaurantId: string;
-  deliveryAddress: string;
-  items: AddOrderItemRequest[];
-  payment?: {
-    paymentMethod: string;
-  };
 }
 
 export interface OrderResponse {
@@ -44,4 +48,12 @@ export interface OrderResponse {
   totalPrice: number;
   items: OrderItemResponse[];
   payment: PaymentResponse;
+}
+
+export interface OrderShortResponse {
+  id: string;
+  orderDate: string;
+  payment: PaymentResponse;
+  status: OrderStatus;
+  totalPrice: number;
 }

@@ -4,9 +4,9 @@ import { restaurantService } from "@/api/services/restaurant/restaurant.service"
 import { dishService } from "@/api/services/dish/dish.service";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import CartDishCard from "./CartDishCard";
 import type { RestaurantResponse, DishResponse } from "@/api";
+import { CreateOrderFormDialog } from "@/features/order/CreateOrderFormDialog";
 
 interface CartRestaurantCardProps {
   restaurantId: string;
@@ -79,7 +79,7 @@ const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, i
 
       <div className="flex items-center justify-between mt-4">
         <span className="text-lg font-medium">Общая сумма: {totalPrice} BYN</span>
-        <Button className="bg-amber-400 text-black hover:bg-amber-300">Заказать</Button>
+        <CreateOrderFormDialog restaurantId={restaurantId} items={items} />
       </div>
     </div>
   );

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public interface DishRepository extends JpaRepository<Dish, UUID> {
 
-    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.status <> 'REMOVED'")
+    @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.status <> 'REMOVED' ORDER BY d.name ASC")
     Page<Dish> findAllByRestaurantId(@Param("restaurantId") UUID restaurantId, Pageable pageable);
 
     @Query("SELECT d FROM Dish d WHERE d.restaurant.id = :restaurantId AND d.id = :dishId AND d.status <> 'REMOVED'")
