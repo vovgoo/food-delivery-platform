@@ -3,7 +3,6 @@ export const AppRoutes = {
   RESTAURANT: '/restaurant/:restaurantId',
   DISH: '/restaurant/:restaurantId/dish/:dishId',
   CART: '/cart',
-  CREATE_ORDER: '/create-order',
 
   SIGN_IN: '/auth/signIn',
   SIGN_UP: '/auth/signUp',
@@ -11,6 +10,7 @@ export const AppRoutes = {
 
   PROFILE: '/profile',
   PROFILE_ORDERS: '/profile/orders',
+  PROFILE_ORDER_DETAILS: '/profile/orders/:orderId',
   PROFILE_ADDRESSES: '/profile/addresses',
   PROFILE_SETTINGS: '/profile/settings',
   CHANGE_EMAIL: '/profile/confirm/change-email',

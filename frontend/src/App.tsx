@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import ChangeUserEmailPage from "./pages/profile/ConfirmChangeEmailPage";
 import ChangeUserPhonePage from "./pages/profile/ConfirmChangePhonePage";
-import CreateOrderPage from "./pages/CreateOrderPage";
 
 import SignInPage from "./pages/auth/SignInPage";
 import SignUpPage from "./pages/auth/SignUpPage";
@@ -28,6 +27,7 @@ import AdminDishPage from "./pages/admin/AdminDishPage";
 import RestaurantPage from "./pages/restaurant/RestaurantPage";
 import DishPage from "./pages/dish/DishPage";
 import CartPage from "./pages/CartPage";
+import ProfileOrderDetailsPage from "./pages/profile/ProfileOrderDetailsPage";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -60,6 +60,7 @@ const App: React.FC = () => {
 
           <Route path={AppRoutes.PROFILE} element={<ProfileLayout />}>
             <Route path={AppRoutes.PROFILE_ORDERS} element={<ProfileOrdersPage />} />
+            <Route path={AppRoutes.PROFILE_ORDER_DETAILS} element={<ProfileOrderDetailsPage />} />
             <Route path={AppRoutes.PROFILE_ADDRESSES} element={<ProfileAddressesPage />} />
             <Route path={AppRoutes.PROFILE_SETTINGS} element={<ProfileSettingsPage />} />
             <Route index element={<Navigate to={AppRoutes.PROFILE_ORDERS} replace />} />
@@ -75,7 +76,6 @@ const App: React.FC = () => {
             <Route index element={<Navigate to={AppRoutes.ADMIN_RESTAURANTS} replace />} />
           </Route>
 
-          <Route path={AppRoutes.CREATE_ORDER} element={<CreateOrderPage />} />
           <Route path="*" element={<Navigate to={AppRoutes.MAIN} />} />
         </Routes>
 
