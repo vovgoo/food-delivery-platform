@@ -1,10 +1,10 @@
-import React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userService } from "@/api";
-import { AppRoutes } from "@/routes";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
+import React from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { userService } from '@/api';
+import { AppRoutes } from '@/routes';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
 
 const UserDeactivatePage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -13,12 +13,12 @@ const UserDeactivatePage: React.FC = () => {
   const reactivateMutation = useMutation<void, any, void>({
     mutationFn: () => userService.reactivate(),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
-      toast.success("Аккаунт успешно реактивирован!");
-      navigate(AppRoutes.PROFILE_SETTINGS); 
+      queryClient.invalidateQueries({ queryKey: ['userProfile'] });
+      toast.success('Аккаунт успешно реактивирован!');
+      navigate(AppRoutes.PROFILE_SETTINGS);
     },
     onError: (err: any) => {
-      const message = err.response?.data?.body || "Ошибка при реактивации аккаунта";
+      const message = err.response?.data?.body || 'Ошибка при реактивации аккаунта';
       toast.error(message);
     },
   });
@@ -27,12 +27,12 @@ const UserDeactivatePage: React.FC = () => {
     mutationFn: () => userService.logout(),
     onSuccess: () => {
       queryClient.clear();
-      localStorage.removeItem("accessToken");
-      toast.success("Вы успешно вышли из аккаунта");
+      localStorage.removeItem('accessToken');
+      toast.success('Вы успешно вышли из аккаунта');
       navigate(AppRoutes.MAIN);
     },
     onError: () => {
-      toast.error("Не удалось выйти из аккаунта");
+      toast.error('Не удалось выйти из аккаунта');
     },
   });
 
@@ -44,9 +44,9 @@ const UserDeactivatePage: React.FC = () => {
         <div className="w-full flex justify-between gap-x-5">
           <SpinnerButton
             text="Реактивировать аккаунт"
-              loadingText="Реактивация..."
-              isLoading={reactivateMutation.isPending}
-              onClick={() => reactivateMutation.mutate()}
+            loadingText="Реактивация..."
+            isLoading={reactivateMutation.isPending}
+            onClick={() => reactivateMutation.mutate()}
           />
 
           <SpinnerButton

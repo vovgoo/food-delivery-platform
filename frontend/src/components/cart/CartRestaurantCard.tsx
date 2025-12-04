@@ -1,12 +1,12 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { restaurantService } from "@/api/services/restaurant/restaurant.service";
-import { dishService } from "@/api/services/dish/dish.service";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Badge } from "@/components/ui/badge";
-import CartDishCard from "./CartDishCard";
-import type { RestaurantResponse, DishResponse } from "@/api";
-import { CreateOrderFormDialog } from "@/features/order/CreateOrderFormDialog";
+import React from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { restaurantService } from '@/api/services/restaurant/restaurant.service';
+import { dishService } from '@/api/services/dish/dish.service';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Badge } from '@/components/ui/badge';
+import CartDishCard from './CartDishCard';
+import type { RestaurantResponse, DishResponse } from '@/api';
+import { CreateOrderFormDialog } from '@/features/order/CreateOrderFormDialog';
 
 interface CartRestaurantCardProps {
   restaurantId: string;
@@ -15,7 +15,7 @@ interface CartRestaurantCardProps {
 
 const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, items }) => {
   const { data: restaurant, isPending: isRestaurantPending } = useQuery<RestaurantResponse>({
-    queryKey: ["cart-restaurant", restaurantId],
+    queryKey: ['cart-restaurant', restaurantId],
     queryFn: () => restaurantService.get(restaurantId),
     retry: (failureCount, err: any) => {
       if (err?.response?.status === 404) return false;
@@ -24,9 +24,9 @@ const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, i
   });
 
   const dishesQuery = useQuery<DishResponse[]>({
-    queryKey: ["cart-dishes", restaurantId, items.map(i => i.id).join(",")],
+    queryKey: ['cart-dishes', restaurantId, items.map((i) => i.id).join(',')],
     queryFn: async () => {
-      const promises = items.map(i => dishService.get(restaurantId, i.id));
+      const promises = items.map((i) => dishService.get(restaurantId, i.id));
       return Promise.all(promises);
     },
     enabled: items.length > 0,
@@ -36,10 +36,9 @@ const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, i
     },
   });
 
-
   if (items.length === 0) return null;
 
-  const isActive = restaurant?.status === "ACTIVE";
+  const isActive = restaurant?.status === 'ACTIVE';
 
   const totalPrice = dishesQuery.data
     ? dishesQuery.data.reduce((sum, dish, index) => sum + dish.price * items[index].quantity, 0)
@@ -56,17 +55,15 @@ const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, i
           )}
         </h2>
         {!isRestaurantPending && restaurant && (
-          <Badge className={isActive ? "bg-green-500 text-white" : "bg-orange-500 text-white"}>
-            {isActive ? "Активен" : "Временно не доступен"}
+          <Badge className={isActive ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}>
+            {isActive ? 'Активен' : 'Временно не доступен'}
           </Badge>
         )}
       </div>
 
       <div className="flex flex-col gap-2">
         {dishesQuery.isPending || !dishesQuery.data
-          ? items.map(i => (
-              <Skeleton key={i.id} className="h-20 w-full bg-gray-200 rounded-lg" />
-            ))
+          ? items.map((i) => <Skeleton key={i.id} className="h-20 w-full bg-gray-200 rounded-lg" />)
           : dishesQuery.data.map((dish, index) => (
               <CartDishCard
                 key={dish.id}

@@ -1,7 +1,7 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Input as UIInput } from "@/components/ui/input";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Input as UIInput } from '@/components/ui/input';
 
 interface TextInputProps {
   name: string;
@@ -15,7 +15,7 @@ export const TextInput: React.FC<TextInputProps> = ({
   name,
   control,
   placeholder,
-  type = "text",
+  type = 'text',
   error,
 }) => (
   <div className="flex flex-col gap-1">

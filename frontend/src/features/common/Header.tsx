@@ -1,44 +1,52 @@
-import React from "react";
-import { AppRoutes } from "@/routes";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck, ShoppingCart } from "lucide-react";
-import { toast } from "sonner";
-import { LinkButton } from "@/components/button/LinkButton";
+import React from 'react';
+import { AppRoutes } from '@/routes';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link, useNavigate } from 'react-router-dom';
+import {
+  HomeIcon,
+  UserIcon,
+  LogOutIcon,
+  MapPinIcon,
+  PackageIcon,
+  SettingsIcon,
+  ShieldCheck,
+  ShoppingCart,
+} from 'lucide-react';
+import { toast } from 'sonner';
+import { LinkButton } from '@/components/button/LinkButton';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
-import { userService, type UserResponse } from "@/api";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dropdown-menu';
+import { userService, type UserResponse } from '@/api';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Button } from '@/components/ui/button';
 
 const Header: React.FC = () => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  
+
   const { data: user, isPending } = useQuery<UserResponse>({
-    queryKey: ["me"],
-    queryFn: () => userService.me()
+    queryKey: ['me'],
+    queryFn: () => userService.me(),
   });
 
   const logoutMutation = useMutation({
     mutationFn: () => userService.logout(),
     onSuccess: () => {
       queryClient.clear();
-      localStorage.removeItem("accessToken");
-      toast.success("Вы успешно вышли из аккаунта");
+      localStorage.removeItem('accessToken');
+      toast.success('Вы успешно вышли из аккаунта');
       navigate(AppRoutes.MAIN);
     },
     onError: () => {
-      toast.error("Не удалось выйти из аккаунта");
+      toast.error('Не удалось выйти из аккаунта');
     },
   });
-
 
   return (
     <header className="w-full flex py-5">
@@ -49,7 +57,7 @@ const Header: React.FC = () => {
         </Link>
 
         <div className="flex items-center gap-x-5">
-         {token && (isPending || user?.defaultAddress) && (
+          {token && (isPending || user?.defaultAddress) && (
             <div className="flex items-center gap-3 cursor-pointer">
               <HomeIcon className="w-5 h-5" />
               <div className="text-xs flex flex-col">
@@ -61,10 +69,12 @@ const Header: React.FC = () => {
                 ) : user?.defaultAddress ? (
                   <>
                     <div>
-                      {user.defaultAddress.country}, {user.defaultAddress.state}, {user.defaultAddress.city}
+                      {user.defaultAddress.country}, {user.defaultAddress.state},{' '}
+                      {user.defaultAddress.city}
                     </div>
                     <div>
-                      {user.defaultAddress.street}, {user.defaultAddress.house}, {user.defaultAddress.building}
+                      {user.defaultAddress.street}, {user.defaultAddress.house},{' '}
+                      {user.defaultAddress.building}
                     </div>
                   </>
                 ) : null}
@@ -88,13 +98,13 @@ const Header: React.FC = () => {
                   {isPending ? (
                     <Skeleton className="h-4 w-24 rounded-xs" />
                   ) : (
-                      <h1 className="text-sm">{user?.fullName || "Профиль"}</h1>
+                    <h1 className="text-sm">{user?.fullName || 'Профиль'}</h1>
                   )}
                 </Button>
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
-                {user?.roles?.some(role => role.name === "ADMIN") && (
+                {user?.roles?.some((role) => role.name === 'ADMIN') && (
                   <>
                     <DropdownMenuItem onClick={() => navigate(AppRoutes.ADMIN_DASHBOARD)}>
                       <ShieldCheck className="w-4 h-4 mr-2" />

@@ -1,7 +1,7 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Input as UIInput } from "@/components/ui/input";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Input as UIInput } from '@/components/ui/input';
 
 interface NumberInputProps {
   name: string;
@@ -22,10 +22,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({ name, control, placeho
           placeholder={placeholder}
           type="number"
           step="0.01"
-          value={value ?? ""}
+          value={value ?? ''}
           onChange={(e) => {
             const val = e.target.value;
-            onChange(val === "" ? undefined : parseFloat(val));
+            onChange(val === '' ? undefined : parseFloat(val));
           }}
         />
       )}

@@ -1,38 +1,32 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
-import { updateUserProfileSchema, type UpdateUserProfileFormData } from "@/schemas";
-import { userService, type UpdateUserProfileRequest, type UserResponse } from "@/api";
+import { updateUserProfileSchema, type UpdateUserProfileFormData } from '@/schemas';
+import { userService, type UpdateUserProfileRequest, type UserResponse } from '@/api';
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { TextInput } from "@/components/input/TextInput";
-import { DateInput } from "@/components/input/DateInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { TextInput } from '@/components/input/TextInput';
+import { DateInput } from '@/components/input/DateInput';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
 
 export const UpdateUserProfileForm: React.FC = () => {
   const queryClient = useQueryClient();
 
   const { data: user, isLoading } = useQuery<UserResponse>({
-    queryKey: ["me"],
+    queryKey: ['me'],
     queryFn: () => userService.me(),
   });
 
   const form = useForm<UpdateUserProfileFormData>({
     resolver: zodResolver(updateUserProfileSchema),
     defaultValues: {
-      fullName: "",
-      birthDate: "",
+      fullName: '',
+      birthDate: '',
     },
   });
 
@@ -49,8 +43,8 @@ export const UpdateUserProfileForm: React.FC = () => {
     mutationFn: (payload: UpdateUserProfileRequest) => userService.changeProfile(payload),
 
     onSuccess: (updatedUser) => {
-      toast.success("Профиль успешно обновлён!");
-      queryClient.setQueryData(["me"], updatedUser);
+      toast.success('Профиль успешно обновлён!');
+      queryClient.setQueryData(['me'], updatedUser);
 
       form.reset({
         fullName: updatedUser.fullName,
@@ -62,15 +56,13 @@ export const UpdateUserProfileForm: React.FC = () => {
       const { statusCode, body } = err.response?.data || {};
 
       if (statusCode === 400 && body?.errors) {
-        body.errors.forEach(
-          (fieldError: { field: string; messages: string[] }) => {
-            form.setError(fieldError.field as keyof UpdateUserProfileFormData, {
-              message: fieldError.messages.join(", "),
-            });
-          }
-        );
+        body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
+          form.setError(fieldError.field as keyof UpdateUserProfileFormData, {
+            message: fieldError.messages.join(', '),
+          });
+        });
       } else {
-        toast.error(typeof body === "string" ? body : "Произошла ошибка сервера");
+        toast.error(typeof body === 'string' ? body : 'Произошла ошибка сервера');
       }
     },
   });

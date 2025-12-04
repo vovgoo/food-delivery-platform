@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
-import { SignUpForm } from "@/features/auth/SignUpForm";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "@/routes";
+import React, { useEffect } from 'react';
+import { SignUpForm } from '@/features/auth/SignUpForm';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
 
 const SignUpPage: React.FC = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const SignUpPage: React.FC = () => {
 
   return (
     <div className="flex w-full justify-center">
-      <SignUpForm/>
+      <SignUpForm />
     </div>
   );
 };

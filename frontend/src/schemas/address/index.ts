@@ -1,1 +1,1 @@
-export * from './create-address.schema'
+export * from './create-address.schema';

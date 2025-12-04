@@ -1,6 +1,6 @@
-import React from "react";
-import { CreateAddressFormDialog } from "@/features/address/CreateAddressFormDialog";
-import { AddressList } from "@/features/address/AddressList";
+import React from 'react';
+import { CreateAddressFormDialog } from '@/features/address/CreateAddressFormDialog';
+import { AddressList } from '@/features/address/AddressList';
 
 export const ProfileAddressesPage: React.FC = () => {
   return (

@@ -36,7 +36,7 @@ export class ApiClient {
         const token = localStorage.getItem('accessToken');
         if (token) {
           (config.headers as AxiosHeaders).set?.('Authorization', `Bearer ${token}`) ||
-          ((config.headers as any)['Authorization'] = `Bearer ${token}`);
+            ((config.headers as any)['Authorization'] = `Bearer ${token}`);
         }
       }
       return config;
@@ -51,12 +51,20 @@ export class ApiClient {
         const status = error.response?.status ?? (error.request ? 401 : undefined);
         const body = (error.response?.data as any)?.body;
 
-        if (status === 403 && body === "Пользователь деактивирован" && !originalRequest.skipDeactivateRedirect) {
+        if (
+          status === 403 &&
+          body === 'Пользователь деактивирован' &&
+          !originalRequest.skipDeactivateRedirect
+        ) {
           window.location.href = AppRoutes.USER_DEACTIVATE;
           return Promise.reject(error);
         }
 
-        if (status === 403 && body === "Пользователь заблокирован" && !originalRequest.skipDeactivateRedirect) {
+        if (
+          status === 403 &&
+          body === 'Пользователь заблокирован' &&
+          !originalRequest.skipDeactivateRedirect
+        ) {
           window.location.href = AppRoutes.USER_BLOCKED;
           return Promise.reject(error);
         }
@@ -67,7 +75,11 @@ export class ApiClient {
           return Promise.reject(error);
         }
 
-        if (status === 401 && !originalRequest._retry && !originalRequest.url?.includes('/signIn')) {
+        if (
+          status === 401 &&
+          !originalRequest._retry &&
+          !originalRequest.url?.includes('/signIn')
+        ) {
           const access = localStorage.getItem('accessToken');
 
           if (!access) {
@@ -82,7 +94,7 @@ export class ApiClient {
               this.failedQueue.push({ resolve, reject });
             }).then((token) => {
               (originalRequest.headers as AxiosHeaders).set?.('Authorization', `Bearer ${token}`) ||
-              ((originalRequest.headers as any)['Authorization'] = `Bearer ${token}`);
+                ((originalRequest.headers as any)['Authorization'] = `Bearer ${token}`);
               return this.axiosInstance(originalRequest);
             });
           }
@@ -94,8 +106,12 @@ export class ApiClient {
             localStorage.setItem('accessToken', response.accessToken);
             this.processQueue(null, response.accessToken);
 
-            (originalRequest.headers as AxiosHeaders).set?.('Authorization', `Bearer ${response.accessToken}`) ||
-            ((originalRequest.headers as any)['Authorization'] = `Bearer ${response.accessToken}`);
+            (originalRequest.headers as AxiosHeaders).set?.(
+              'Authorization',
+              `Bearer ${response.accessToken}`,
+            ) ||
+              ((originalRequest.headers as any)['Authorization'] =
+                `Bearer ${response.accessToken}`);
 
             return this.axiosInstance(originalRequest);
           } catch (refreshError) {
@@ -109,7 +125,7 @@ export class ApiClient {
         }
 
         return Promise.reject(error);
-      }
+      },
     );
   }
 

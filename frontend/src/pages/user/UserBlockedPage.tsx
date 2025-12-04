@@ -1,10 +1,10 @@
-import React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userService } from "@/api";
-import { AppRoutes } from "@/routes";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
+import React from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { userService } from '@/api';
+import { AppRoutes } from '@/routes';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
 
 const UserBlockedPage: React.FC = () => {
   const queryClient = useQueryClient();
@@ -14,12 +14,12 @@ const UserBlockedPage: React.FC = () => {
     mutationFn: () => userService.logout(),
     onSuccess: () => {
       queryClient.clear();
-      localStorage.removeItem("accessToken");
-      toast.success("Вы успешно вышли из аккаунта");
+      localStorage.removeItem('accessToken');
+      toast.success('Вы успешно вышли из аккаунта');
       navigate(AppRoutes.MAIN);
     },
     onError: () => {
-      toast.error("Не удалось выйти из аккаунта");
+      toast.error('Не удалось выйти из аккаунта');
     },
   });
 

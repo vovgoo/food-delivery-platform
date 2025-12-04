@@ -1,18 +1,18 @@
-import React from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from 'react';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { FileInput } from "@/components/input/FileInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import type { RestaurantResponse } from "@/api";
-import { restaurantService } from "@/api/services/restaurant/restaurant.service";
-import { uploadImageSchema, type UploadImageFormData } from "@/schemas/common/upload-image.schema";
-import { Building2 } from "lucide-react";
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { FileInput } from '@/components/input/FileInput';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { RestaurantResponse } from '@/api';
+import { restaurantService } from '@/api/services/restaurant/restaurant.service';
+import { uploadImageSchema, type UploadImageFormData } from '@/schemas/common/upload-image.schema';
+import { Building2 } from 'lucide-react';
 
 interface UpdateRestaurantProfileImageFormProps {
   restaurant?: RestaurantResponse;
@@ -32,23 +32,23 @@ export const UpdateRestaurantProfileImageForm: React.FC<UpdateRestaurantProfileI
   const uploadMutation = useMutation({
     mutationFn: (file: File) => restaurantService.setProfileImage(restaurant!.id, file),
     onSuccess: () => {
-      toast.success("Фото профиля обновлено");
-      queryClient.invalidateQueries({ queryKey: ["admin-restaurant"] });
+      toast.success('Фото профиля обновлено');
+      queryClient.invalidateQueries({ queryKey: ['admin-restaurant'] });
       form.reset();
     },
     onError: () => {
-      toast.error("Не удалось обновить фото профиля");
+      toast.error('Не удалось обновить фото профиля');
     },
   });
 
   const removeMutation = useMutation({
     mutationFn: () => restaurantService.removeProfileImage(restaurant!.id),
     onSuccess: () => {
-      toast.success("Фото профиля удалено");
-      queryClient.invalidateQueries({ queryKey: ["admin-restaurant"] });
+      toast.success('Фото профиля удалено');
+      queryClient.invalidateQueries({ queryKey: ['admin-restaurant'] });
     },
     onError: () => {
-      toast.error("Не удалось удалить фото профиля");
+      toast.error('Не удалось удалить фото профиля');
     },
   });
 
@@ -125,7 +125,7 @@ export const UpdateRestaurantProfileImageForm: React.FC<UpdateRestaurantProfileI
                     loadingText="Загружаем..."
                     isLoading={uploadMutation.isPending}
                     onClick={form.handleSubmit(onSubmit)}
-                    disabled={!form.watch("profileImage")}
+                    disabled={!form.watch('profileImage')}
                   />
                 </div>
               </Form>

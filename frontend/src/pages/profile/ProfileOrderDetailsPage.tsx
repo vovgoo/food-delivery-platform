@@ -1,77 +1,76 @@
-import React, { useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "sonner";
-import { orderService } from "@/api/services/order/order.service";
+import React, { useEffect } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
+import { orderService } from '@/api/services/order/order.service';
 import type {
   OrderResponse,
   OrderItemResponse,
   PaymentStatus,
   OrderStatus,
   PaymentMethod,
-} from "@/api";
-import { AppRoutes } from "@/routes";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Skeleton } from "@/components/ui/skeleton";
-import { ImageIcon } from "lucide-react";
+} from '@/api';
+import { AppRoutes } from '@/routes';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ImageIcon } from 'lucide-react';
 
 const ORDER_STATUS_RU: Record<OrderStatus, string> = {
-  CREATED: "Создан",
-  CONFIRMED: "Подтверждён",
-  PREPARING: "Готовится",
-  READY: "Готов",
-  DELIVERING: "Доставляется",
-  COMPLETED: "Завершён",
-  CANCELLED: "Отменён",
+  CREATED: 'Создан',
+  CONFIRMED: 'Подтверждён',
+  PREPARING: 'Готовится',
+  READY: 'Готов',
+  DELIVERING: 'Доставляется',
+  COMPLETED: 'Завершён',
+  CANCELLED: 'Отменён',
 };
 
 const PAYMENT_STATUS_RU: Record<PaymentStatus, string> = {
-  PENDING: "Ожидается",
-  PROCESSING: "В обработке",
-  COMPLETED: "Оплачено",
-  FAILED: "Не удалось",
-  CANCELLED: "Отменено",
-  REFUNDED: "Возвращено",
+  PENDING: 'Ожидается',
+  PROCESSING: 'В обработке',
+  COMPLETED: 'Оплачено',
+  FAILED: 'Не удалось',
+  CANCELLED: 'Отменено',
+  REFUNDED: 'Возвращено',
 };
 
 const PAYMENT_METHOD_RU: Record<PaymentMethod, string> = {
-  CREDIT_CARD: "Кредитная карта",
-  DEBIT_CARD: "Дебетовая карта",
-  PAYPAL: "PayPal",
-  APPLE_PAY: "Apple Pay",
-  GOOGLE_PAY: "Google Pay",
-  BANK_TRANSFER: "Банковский перевод",
-  CASH_ON_DELIVERY: "Наличные при доставке",
+  CREDIT_CARD: 'Кредитная карта',
+  DEBIT_CARD: 'Дебетовая карта',
+  PAYPAL: 'PayPal',
+  APPLE_PAY: 'Apple Pay',
+  GOOGLE_PAY: 'Google Pay',
+  BANK_TRANSFER: 'Банковский перевод',
+  CASH_ON_DELIVERY: 'Наличные при доставке',
 };
 
 const getStatusBadgeClass = (status: OrderStatus | PaymentStatus) => {
   switch (status) {
-    case "COMPLETED":
-      return "bg-green-100 text-green-700";
-    case "CANCELLED":
-    case "FAILED":
-      return "bg-red-100 text-red-700";
+    case 'COMPLETED':
+      return 'bg-green-100 text-green-700';
+    case 'CANCELLED':
+    case 'FAILED':
+      return 'bg-red-100 text-red-700';
     default:
-      return "bg-yellow-100 text-yellow-700";
+      return 'bg-yellow-100 text-yellow-700';
   }
 };
 
 const formatOrderDate = (dateString: string) => {
   const date = new Date(dateString);
-  return new Intl.DateTimeFormat("ru-RU", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
+  return new Intl.DateTimeFormat('ru-RU', {
+    day: '2-digit',
+    month: 'long',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
     hour12: false,
   }).format(date);
 };
 
 const ImageSkeleton: React.FC<{ src?: string; alt?: string }> = ({ src, alt }) => {
-  if (src)
-    return <img src={src} alt={alt} className="w-16 h-16 object-cover rounded" />;
+  if (src) return <img src={src} alt={alt} className="w-16 h-16 object-cover rounded" />;
   return (
     <div className="w-16 h-16 bg-gray-300 flex items-center justify-center rounded">
       <ImageIcon className="w-6 h-6 text-white" />
@@ -106,7 +105,7 @@ const OrderDetailsCard: React.FC<{ order: OrderResponse }> = ({ order }) => (
   <Card className="w-full mb-6">
     <CardHeader className="flex justify-between items-center mb-4">
       <CardTitle className="text-lg font-semibold">
-        Заказ #{order.id} —{" "}
+        Заказ #{order.id} —{' '}
         <span className="text-gray-600">{formatOrderDate(order.orderDate)}</span>
       </CardTitle>
       <Badge className={`px-3 py-1 rounded-full ${getStatusBadgeClass(order.status)}`}>
@@ -118,7 +117,7 @@ const OrderDetailsCard: React.FC<{ order: OrderResponse }> = ({ order }) => (
         <h3 className="font-semibold mb-1">Адрес доставки</h3>
         <div className="text-gray-700">
           {order.address.city}, {order.address.street} {order.address.house}
-          {order.address.apartment ? `, кв. ${order.address.apartment}` : ""}
+          {order.address.apartment ? `, кв. ${order.address.apartment}` : ''}
         </div>
       </div>
 
@@ -146,7 +145,7 @@ const OrderDetailsCard: React.FC<{ order: OrderResponse }> = ({ order }) => (
               </div>
               <div className="flex gap-4">
                 <span>{item.quantity} шт.</span>
-               <span>{(item.price * item.quantity).toFixed(2)} BYN</span>
+                <span>{(item.price * item.quantity).toFixed(2)} BYN</span>
               </div>
             </li>
           ))}
@@ -176,12 +175,17 @@ const ProfileOrderDetailsPage: React.FC = () => {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
     if (!token) navigate(AppRoutes.MAIN);
   }, [navigate]);
 
-  const { data: data, isPending, isError, error } = useQuery<OrderResponse>({
-    queryKey: ["order"],
+  const {
+    data: data,
+    isPending,
+    isError,
+    error,
+  } = useQuery<OrderResponse>({
+    queryKey: ['order'],
     queryFn: () => orderService.get(orderId!),
     retry: (failureCount, err: any) => {
       if (err?.response?.status === 404) return false;
@@ -191,11 +195,11 @@ const ProfileOrderDetailsPage: React.FC = () => {
 
   useEffect(() => {
     if (isError) {
-      if ((error as any)?.response?.status === 404 ) {
-        toast.error("Заказ не найден");
+      if ((error as any)?.response?.status === 404) {
+        toast.error('Заказ не найден');
         navigate(AppRoutes.PROFILE_ORDERS);
       } else {
-        toast.error("Произошла ошибка при загрузке ресторана");
+        toast.error('Произошла ошибка при загрузке ресторана');
       }
     }
   }, [isError]);

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import type { Control } from "react-hook-form";
-import { Controller } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import React, { useState } from 'react';
+import type { Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
+import { Eye, EyeOff } from 'lucide-react';
 
 interface PasswordInputProps {
   name: string;
@@ -11,7 +11,12 @@ interface PasswordInputProps {
   error?: string;
 }
 
-export const PasswordInput: React.FC<PasswordInputProps> = ({ name, control, placeholder, error }) => {
+export const PasswordInput: React.FC<PasswordInputProps> = ({
+  name,
+  control,
+  placeholder,
+  error,
+}) => {
   const [show, setShow] = useState(false);
 
   return (
@@ -24,7 +29,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = ({ name, control, pla
           <div className="relative w-full">
             <Input
               {...field}
-              type={show ? "text" : "password"}
+              type={show ? 'text' : 'password'}
               placeholder={placeholder}
               className="pr-10"
             />

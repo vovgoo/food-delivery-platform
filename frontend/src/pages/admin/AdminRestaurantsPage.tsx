@@ -1,6 +1,6 @@
-import { AdminRestaurantList } from "@/features/restaurant/AdminRestaurantList";
-import { CreateRestaurantFormDialog } from "@/features/restaurant/CreateRestaurantFormDialog";
-import React from "react";
+import { AdminRestaurantList } from '@/features/restaurant/AdminRestaurantList';
+import { CreateRestaurantFormDialog } from '@/features/restaurant/CreateRestaurantFormDialog';
+import React from 'react';
 
 const AdminRestaurantsPage: React.FC = () => {
   return (

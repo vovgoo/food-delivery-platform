@@ -1,8 +1,8 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Input as UIInput } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Input as UIInput } from '@/components/ui/input';
+import { SearchIcon } from 'lucide-react';
 
 interface SearchInputProps {
   name: string;
@@ -13,7 +13,7 @@ interface SearchInputProps {
 export const SearchInput: React.FC<SearchInputProps> = ({
   name,
   control,
-  placeholder = "Поиск...",
+  placeholder = 'Поиск...',
 }) => (
   <div className="flex flex-col gap-1 relative">
     <Controller

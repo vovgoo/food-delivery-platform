@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { toast } from "sonner";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { userService } from "@/api";
+import { userService } from '@/api';
 
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "@/routes";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
 
 import {
   AlertDialog,
@@ -19,7 +19,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
 export const DeactivateAccountForm: React.FC = () => {
   const queryClient = useQueryClient();
@@ -30,14 +30,13 @@ export const DeactivateAccountForm: React.FC = () => {
     mutationFn: () => userService.deactivate(),
 
     onSuccess: () => {
-      toast.success("Аккаунт успешно деактивирован!");
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      toast.success('Аккаунт успешно деактивирован!');
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       navigate(AppRoutes.USER_DEACTIVATE);
     },
 
     onError: (err: any) => {
-      const message =
-        err.response?.data?.body || "Произошла ошибка при деактивации аккаунта";
+      const message = err.response?.data?.body || 'Произошла ошибка при деактивации аккаунта';
       toast.error(message);
     },
   });
@@ -52,7 +51,8 @@ export const DeactivateAccountForm: React.FC = () => {
       <CardHeader>
         <CardTitle>Деактивация аккаунта</CardTitle>
         <CardDescription>
-          Вы можете деактивировать свой аккаунт, если он вам больше не нужен. Вы можете в любой момент его реактивировать.
+          Вы можете деактивировать свой аккаунт, если он вам больше не нужен. Вы можете в любой
+          момент его реактивировать.
         </CardDescription>
       </CardHeader>
 

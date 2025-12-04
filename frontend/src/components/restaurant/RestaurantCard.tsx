@@ -1,11 +1,11 @@
- import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import type { RestaurantShortResponse } from "@/api";
-import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "@/routes";
-import { Building2, Phone, Globe, Clock, Truck, Car } from "lucide-react";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import type { RestaurantShortResponse } from '@/api';
+import { Button } from '../ui/button';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
+import { Building2, Phone, Globe, Clock, Truck, Car } from 'lucide-react';
 
 interface RestaurantCardProps {
   restaurant: RestaurantShortResponse;
@@ -13,7 +13,7 @@ interface RestaurantCardProps {
 
 export const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) => {
   const navigate = useNavigate();
-  const isActive = restaurant.status === "ACTIVE";
+  const isActive = restaurant.status === 'ACTIVE';
 
   return (
     <Card className="transition-transform hover:scale-[1.02] p-0 overflow-hidden flex flex-col">
@@ -30,8 +30,10 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) =>
       )}
 
       <CardContent className="flex flex-col p-4 gap-2">
-        <Badge className={`self-start ${isActive ? "bg-green-500 text-white" : "bg-orange-500 text-white"}`}>
-          {isActive ? "Активен" : "Временно не доступен"}
+        <Badge
+          className={`self-start ${isActive ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}`}
+        >
+          {isActive ? 'Активен' : 'Временно не доступен'}
         </Badge>
 
         <h2 className="text-xl font-semibold">{restaurant.name}</h2>
@@ -53,7 +55,12 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) =>
           {restaurant.website && (
             <div className="flex items-center gap-1">
               <Globe className="w-4 h-4" />
-              <a href={restaurant.website} target="_blank" rel="noopener noreferrer" className="underline">
+              <a
+                href={restaurant.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
                 Сайт
               </a>
             </div>
@@ -64,19 +71,19 @@ export const RestaurantCard: React.FC<RestaurantCardProps> = ({ restaurant }) =>
           </div>
           <div className="flex items-center gap-1">
             <Truck className="w-4 h-4" />
-            {restaurant.deliveryAvailable ? "Доставка" : "Без доставки"}
+            {restaurant.deliveryAvailable ? 'Доставка' : 'Без доставки'}
           </div>
           <div className="flex items-center gap-1">
             <Car className="w-4 h-4" />
-            {restaurant.parkingAvailable ? "Парковка есть" : "Парковки нет"}
+            {restaurant.parkingAvailable ? 'Парковка есть' : 'Парковки нет'}
           </div>
         </div>
 
         <Button
-            className="bg-amber-400 text-black hover:bg-amber-300 mt-4"
-            onClick={() => navigate(AppRoutes.RESTAURANT.replace(":restaurantId", restaurant.id))}
-            >
-            Заказать здесь
+          className="bg-amber-400 text-black hover:bg-amber-300 mt-4"
+          onClick={() => navigate(AppRoutes.RESTAURANT.replace(':restaurantId', restaurant.id))}
+        >
+          Заказать здесь
         </Button>
       </CardContent>
     </Card>

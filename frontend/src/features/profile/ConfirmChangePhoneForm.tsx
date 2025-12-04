@@ -1,17 +1,20 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
-import { userService, type ConfirmChangePhoneRequest } from "@/api";
-import { AppRoutes } from "@/routes";
-import { confirmChangePhoneSchema, type ConfirmChangePhoneFormData } from "@/schemas/user/confirm-change-phone.schema";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { OtpInput } from "@/components/input/OtpInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-import { LinkButton } from "@/components/button/LinkButton";
+import { userService, type ConfirmChangePhoneRequest } from '@/api';
+import { AppRoutes } from '@/routes';
+import {
+  confirmChangePhoneSchema,
+  type ConfirmChangePhoneFormData,
+} from '@/schemas/user/confirm-change-phone.schema';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { OtpInput } from '@/components/input/OtpInput';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { LinkButton } from '@/components/button/LinkButton';
 
 export const ConfirmChangePhoneForm: React.FC = () => {
   const navigate = useNavigate();
@@ -19,26 +22,31 @@ export const ConfirmChangePhoneForm: React.FC = () => {
 
   const form = useForm<ConfirmChangePhoneFormData>({
     resolver: zodResolver(confirmChangePhoneSchema),
-    defaultValues: { code: "" },
+    defaultValues: { code: '' },
   });
 
   const mutation = useMutation({
     mutationFn: (payload: ConfirmChangePhoneRequest) => userService.confirmChangePhone(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("Телефон успешно изменён!");
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      toast.success('Телефон успешно изменён!');
       navigate(AppRoutes.PROFILE_SETTINGS);
     },
     onError: (err: any) => {
       if (err.response?.data?.body?.errors) {
-        err.response.data.body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
-          form.setError(fieldError.field as keyof ConfirmChangePhoneFormData, {
-            type: "server",
-            message: fieldError.messages.join(", "),
-          });
-        });
+        err.response.data.body.errors.forEach(
+          (fieldError: { field: string; messages: string[] }) => {
+            form.setError(fieldError.field as keyof ConfirmChangePhoneFormData, {
+              type: 'server',
+              message: fieldError.messages.join(', '),
+            });
+          },
+        );
       } else {
-        const message = typeof err.response?.data?.body === "string" ? err.response.data.body : "Произошла ошибка";
+        const message =
+          typeof err.response?.data?.body === 'string'
+            ? err.response.data.body
+            : 'Произошла ошибка';
         toast.error(message);
       }
     },
@@ -81,10 +89,7 @@ export const ConfirmChangePhoneForm: React.FC = () => {
             onClick={form.handleSubmit(onSubmit)}
           />
 
-          <LinkButton
-            text="Обратно в профиль"
-            to={AppRoutes.PROFILE_SETTINGS}
-          />
+          <LinkButton text="Обратно в профиль" to={AppRoutes.PROFILE_SETTINGS} />
         </form>
       </Form>
     </div>

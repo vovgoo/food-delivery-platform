@@ -1,7 +1,13 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+  SelectValue,
+} from '@/components/ui/select';
 
 interface SelectInputProps {
   name: string;
@@ -15,7 +21,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
   name,
   control,
   options,
-  placeholder = "Выберите...",
+  placeholder = 'Выберите...',
   error,
 }) => (
   <div className="flex flex-col gap-1 w-full">
@@ -24,10 +30,7 @@ export const SelectInput: React.FC<SelectInputProps> = ({
       name={name}
       defaultValue=""
       render={({ field }) => (
-        <Select
-          value={field.value}
-          onValueChange={field.onChange}
-        >
+        <Select value={field.value} onValueChange={field.onChange}>
           <SelectTrigger className="w-full">
             <SelectValue placeholder={placeholder} />
           </SelectTrigger>

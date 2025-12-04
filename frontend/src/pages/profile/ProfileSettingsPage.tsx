@@ -1,9 +1,9 @@
-import { ChangeEmailForm } from "@/features/profile/ChangeEmailForm";
-import { ChangePasswordForm } from "@/features/profile/ChangePasswordForm";
-import { ChangePhoneForm } from "@/features/profile/ChangePhoneForm";
-import { DeactivateAccountForm } from "@/features/profile/DeactivateAccountForm";
-import { UpdateUserProfileForm } from "@/features/profile/UpdateUserProfileForm";
-import React from "react";
+import { ChangeEmailForm } from '@/features/profile/ChangeEmailForm';
+import { ChangePasswordForm } from '@/features/profile/ChangePasswordForm';
+import { ChangePhoneForm } from '@/features/profile/ChangePhoneForm';
+import { DeactivateAccountForm } from '@/features/profile/DeactivateAccountForm';
+import { UpdateUserProfileForm } from '@/features/profile/UpdateUserProfileForm';
+import React from 'react';
 
 const ProfileSettingsPage: React.FC = () => {
   return (
@@ -25,7 +25,7 @@ const ProfileSettingsPage: React.FC = () => {
         </div>
       </div>
       <div>
-        <DeactivateAccountForm/>
+        <DeactivateAccountForm />
       </div>
     </div>
   );

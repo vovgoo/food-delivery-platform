@@ -1,24 +1,21 @@
-import React from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from 'react';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { FileInput } from "@/components/input/FileInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { FileInput } from '@/components/input/FileInput';
+import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 
-import type { DishResponse, RestaurantResponse } from "@/api";
-import { dishService } from "@/api/services/dish/dish.service";
+import type { DishResponse, RestaurantResponse } from '@/api';
+import { dishService } from '@/api/services/dish/dish.service';
 
-import {
-  uploadImageSchema,
-  type UploadImageFormData,
-} from "@/schemas/common/upload-image.schema";
+import { uploadImageSchema, type UploadImageFormData } from '@/schemas/common/upload-image.schema';
 
-import { ImageIcon } from "lucide-react";
+import { ImageIcon } from 'lucide-react';
 
 interface UpdateDishProfileImageFormProps {
   dish?: DishResponse;
@@ -38,27 +35,25 @@ export const UpdateDishProfileImageForm: React.FC<UpdateDishProfileImageFormProp
   });
 
   const uploadMutation = useMutation({
-    mutationFn: (file: File) =>
-      dishService.setProfileImage(restaurant!.id, dish!.id, file),
+    mutationFn: (file: File) => dishService.setProfileImage(restaurant!.id, dish!.id, file),
     onSuccess: () => {
-      toast.success("Фото блюда обновлено");
-      queryClient.invalidateQueries({ queryKey: ["admin-dish"] });
+      toast.success('Фото блюда обновлено');
+      queryClient.invalidateQueries({ queryKey: ['admin-dish'] });
       form.reset();
     },
     onError: () => {
-      toast.error("Не удалось обновить фото блюда");
+      toast.error('Не удалось обновить фото блюда');
     },
   });
 
   const removeMutation = useMutation({
-    mutationFn: () =>
-      dishService.removeProfileImage(restaurant!.id, dish!.id),
+    mutationFn: () => dishService.removeProfileImage(restaurant!.id, dish!.id),
     onSuccess: () => {
-      toast.success("Фото блюда удалено");
-      queryClient.invalidateQueries({ queryKey: ["admin-dish"] });
+      toast.success('Фото блюда удалено');
+      queryClient.invalidateQueries({ queryKey: ['admin-dish'] });
     },
     onError: () => {
-      toast.error("Не удалось удалить фото блюда");
+      toast.error('Не удалось удалить фото блюда');
     },
   });
 
@@ -71,7 +66,7 @@ export const UpdateDishProfileImageForm: React.FC<UpdateDishProfileImageFormProp
       <CardHeader>
         <CardTitle>Фото блюда</CardTitle>
         <CardDescription>
-          Добавьте или измените фото блюда <strong>{dish?.name ?? "..."}</strong>
+          Добавьте или измените фото блюда <strong>{dish?.name ?? '...'}</strong>
         </CardDescription>
       </CardHeader>
 
@@ -138,7 +133,7 @@ export const UpdateDishProfileImageForm: React.FC<UpdateDishProfileImageFormProp
                     loadingText="Загружаем..."
                     isLoading={uploadMutation.isPending}
                     onClick={form.handleSubmit(onSubmit)}
-                    disabled={!form.watch("profileImage")}
+                    disabled={!form.watch('profileImage')}
                   />
                 </div>
               </Form>

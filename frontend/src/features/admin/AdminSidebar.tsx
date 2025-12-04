@@ -1,7 +1,7 @@
-import React from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { AppRoutes } from "@/routes";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
+import { Button } from '@/components/ui/button';
 
 export const AdminSidebar: React.FC = () => {
   const navigate = useNavigate();
@@ -9,8 +9,8 @@ export const AdminSidebar: React.FC = () => {
   const activePath = location.pathname;
 
   const menuItems = [
-    { label: "Рестораны", path: AppRoutes.ADMIN_RESTAURANTS },
-    { label: "Заказы", path: AppRoutes.ADMIN_ORDERS },
+    { label: 'Рестораны', path: AppRoutes.ADMIN_RESTAURANTS },
+    { label: 'Заказы', path: AppRoutes.ADMIN_ORDERS },
   ];
 
   return (
@@ -26,8 +26,8 @@ export const AdminSidebar: React.FC = () => {
               transition-colors
               ${
                 activePath === item.path
-                  ? "bg-white text-black font-semibold hover:bg-white"
-                  : "hover:bg-white bg-transparent text-black"
+                  ? 'bg-white text-black font-semibold hover:bg-white'
+                  : 'hover:bg-white bg-transparent text-black'
               }
             `}
           >
