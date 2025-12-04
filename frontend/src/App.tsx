@@ -27,6 +27,7 @@ import AdminRestaurantPage from "./pages/admin/AdminRestaurantPage";
 import AdminDishPage from "./pages/admin/AdminDishPage";
 import RestaurantPage from "./pages/restaurant/RestaurantPage";
 import DishPage from "./pages/dish/DishPage";
+import CartPage from "./pages/CartPage";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -51,6 +52,7 @@ const App: React.FC = () => {
           <Route path={AppRoutes.MAIN} element={<MainPage />} />
           <Route path={AppRoutes.RESTAURANT} element={<RestaurantPage />} />
           <Route path={AppRoutes.DISH} element={<DishPage />} />
+          <Route path={AppRoutes.CART} element={<CartPage/>} />
           
           <Route path={AppRoutes.SIGN_IN} element={<SignInPage />} />
           <Route path={AppRoutes.SIGN_UP} element={<SignUpPage />} />

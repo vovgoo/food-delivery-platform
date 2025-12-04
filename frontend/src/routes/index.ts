@@ -2,6 +2,7 @@ export const AppRoutes = {
   MAIN: '/',
   RESTAURANT: '/restaurant/:restaurantId',
   DISH: '/restaurant/:restaurantId/dish/:dishId',
+  CART: '/cart',
   CREATE_ORDER: '/create-order',
 
   SIGN_IN: '/auth/signIn',
