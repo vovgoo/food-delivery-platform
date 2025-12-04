@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, keepPreviousData as keepPrevData } from '@tanstack/react-query';
-import { type RestaurantShortResponse, type PageResponse } from '@/api';
-import { RestaurantCardAdmin } from '@/components/restaurant/RestaurantCardAdmin';
-import { RestaurantCardAdminSkeleton } from '@/components/restaurant/RestaurantCardAdminSkeleton';
-import { Pagination } from '@/components/common/Pagination';
-import { SearchInput } from '@/components/input/SearchInput';
+import { type RestaurantShortResponse, type PageResponse, restaurantService } from '@/api';
 import { useForm } from 'react-hook-form';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
 import { SearchIcon } from 'lucide-react';
+import {
+  Pagination,
+  RestaurantCardAdmin,
+  RestaurantCardAdminSkeleton,
+  SearchInput,
+} from '@/components';
 
 interface AdminRestaurantListProps {
   pageSize?: number;

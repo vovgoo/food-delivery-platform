@@ -5,15 +5,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { FileInput } from '@/components/input/FileInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import type { RestaurantResponse, ImageResponse } from '@/api';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
-import { uploadImageSchema, type UploadImageFormData } from '@/schemas/common/upload-image.schema';
+import { type RestaurantResponse, type ImageResponse, restaurantService } from '@/api';
 import { Button } from '@/components/ui/button';
 import { Trash2 } from 'lucide-react';
+import { uploadImageSchema, type UploadImageFormData } from '@/schemas';
+import { Skeleton } from '@/components/ui/skeleton';
+import { FileInput, SpinnerButton } from '@/components';
 
 interface UpdateRestaurantImagesFormProps {
   restaurant?: RestaurantResponse;

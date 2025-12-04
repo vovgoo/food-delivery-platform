@@ -4,15 +4,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-
 import { addressService, type CreateAddressRequest } from '@/api';
 import { AppRoutes } from '@/routes';
 import { createAddressSchema, type CreateAddressFormData } from '@/schemas';
-
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -24,10 +19,9 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
-
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
-import { TextareaInput } from '@/components/input/TextareaInput';
+import { SpinnerButton, TextareaInput, TextInput } from '@/components';
 
 export const CreateAddressFormDialog: React.FC = () => {
   const navigate = useNavigate();

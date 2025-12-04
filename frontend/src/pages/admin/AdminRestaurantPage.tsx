@@ -1,18 +1,19 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
-import type { RestaurantResponse } from '@/api';
+import { restaurantService, type RestaurantResponse } from '@/api';
 import { AppRoutes } from '@/routes';
 import { toast } from 'sonner';
-import { UpdateRestaurantForm } from '@/features/restaurant/UpdateRestaurantForm';
-import { AdminRestaurantBreadcrumb } from '@/components/restaurant/AdminRestaurantBreadcrumb';
-import { UpdateRestaurantProfileImageForm } from '@/features/restaurant/UpdateRestaurantProfileImageForm';
-import { UpdateRestaurantImagesForm } from '@/features/restaurant/UpdateRestaurantImagesForm';
-import { AdminDishList } from '@/features/dish/AdminDishList';
-import { CreateDishFormDialog } from '@/features/dish/CreateDishFormDialog';
+import { AdminRestaurantBreadcrumb } from '@/components';
+import {
+  AdminDishList,
+  CreateDishFormDialog,
+  UpdateRestaurantForm,
+  UpdateRestaurantImagesForm,
+  UpdateRestaurantProfileImageForm,
+} from '@/features';
 
-const AdminRestaurantPage: React.FC = () => {
+export const AdminRestaurantPage: React.FC = () => {
   const { restaurantId } = useParams<{ restaurantId: string }>();
 
   const navigate = useNavigate();
@@ -56,5 +57,3 @@ const AdminRestaurantPage: React.FC = () => {
     </>
   );
 };
-
-export default AdminRestaurantPage;

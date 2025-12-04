@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData as keepPrevData } from '@tanstack/react-query';
-import { type PageResponse, type OrderShortResponse } from '@/api';
-import { Pagination } from '@/components/common/Pagination';
+import { type PageResponse, type OrderShortResponse, orderService } from '@/api';
 import { SearchIcon } from 'lucide-react';
-import { orderService } from '@/api/services/order/order.service';
-import { OrderCardAdmin } from '@/components/order/OrderCardAdmin';
-import { OrderCardAdminSkeleton } from '@/components/order/OrderCardAdminSkeleton';
+import { OrderCardAdmin, OrderCardAdminSkeleton, Pagination } from '@/components';
 
 interface AdminOrderListProps {
   pageSize?: number;

@@ -8,10 +8,8 @@ import { changeEmailSchema, type ChangeEmailFormData } from '@/schemas';
 import { userService, type ChangeEmailRequest } from '@/api';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { SpinnerButton, TextInput } from '@/components';
 
 export const ChangeEmailForm: React.FC = () => {
   const form = useForm<ChangeEmailFormData>({

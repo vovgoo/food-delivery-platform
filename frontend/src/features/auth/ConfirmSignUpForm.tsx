@@ -4,17 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-
-import { authService, type ConfirmSignUpRequest, type JwtResponse } from '../../api';
 import { AppRoutes } from '@/routes';
-import {
-  confirmSignUpSchema,
-  type ConfirmSignUpFormData,
-} from '@/schemas/auth/confirm-sign-up.schema';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { OtpInput } from '@/components/input/OtpInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-import { LinkButton } from '@/components/button/LinkButton';
+import { confirmSignUpSchema, type ConfirmSignUpFormData } from '@/schemas';
+import { authService, type ConfirmSignUpRequest, type JwtResponse } from '@/api';
+import { LinkButton, OtpInput, SpinnerButton } from '@/components';
 
 export const ConfirmSignUpForm: React.FC = () => {
   const navigate = useNavigate();

@@ -1,33 +1,30 @@
 import React from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import ChangeUserEmailPage from './pages/profile/ConfirmChangeEmailPage';
-import ChangeUserPhonePage from './pages/profile/ConfirmChangePhonePage';
-
-import SignInPage from './pages/auth/SignInPage';
-import SignUpPage from './pages/auth/SignUpPage';
-import ConfirmSignUpPage from './pages/auth/ConfirmSignUpPage';
-
-import AdminRestaurantsPage from './pages/admin/AdminRestaurantsPage';
-import AdminOrdersPage from './pages/admin/AdminOrdersPage';
-
-import { AppRoutes } from './routes';
-import UserDeactivatePage from './pages/user/UserDeactivatePage';
-import UserBlockedPage from './pages/user/UserBlockedPage';
-import Header from './features/common/Header';
-import Footer from './features/common/Footer';
 import { Toaster } from 'sonner';
-import { ProfileLayout } from './features/profile/ProfileLayout';
-import ProfileOrdersPage from './pages/profile/ProfileOrdersPage';
-import ProfileAddressesPage from './pages/profile/ProfileAddressesPage';
-import ProfileSettingsPage from './pages/profile/ProfileSettingsPage';
-import { AdminLayout } from './features/admin/AdminLayout';
-import AdminRestaurantPage from './pages/admin/AdminRestaurantPage';
-import AdminDishPage from './pages/admin/AdminDishPage';
-import RestaurantPage from './pages/restaurant/RestaurantPage';
-import DishPage from './pages/dish/DishPage';
-import CartPage from './pages/CartPage';
-import ProfileOrderDetailsPage from './pages/profile/ProfileOrderDetailsPage';
+import { AppRoutes } from './routes';
+import {
+  AdminDishPage,
+  AdminOrdersPage,
+  AdminRestaurantPage,
+  AdminRestaurantsPage,
+  CartPage,
+  ConfirmChangeEmailPage,
+  ConfirmChangePhonePage,
+  ConfirmSignUpPage,
+  MainPage,
+  ProfileAddressesPage,
+  ProfileOrderDetailsPage,
+  ProfileOrdersPage,
+  ProfileSettingsPage,
+  RestaurantPage,
+  SignInPage,
+  SignUpPage,
+  UserBlockedPage,
+  UserDeactivatePage,
+} from './pages';
+import { DishPage } from './pages/dish';
+import { AdminLayout, Header, ProfileLayout } from './features';
+import { Footer } from 'react-day-picker';
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -62,8 +59,8 @@ const App: React.FC = () => {
             <Route path={AppRoutes.PROFILE_SETTINGS} element={<ProfileSettingsPage />} />
             <Route index element={<Navigate to={AppRoutes.PROFILE_ORDERS} replace />} />
           </Route>
-          <Route path={AppRoutes.CHANGE_EMAIL} element={<ChangeUserEmailPage />} />
-          <Route path={AppRoutes.CHANGE_PHONE} element={<ChangeUserPhonePage />} />
+          <Route path={AppRoutes.CHANGE_EMAIL} element={<ConfirmChangeEmailPage />} />
+          <Route path={AppRoutes.CHANGE_PHONE} element={<ConfirmChangePhonePage />} />
 
           <Route path={AppRoutes.ADMIN_DASHBOARD} element={<AdminLayout />}>
             <Route path={AppRoutes.ADMIN_RESTAURANTS} element={<AdminRestaurantsPage />} />

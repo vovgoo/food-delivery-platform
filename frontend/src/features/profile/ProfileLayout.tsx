@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { ProfileSidebar } from '@/features/profile/ProfileSidebar';
 import { userService, type UserResponse } from '@/api';
 import { useQuery } from '@tanstack/react-query';
 import { AppRoutes } from '@/routes';
 import { ProfileInfoCard } from './ProfileInfoCard';
+import { ProfileSidebar } from './ProfileSidebar';
 
 export const ProfileLayout: React.FC = () => {
   const navigate = useNavigate();

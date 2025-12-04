@@ -4,20 +4,19 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-
 import { authService, type SignUpRequest } from '@/api';
 import { AppRoutes } from '@/routes';
 import { signUpSchema, type SignUpFormData } from '@/schemas';
-
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { PasswordInput } from '@/components/input/PasswordInput';
-import { DateInput } from '@/components/input/DateInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { LinkButton } from '@/components/button/LinkButton';
-import { PhoneInput } from '@/components/input/PhoneInput';
+import {
+  DateInput,
+  LinkButton,
+  PasswordInput,
+  PhoneInput,
+  SpinnerButton,
+  TextInput,
+} from '@/components';
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();

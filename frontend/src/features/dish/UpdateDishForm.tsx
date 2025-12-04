@@ -3,21 +3,24 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-
-import { type DishResponse, type RestaurantResponse, type DishUpdateRequest } from '@/api';
-import { dishService } from '@/api/services/dish/dish.service';
-import { dishUpdateSchema, type DishUpdateFormData } from '@/schemas/dish/update-dish.schema';
-
+import {
+  type DishResponse,
+  type RestaurantResponse,
+  type DishUpdateRequest,
+  dishService,
+} from '@/api';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { TextareaInput } from '@/components/input/TextareaInput';
-import { NumberInput } from '@/components/input/NumberInput';
-import { CheckboxInput } from '@/components/input/CheckBoxInput';
-import { SelectInput } from '@/components/input/SelectInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
+import { dishUpdateSchema, type DishUpdateFormData } from '@/schemas';
+import {
+  CheckBoxInput,
+  NumberInput,
+  SelectInput,
+  SpinnerButton,
+  TextareaInput,
+  TextInput,
+} from '@/components';
 
 interface UpdateDishFormProps {
   dish?: DishResponse;
@@ -275,7 +278,7 @@ export const UpdateDishForm: React.FC<UpdateDishFormProps> = ({ dish, restaurant
                     {isPending ? (
                       <Skeleton className="h-6 w-32 mb-4 bg-gray-400" />
                     ) : (
-                      <CheckboxInput
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Острое"
@@ -296,7 +299,7 @@ export const UpdateDishForm: React.FC<UpdateDishFormProps> = ({ dish, restaurant
                     {isPending ? (
                       <Skeleton className="h-6 w-28 mb-4 bg-gray-400" />
                     ) : (
-                      <CheckboxInput
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Веган"
@@ -317,7 +320,7 @@ export const UpdateDishForm: React.FC<UpdateDishFormProps> = ({ dish, restaurant
                     {isPending ? (
                       <Skeleton className="h-6 w-40 mb-4 bg-gray-400" />
                     ) : (
-                      <CheckboxInput
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Вегетарианец"

@@ -12,7 +12,7 @@ interface CartDishCardProps {
   quantity: number;
 }
 
-const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantity }) => {
+export const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantity }) => {
   const dispatch = useDispatch();
 
   const isAvailable = dish.status === 'AVAILABLE';
@@ -70,5 +70,3 @@ const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantit
     </div>
   );
 };
-
-export default CartDishCard;

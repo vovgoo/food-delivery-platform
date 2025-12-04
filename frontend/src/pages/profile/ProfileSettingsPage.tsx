@@ -1,11 +1,13 @@
-import { ChangeEmailForm } from '@/features/profile/ChangeEmailForm';
-import { ChangePasswordForm } from '@/features/profile/ChangePasswordForm';
-import { ChangePhoneForm } from '@/features/profile/ChangePhoneForm';
-import { DeactivateAccountForm } from '@/features/profile/DeactivateAccountForm';
-import { UpdateUserProfileForm } from '@/features/profile/UpdateUserProfileForm';
+import {
+  ChangeEmailForm,
+  ChangePasswordForm,
+  ChangePhoneForm,
+  DeactivateAccountForm,
+  UpdateUserProfileForm,
+} from '@/features';
 import React from 'react';
 
-const ProfileSettingsPage: React.FC = () => {
+export const ProfileSettingsPage: React.FC = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-[3fr_7fr] gap-6">
@@ -30,5 +32,3 @@ const ProfileSettingsPage: React.FC = () => {
     </div>
   );
 };
-
-export default ProfileSettingsPage;

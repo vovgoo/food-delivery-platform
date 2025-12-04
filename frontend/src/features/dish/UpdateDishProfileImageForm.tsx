@@ -5,17 +5,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { FileInput } from '@/components/input/FileInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
-import type { DishResponse, RestaurantResponse } from '@/api';
-import { dishService } from '@/api/services/dish/dish.service';
-
-import { uploadImageSchema, type UploadImageFormData } from '@/schemas/common/upload-image.schema';
+import { dishService, type DishResponse, type RestaurantResponse } from '@/api';
 
 import { ImageIcon } from 'lucide-react';
+import { uploadImageSchema, type UploadImageFormData } from '@/schemas';
+import { FileInput, SpinnerButton } from '@/components';
 
 interface UpdateDishProfileImageFormProps {
   dish?: DishResponse;

@@ -4,16 +4,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-
-import { type RestaurantCreateRequest } from '@/api';
+import { restaurantService, type RestaurantCreateRequest } from '@/api';
 import { AppRoutes } from '@/routes';
-
-import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { TextareaInput } from '@/components/input/TextareaInput';
-import { PhoneInput } from '@/components/input/PhoneInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -28,13 +20,16 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
+import { restaurantCreateSchema, type RestaurantCreateFormData } from '@/schemas';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import {
-  restaurantCreateSchema,
-  type RestaurantCreateFormData,
-} from '@/schemas/restaurant/create-restaurant.schema';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
-import { CheckboxInput } from '@/components/input/CheckBoxInput';
-import { TimeInput } from '@/components/input/TimeInput';
+  CheckBoxInput,
+  PhoneInput,
+  SpinnerButton,
+  TextareaInput,
+  TextInput,
+  TimeInput,
+} from '@/components';
 
 export const CreateRestaurantFormDialog: React.FC = () => {
   const navigate = useNavigate();
@@ -249,7 +244,7 @@ export const CreateRestaurantFormDialog: React.FC = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxInput
+                    <CheckBoxInput
                       name={field.name}
                       control={form.control}
                       label="Доступна доставка"
@@ -265,7 +260,7 @@ export const CreateRestaurantFormDialog: React.FC = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxInput
+                    <CheckBoxInput
                       name={field.name}
                       control={form.control}
                       label="Есть парковка"

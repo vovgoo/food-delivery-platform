@@ -6,7 +6,7 @@ import { AppRoutes } from '@/routes';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 
-const ConfirmChangeEmailPage: React.FC = () => {
+export const ConfirmChangeEmailPage: React.FC = () => {
   const navigate = useNavigate();
   const hasMutated = useRef(false);
   const [searchParams] = useSearchParams();
@@ -73,5 +73,3 @@ const ConfirmChangeEmailPage: React.FC = () => {
     </div>
   );
 };
-
-export default ConfirmChangeEmailPage;

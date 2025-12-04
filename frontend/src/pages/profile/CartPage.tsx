@@ -3,9 +3,9 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '@/store';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '@/routes';
-import CartRestaurantCard from '@/components/cart/CartRestaurantCard';
+import { CartRestaurantCard } from '@/components';
 
-const CartPage: React.FC = () => {
+export const CartPage: React.FC = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem('accessToken');
 
@@ -42,5 +42,3 @@ const CartPage: React.FC = () => {
     </div>
   );
 };
-
-export default CartPage;

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData as keepPrevData } from '@tanstack/react-query';
-import { type DishShortResponse, type PageResponse, type RestaurantResponse } from '@/api';
-import { Pagination } from '@/components/common/Pagination';
-import { dishService } from '@/api/services/dish/dish.service';
+import {
+  dishService,
+  type DishShortResponse,
+  type PageResponse,
+  type RestaurantResponse,
+} from '@/api';
 import { SearchIcon } from 'lucide-react';
-import { DishCardSkeleton } from '@/components/dish/DishCardSkeleton';
-import { DishCard } from '@/components/dish/DishCard';
+import { DishCard, DishCardSkeleton, Pagination } from '@/components';
 
 interface DishListProps {
   restaurant?: RestaurantResponse;

@@ -1,5 +1,4 @@
-import type { RestaurantResponse } from '@/api';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
+import { restaurantService, type RestaurantResponse } from '@/api';
 import { AppRoutes } from '@/routes';
 import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
@@ -15,9 +14,9 @@ import {
   CarouselNext,
 } from '@/components/ui/carousel';
 import { Building2, Phone, Globe, Clock, Truck, Car } from 'lucide-react';
-import { DishList } from '@/features/dish/DishList';
+import { DishList } from '@/features';
 
-const RestaurantPage: React.FC = () => {
+export const RestaurantPage: React.FC = () => {
   const { restaurantId } = useParams<{ restaurantId: string }>();
   const navigate = useNavigate();
 
@@ -161,5 +160,3 @@ const RestaurantPage: React.FC = () => {
     </div>
   );
 };
-
-export default RestaurantPage;

@@ -8,11 +8,8 @@ import { updateUserProfileSchema, type UpdateUserProfileFormData } from '@/schem
 import { userService, type UpdateUserProfileRequest, type UserResponse } from '@/api';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { DateInput } from '@/components/input/DateInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { DateInput, SpinnerButton, TextInput } from '@/components';
 
 export const UpdateUserProfileForm: React.FC = () => {
   const queryClient = useQueryClient();

@@ -4,16 +4,16 @@ import { restaurantService } from '@/api/services/restaurant/restaurant.service'
 import { dishService } from '@/api/services/dish/dish.service';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
-import CartDishCard from './CartDishCard';
 import type { RestaurantResponse, DishResponse } from '@/api';
 import { CreateOrderFormDialog } from '@/features/order/CreateOrderFormDialog';
+import { CartDishCard } from './CartDishCard';
 
 interface CartRestaurantCardProps {
   restaurantId: string;
   items: { id: string; quantity: number }[];
 }
 
-const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, items }) => {
+export const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, items }) => {
   const { data: restaurant, isPending: isRestaurantPending } = useQuery<RestaurantResponse>({
     queryKey: ['cart-restaurant', restaurantId],
     queryFn: () => restaurantService.get(restaurantId),
@@ -81,5 +81,3 @@ const CartRestaurantCard: React.FC<CartRestaurantCardProps> = ({ restaurantId, i
     </div>
   );
 };
-
-export default CartRestaurantCard;

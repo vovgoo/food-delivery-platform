@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
 import { dishService } from '@/api/services/dish/dish.service';
-import type { RestaurantResponse, DishResponse } from '@/api';
+import { type RestaurantResponse, type DishResponse, restaurantService } from '@/api';
 import { AppRoutes } from '@/routes';
 import { toast } from 'sonner';
-import { AdminDishBreadcrumb } from '@/components/dish/AdminDishBreadcrumb';
-import { UpdateDishForm } from '@/features/dish/UpdateDishForm';
-import { UpdateDishProfileImageForm } from '@/features/dish/UpdateDishProfileImageForm';
-import { UpdateDishImagesForm } from '@/features/dish/UpdateDishImagesFrom';
+import { AdminDishBreadcrumb } from '@/components';
+import { UpdateDishForm, UpdateDishImagesForm, UpdateDishProfileImageForm } from '@/features';
 
-const AdminDishPage: React.FC = () => {
+export const AdminDishPage: React.FC = () => {
   const { restaurantId, dishId } = useParams<{ restaurantId: string; dishId: string }>();
   const navigate = useNavigate();
 
@@ -78,5 +75,3 @@ const AdminDishPage: React.FC = () => {
     </>
   );
 };
-
-export default AdminDishPage;

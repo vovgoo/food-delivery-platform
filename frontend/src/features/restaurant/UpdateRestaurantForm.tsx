@@ -3,25 +3,20 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { type RestaurantUpdateRequest, type RestaurantResponse } from '@/api';
-import {
-  restaurantUpdateSchema,
-  type RestaurantUpdateFormData,
-} from '@/schemas/restaurant/update-restaurant.schema';
-
-import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { TextareaInput } from '@/components/input/TextareaInput';
-import { PhoneInput } from '@/components/input/PhoneInput';
-import { CheckboxInput } from '@/components/input/CheckBoxInput';
-import { TimeInput } from '@/components/input/TimeInput';
-import { SelectInput } from '@/components/input/SelectInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
+import { type RestaurantUpdateRequest, type RestaurantResponse, restaurantService } from '@/api';
+import { restaurantUpdateSchema, type RestaurantUpdateFormData } from '@/schemas';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { Skeleton } from '@/components/ui/skeleton';
+import {
+  CheckBoxInput,
+  PhoneInput,
+  SelectInput,
+  SpinnerButton,
+  TextareaInput,
+  TextInput,
+  TimeInput,
+} from '@/components';
 
 interface UpdateRestaurantFormProps {
   restaurant?: RestaurantResponse;
@@ -322,7 +317,7 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({
                     {isPending ? (
                       <Skeleton className="bg-gray-400 h-6 w-32 mb-4" />
                     ) : (
-                      <CheckboxInput
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Доступна доставка"
@@ -343,7 +338,7 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({
                     {isPending ? (
                       <Skeleton className="bg-gray-400 h-6 w-24 mb-4" />
                     ) : (
-                      <CheckboxInput
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Есть парковка"

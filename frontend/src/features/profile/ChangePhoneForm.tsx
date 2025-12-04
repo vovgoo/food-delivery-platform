@@ -8,12 +8,10 @@ import { changePhoneSchema, type ChangePhoneFormData } from '@/schemas';
 import { userService, type ChangePhoneRequest } from '@/api';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '@/routes';
-import { PhoneInput } from '@/components/input/PhoneInput';
+import { PhoneInput, SpinnerButton } from '@/components';
 
 export const ChangePhoneForm: React.FC = () => {
   const navigate = useNavigate();

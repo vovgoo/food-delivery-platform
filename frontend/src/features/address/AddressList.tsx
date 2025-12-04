@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { useQuery, keepPreviousData as keepPrevData } from '@tanstack/react-query';
 import { addressService, type AddressResponse, type PageResponse } from '@/api';
-import { AddressCard } from '@/components/address/AddressCard';
-import { AddressCardSkeleton } from '@/components/address/AddressCardSkeleton';
-import { Pagination } from '@/components/common/Pagination';
+import { AddressCard, AddressCardSkeleton, Pagination } from '@/components';
 
 interface AddressListProps {
   pageSize?: number;

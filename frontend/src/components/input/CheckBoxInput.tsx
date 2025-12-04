@@ -10,7 +10,7 @@ interface CheckboxInputProps {
   error?: string;
 }
 
-export const CheckboxInput: React.FC<CheckboxInputProps> = ({ name, control, label, error }) => (
+export const CheckBoxInput: React.FC<CheckboxInputProps> = ({ name, control, label, error }) => (
   <div className="flex flex-col gap-1">
     <Controller
       control={control}

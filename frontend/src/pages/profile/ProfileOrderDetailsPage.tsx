@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
-import { orderService } from '@/api/services/order/order.service';
+import { orderService } from '@/api';
 import type {
   OrderResponse,
   OrderItemResponse,
@@ -170,7 +170,7 @@ const OrderDetailsCard: React.FC<{ order: OrderResponse }> = ({ order }) => (
   </Card>
 );
 
-const ProfileOrderDetailsPage: React.FC = () => {
+export const ProfileOrderDetailsPage: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
 
@@ -212,5 +212,3 @@ const ProfileOrderDetailsPage: React.FC = () => {
     </div>
   );
 };
-
-export default ProfileOrderDetailsPage;

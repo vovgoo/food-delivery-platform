@@ -4,9 +4,9 @@ import { userService } from '@/api';
 import { AppRoutes } from '@/routes';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { SpinnerButton } from '@/components';
 
-const UserDeactivatePage: React.FC = () => {
+export const UserDeactivatePage: React.FC = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -60,5 +60,3 @@ const UserDeactivatePage: React.FC = () => {
     </div>
   );
 };
-
-export default UserDeactivatePage;

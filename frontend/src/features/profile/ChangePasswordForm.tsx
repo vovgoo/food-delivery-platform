@@ -8,10 +8,9 @@ import { userService, type ChangePasswordRequest } from '@/api';
 import { changePasswordSchema, type ChangePasswordFormData } from '@/schemas';
 
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { PasswordInput } from '@/components/input/PasswordInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { PasswordInput, SpinnerButton } from '@/components';
 
 export const ChangePasswordForm: React.FC = () => {
   const queryClient = useQueryClient();

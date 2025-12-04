@@ -3,18 +3,9 @@ import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-
-import { type DishCreateRequest, type RestaurantResponse } from '@/api';
-import { dishService } from '@/api/services/dish/dish.service';
-
+import { dishService, type DishCreateRequest, type RestaurantResponse } from '@/api';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { TextInput } from '@/components/input/TextInput';
-import { TextareaInput } from '@/components/input/TextareaInput';
-import { NumberInput } from '@/components/input/NumberInput';
-import { CheckboxInput } from '@/components/input/CheckBoxInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { Skeleton } from '@/components/ui/skeleton';
-
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -26,10 +17,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
-
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from 'lucide-react';
-import { dishCreateSchema, type DishCreateFormData } from '@/schemas/dish/create-dish.schema';
+import { dishCreateSchema, type DishCreateFormData } from '@/schemas';
+import { CheckBoxInput, NumberInput, SpinnerButton, TextareaInput, TextInput } from '@/components';
 
 interface CreateDishFormDialogProps {
   restaurant?: RestaurantResponse;
@@ -241,7 +232,7 @@ export const CreateDishFormDialog: React.FC<CreateDishFormDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxInput
+                    <CheckBoxInput
                       name={field.name}
                       control={form.control}
                       label="Острое"
@@ -258,7 +249,7 @@ export const CreateDishFormDialog: React.FC<CreateDishFormDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxInput
+                    <CheckBoxInput
                       name={field.name}
                       control={form.control}
                       label="Веган"
@@ -275,7 +266,7 @@ export const CreateDishFormDialog: React.FC<CreateDishFormDialogProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <CheckboxInput
+                    <CheckBoxInput
                       name={field.name}
                       control={form.control}
                       label="Вегетарианец"

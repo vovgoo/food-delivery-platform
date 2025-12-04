@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '@/routes';
-import { ConfirmChangePhoneForm } from '@/features/profile/ConfirmChangePhoneForm';
+import { ConfirmChangePhoneForm } from '@/features';
 
-const ChangeUserPhonePage: React.FC = () => {
+export const ConfirmChangePhonePage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,5 +17,3 @@ const ChangeUserPhonePage: React.FC = () => {
     </div>
   );
 };
-
-export default ChangeUserPhonePage;

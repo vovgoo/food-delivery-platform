@@ -13,7 +13,6 @@ import {
   ShoppingCart,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { LinkButton } from '@/components/button/LinkButton';
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -24,8 +23,9 @@ import {
 import { userService, type UserResponse } from '@/api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
+import { LinkButton } from '@/components';
 
-const Header: React.FC = () => {
+export const Header: React.FC = () => {
   const token = localStorage.getItem('accessToken');
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -82,13 +82,11 @@ const Header: React.FC = () => {
             </div>
           )}
           {token && (
-            <Button
-              className="flex items-center gap-2 bg-white hover:bg-white text-black cursor-pointer"
-              onClick={() => navigate(AppRoutes.CART)}
-            >
-              <ShoppingCart className="w-5 h-5" />
-              Корзина
-            </Button>
+            <LinkButton
+              icon={<ShoppingCart className="w-5 h-5" />}
+              text="Корзина"
+              to={AppRoutes.CART}
+            />
           )}
           {token ? (
             <DropdownMenu>
@@ -148,5 +146,3 @@ const Header: React.FC = () => {
     </header>
   );
 };
-
-export default Header;

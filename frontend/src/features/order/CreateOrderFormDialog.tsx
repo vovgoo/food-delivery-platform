@@ -3,16 +3,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
-
-import { createOrderSchema, type CreateOrderFormData } from '@/schemas/order/create-order.schema';
-import { orderService } from '@/api/services/order/order.service';
-import { userService } from '@/api/services/user/user.service';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
-import { dishService } from '@/api/services/dish/dish.service';
-import type { CreateOrderRequest } from '@/api';
-
+import {
+  dishService,
+  orderService,
+  restaurantService,
+  userService,
+  type CreateOrderRequest,
+} from '@/api';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { SelectInput } from '@/components/input/SelectInput';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -24,9 +22,10 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { useDispatch } from 'react-redux';
 import { clearCart } from '@/store/slices/cartSlice';
+import { createOrderSchema, type CreateOrderFormData } from '@/schemas';
+import { SelectInput, SpinnerButton } from '@/components';
 
 interface CreateOrderFormDialogProps {
   restaurantId: string;

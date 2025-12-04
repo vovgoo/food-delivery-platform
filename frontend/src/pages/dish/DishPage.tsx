@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { restaurantService } from '@/api/services/restaurant/restaurant.service';
-import { dishService } from '@/api/services/dish/dish.service';
+import { restaurantService, dishService } from '@/api';
 import type { RestaurantResponse, DishResponse } from '@/api';
 import { AppRoutes } from '@/routes';
 import { toast } from 'sonner';
@@ -21,7 +20,7 @@ import {
 } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
 
-const DishPage: React.FC = () => {
+export const DishPage: React.FC = () => {
   const { restaurantId, dishId } = useParams<{ restaurantId: string; dishId: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -259,5 +258,3 @@ const DishPage: React.FC = () => {
     </div>
   );
 };
-
-export default DishPage;

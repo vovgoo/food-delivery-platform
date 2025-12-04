@@ -5,7 +5,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { userService } from '@/api';
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes } from '@/routes';
 
@@ -20,6 +19,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from '@/components/ui/alert-dialog';
+import { SpinnerButton } from '@/components';
 
 export const DeactivateAccountForm: React.FC = () => {
   const queryClient = useQueryClient();

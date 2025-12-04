@@ -1,7 +1,7 @@
+import { OrderList } from '@/features';
 import React from 'react';
-import { OrderList } from '@/features/order/OrderList';
 
-const ProfileOrdersPage: React.FC = () => {
+export const ProfileOrdersPage: React.FC = () => {
   return (
     <div className="w-full flex flex-col gap-y-6">
       <h1 className="text-3xl font-bold">Мои заказы</h1>
@@ -9,5 +9,3 @@ const ProfileOrdersPage: React.FC = () => {
     </div>
   );
 };
-
-export default ProfileOrdersPage;

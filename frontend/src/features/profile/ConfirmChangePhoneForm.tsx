@@ -7,14 +7,9 @@ import { toast } from 'sonner';
 
 import { userService, type ConfirmChangePhoneRequest } from '@/api';
 import { AppRoutes } from '@/routes';
-import {
-  confirmChangePhoneSchema,
-  type ConfirmChangePhoneFormData,
-} from '@/schemas/user/confirm-change-phone.schema';
 import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
-import { OtpInput } from '@/components/input/OtpInput';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
-import { LinkButton } from '@/components/button/LinkButton';
+import { confirmChangePhoneSchema, type ConfirmChangePhoneFormData } from '@/schemas';
+import { LinkButton, OtpInput, SpinnerButton } from '@/components';
 
 export const ConfirmChangePhoneForm: React.FC = () => {
   const navigate = useNavigate();

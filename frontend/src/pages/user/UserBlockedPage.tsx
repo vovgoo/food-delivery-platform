@@ -4,9 +4,9 @@ import { userService } from '@/api';
 import { AppRoutes } from '@/routes';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { SpinnerButton } from '@/components/button/SpinnerButton';
+import { SpinnerButton } from '@/components';
 
-const UserBlockedPage: React.FC = () => {
+export const UserBlockedPage: React.FC = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -40,5 +40,3 @@ const UserBlockedPage: React.FC = () => {
     </div>
   );
 };
-
-export default UserBlockedPage;
