@@ -20,6 +20,8 @@ const DishPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const token = localStorage.getItem("accessToken");
+
   const { isPending: isRestaurantPending, isError: isRestaurantError, error: restaurantError } = useQuery<RestaurantResponse>({
     queryKey: ["restaurant", restaurantId],
     queryFn: () => restaurantService.get(restaurantId!),
@@ -109,11 +111,25 @@ const DishPage: React.FC = () => {
           <Badge className={isActive ? "bg-green-500 text-white" : "bg-orange-500 text-white"}>
             {isActive ? "Активен" : "Временно не доступен"}
           </Badge>
-          {quantityInCart === 0 ? (
+          {!token ? (
+            <Button
+              className="flex items-center gap-2 bg-amber-400 text-black hover:bg-amber-300"
+              onClick={() => navigate(AppRoutes.SIGN_IN)}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              В корзину
+            </Button>
+          ) : quantityInCart === 0 ? (
             <Button
               className="flex items-center gap-2 bg-amber-400 text-black hover:bg-amber-300"
               onClick={() =>
-                dispatch(addItem({ restaurantId: restaurantId!, dishId: dish.id, quantity: 1 }))
+                dispatch(
+                  addItem({
+                    restaurantId: restaurantId!,
+                    dishId: dish.id,
+                    quantity: 1,
+                  })
+                )
               }
             >
               <ShoppingCart className="w-5 h-5" />
@@ -125,27 +141,40 @@ const DishPage: React.FC = () => {
                 className="w-10 bg-amber-300 hover:bg-amber-200 flex items-center justify-center"
                 onClick={() => {
                   if (quantityInCart === 1) {
-                    dispatch(removeItem({ restaurantId: restaurantId!, dishId: dish.id }));
+                    dispatch(
+                      removeItem({
+                        restaurantId: restaurantId!,
+                        dishId: dish.id,
+                      })
+                    );
                   } else {
-                    dispatch(updateQuantity({
-                      restaurantId: restaurantId!,
-                      dishId: dish.id,
-                      quantity: quantityInCart - 1
-                    }));
+                    dispatch(
+                      updateQuantity({
+                        restaurantId: restaurantId!,
+                        dishId: dish.id,
+                        quantity: quantityInCart - 1,
+                      })
+                    );
                   }
                 }}
               >
                 <Minus className="w-4 h-4 text-black" />
               </Button>
-              <div className="flex-1 flex items-center justify-center text-black font-medium">{quantityInCart}</div>
+
+              <div className="flex-1 flex items-center justify-center text-black font-medium">
+                {quantityInCart}
+              </div>
+
               <Button
                 className="w-10 bg-amber-300 hover:bg-amber-200 flex items-center justify-center"
                 onClick={() =>
-                  dispatch(updateQuantity({
-                    restaurantId: restaurantId!,
-                    dishId: dish.id,
-                    quantity: quantityInCart + 1
-                  }))
+                  dispatch(
+                    updateQuantity({
+                      restaurantId: restaurantId!,
+                      dishId: dish.id,
+                      quantity: quantityInCart + 1,
+                    })
+                  )
                 }
               >
                 <Plus className="w-4 h-4 text-black" />

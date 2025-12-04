@@ -27,6 +27,8 @@ export const DishCard: React.FC<DishCardProps> = ({ dish, restaurant }) => {
   const cartDish = cartItems.find((i) => i.id === dish.id);
   const quantityInCart = cartDish?.quantity ?? 0;
 
+  const token = localStorage.getItem("accessToken");
+
   return (
     <Card className="transition-transform hover:scale-[1.02] p-0 overflow-hidden flex flex-col">
       {dish.profileImage?.url ? (
@@ -99,56 +101,69 @@ export const DishCard: React.FC<DishCardProps> = ({ dish, restaurant }) => {
             Подробнее
           </Button>
 
-          {quantityInCart === 0 ? (
+          {!token ? (
             <Button
               className="flex items-center gap-2 bg-gray-200 text-black hover:bg-gray-300"
-              onClick={() =>
-                dispatch(addItem({ restaurantId: restaurant.id, dishId: dish.id, quantity: 1 }))
-              }
+              onClick={() => navigate(AppRoutes.SIGN_IN)}
             >
               <ShoppingCart className="w-5 h-5" />
               В корзину
             </Button>
           ) : (
-            <div className="flex items-center w-full bg-gray-300 rounded-lg overflow-hidden">
+
+            quantityInCart === 0 ? (
               <Button
-                className="flex-1 max-w-10 bg-gray-500 hover:bg-gray-400 flex items-center justify-center"
-                onClick={() => {
-                  if (quantityInCart === 1) {
-                    dispatch(removeItem({ restaurantId: restaurant.id, dishId: dish.id }));
-                  } else {
+                className="flex items-center gap-2 bg-gray-200 text-black hover:bg-gray-300"
+                onClick={() =>
+                  dispatch(addItem({ restaurantId: restaurant.id, dishId: dish.id, quantity: 1 }))
+                }
+              >
+                <ShoppingCart className="w-5 h-5" />
+                В корзину
+              </Button>
+            ) : (
+              <div className="flex items-center w-full bg-gray-300 rounded-lg overflow-hidden">
+
+                <Button
+                  className="flex-1 max-w-10 bg-gray-500 hover:bg-gray-400 flex items-center justify-center"
+                  onClick={() => {
+                    if (quantityInCart === 1) {
+                      dispatch(removeItem({ restaurantId: restaurant.id, dishId: dish.id }));
+                    } else {
+                      dispatch(
+                        updateQuantity({
+                          restaurantId: restaurant.id,
+                          dishId: dish.id,
+                          quantity: quantityInCart - 1,
+                        })
+                      );
+                    }
+                  }}
+                >
+                  <Minus className="w-4 h-4 text-white" />
+                </Button>
+
+                <div className="flex-1 flex items-center justify-center text-black font-medium">
+                  {quantityInCart}
+                </div>
+
+                <Button
+                  className="flex-1 max-w-10 bg-gray-500 hover:bg-gray-400 flex items-center justify-center p-2"
+                  onClick={() =>
                     dispatch(
                       updateQuantity({
                         restaurantId: restaurant.id,
                         dishId: dish.id,
-                        quantity: quantityInCart - 1,
+                        quantity: quantityInCart + 1,
                       })
-                    );
+                    )
                   }
-                }}
-              >
-                <Minus className="w-4 h-4 text-white" />
-              </Button>
+                >
+                  <Plus className="w-4 h-4 text-white" />
+                </Button>
 
-              <div className="flex-1 flex items-center justify-center text-black font-medium">
-                {quantityInCart}
               </div>
-
-              <Button
-                className="flex-1 max-w-10 bg-gray-500 hover:bg-gray-400 flex items-center justify-center p-2"
-                onClick={() =>
-                  dispatch(
-                    updateQuantity({
-                      restaurantId: restaurant.id,
-                      dishId: dish.id,
-                      quantity: quantityInCart + 1,
-                    })
-                  )
-                }
-              >
-                <Plus className="w-4 h-4 text-white" />
-              </Button>
-            </div>
+            )
           )}
         </div>
       </CardContent>
