@@ -49,3 +49,11 @@ export interface OrderResponse {
   items: OrderItemResponse[];
   payment: PaymentResponse;
 }
+
+export interface OrderShortResponse {
+  id: string;
+  orderDate: string;
+  payment: PaymentResponse;
+  status: OrderStatus;
+  totalPrice: number;
+}

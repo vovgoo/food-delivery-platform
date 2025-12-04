@@ -1,6 +1,7 @@
 import type { 
   CreateOrderRequest, 
   OrderResponse, 
+  OrderShortResponse, 
   PageParams, 
   PageResponse, 
   UpdateOrderStatusRequest 
@@ -10,8 +11,8 @@ import { apiClient } from '@/api/core/api-client';
 export class OrderService {
   private readonly basePath = '/api/v1/orders';
 
-  async list(page: PageParams): Promise<PageResponse<OrderResponse>> {
-    return apiClient.get<PageResponse<OrderResponse>>(this.basePath, { params: page });
+  async list(page: PageParams): Promise<PageResponse<OrderShortResponse>> {
+    return apiClient.get<PageResponse<OrderShortResponse>>(this.basePath, { params: page });
   }
 
   async create(data: CreateOrderRequest): Promise<OrderResponse> {
