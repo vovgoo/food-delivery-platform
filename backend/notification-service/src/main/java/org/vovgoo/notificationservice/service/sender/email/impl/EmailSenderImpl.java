@@ -24,7 +24,7 @@ public class EmailSenderImpl implements EmailSender {
             helper.setFrom("vovgoo@innowise.com");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(body, true);
+            helper.setText(String.format("<html>%s</html>", body), true);
 
             javaMailSender.send(message);
         } catch (Exception e) {
