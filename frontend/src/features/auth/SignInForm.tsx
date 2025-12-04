@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authService, type SignInRequest } from '@/api';
 import { AppRoutes } from '@/routes';
@@ -13,6 +13,7 @@ import { LinkButton, PasswordInput, PhoneInput, SpinnerButton } from '@/componen
 
 export const SignInForm: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
@@ -27,6 +28,7 @@ export const SignInForm: React.FC = () => {
     onSuccess: (data) => {
       localStorage.setItem('accessToken', data.accessToken);
       navigate(AppRoutes.MAIN);
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       toast.success('Вы успешно авторизовались!');
     },
     onError: (err: any) => {

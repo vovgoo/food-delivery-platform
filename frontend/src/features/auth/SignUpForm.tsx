@@ -2,7 +2,7 @@ import React from 'react';
 import { toast } from 'sonner';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { authService, type SignUpRequest } from '@/api';
 import { AppRoutes } from '@/routes';
@@ -20,6 +20,7 @@ import {
 
 export const SignUpForm: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
@@ -36,6 +37,7 @@ export const SignUpForm: React.FC = () => {
     mutationFn: (payload: SignUpRequest) => authService.signUp(payload),
     onSuccess: (_data, variables) => {
       navigate(AppRoutes.CONFIRM_SIGN_UP, { state: { phone: variables.phone } });
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       toast.success(
         'На ваш номер был отправлен временный код, введите его что бы завершить регистрацию!',
       );
