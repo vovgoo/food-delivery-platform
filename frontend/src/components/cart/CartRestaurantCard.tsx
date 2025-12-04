@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import CartDishCard from "./CartDishCard";
 import type { RestaurantResponse, DishResponse } from "@/api";
-import { CreateOrderFormDialog } from "@/features/features/CreateOrderFormDialog";
+import { CreateOrderFormDialog } from "@/features/order/CreateOrderFormDialog";
 
 interface CartRestaurantCardProps {
   restaurantId: string;
