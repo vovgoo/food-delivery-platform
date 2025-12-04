@@ -38,7 +38,7 @@ public class SmsSenderImpl implements SmsSender {
             helper.setFrom("vovgoo@innowise.com");
             helper.setTo(phone);
             helper.setSubject("Sms message");
-            helper.setText(message, true);
+            helper.setText(String.format("<html>%s</html>", message), true);
 
             javaMailSender.send(msg);
         } catch (Exception e) {
