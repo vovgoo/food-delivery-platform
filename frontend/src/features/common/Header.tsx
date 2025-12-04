@@ -2,7 +2,7 @@ import React from "react";
 import { AppRoutes } from "@/routes";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck } from "lucide-react";
+import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { LinkButton } from "@/components/button/LinkButton";
 import {
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
           <span className="text-2xl font-bold">Food Delivery</span>
         </Link>
 
-        <div className="flex items-center gap-x-10">
+        <div className="flex items-center gap-x-5">
          {token && (isPending || user?.defaultAddress) && (
             <div className="flex items-center gap-3 cursor-pointer">
               <HomeIcon className="w-5 h-5" />
@@ -71,7 +71,15 @@ const Header: React.FC = () => {
               </div>
             </div>
           )}
-
+          {token && (
+            <Button
+              className="flex items-center gap-2 bg-white hover:bg-white text-black cursor-pointer"
+              onClick={() => navigate(AppRoutes.CART)}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Корзина
+            </Button>
+          )}
           {token ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
