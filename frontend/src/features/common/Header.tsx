@@ -1,9 +1,8 @@
 import React from "react";
 import { AppRoutes } from "@/routes";
-import { useForm } from "react-hook-form";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "react-router-dom";
-import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon } from "lucide-react";
+import { HomeIcon, UserIcon, LogOutIcon, MapPinIcon, PackageIcon, SettingsIcon, ShieldCheck, ShoppingCart } from "lucide-react";
 import { toast } from "sonner";
 import { LinkButton } from "@/components/button/LinkButton";
 import {
@@ -15,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { userService, type UserResponse } from "@/api";
 import { Skeleton } from "@/components/ui/skeleton";
-import { SearchInput } from "@/components/input/SearchInput";
 import { Button } from "@/components/ui/button";
 
 const Header: React.FC = () => {
@@ -41,7 +39,6 @@ const Header: React.FC = () => {
     },
   });
 
-  const form = useForm<{ search: string }>();
 
   return (
     <header className="w-full flex py-5">
@@ -50,10 +47,8 @@ const Header: React.FC = () => {
           <img src="/img/logo_black.png" alt="FDP" className="w-8 h-8" />
           <span className="text-2xl font-bold">Food Delivery</span>
         </Link>
-        <div className="w-[400px]">
-          <SearchInput name="search" control={form.control} placeholder="Поиск..." />
-        </div>
-        <div className="flex items-center gap-x-10">
+
+        <div className="flex items-center gap-x-5">
          {token && (isPending || user?.defaultAddress) && (
             <div className="flex items-center gap-3 cursor-pointer">
               <HomeIcon className="w-5 h-5" />
@@ -76,7 +71,15 @@ const Header: React.FC = () => {
               </div>
             </div>
           )}
-
+          {token && (
+            <Button
+              className="flex items-center gap-2 bg-white hover:bg-white text-black cursor-pointer"
+              onClick={() => navigate(AppRoutes.CART)}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              Корзина
+            </Button>
+          )}
           {token ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -91,6 +94,13 @@ const Header: React.FC = () => {
               </DropdownMenuTrigger>
 
               <DropdownMenuContent align="end">
+                {user?.roles?.some(role => role.name === "ADMIN") && (
+                  <DropdownMenuItem onClick={() => navigate(AppRoutes.ADMIN_DASHBOARD)}>
+                    <ShieldCheck className="w-4 h-4 mr-2" />
+                    Админ панель
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={() => navigate(AppRoutes.PROFILE)}>
                   <UserIcon className="w-4 h-4 mr-2" />
                   Профиль

@@ -19,6 +19,22 @@ export interface DishResponse {
   images?: ImageResponse[];
 }
 
+export interface DishShortResponse {
+  id: string;
+  name: string;
+  description?: string;
+  profileImage?: ImageResponse;
+  portionInGrams?: number;
+  proteins?: number;
+  fats?: number;
+  carbohydrates?: number;
+  spicy: boolean;
+  vegan: boolean;
+  vegetarian: boolean;
+  price: number;
+  status: DishStatus;
+}
+
 export interface DishCreateRequest {
   name: string;
   description?: string;

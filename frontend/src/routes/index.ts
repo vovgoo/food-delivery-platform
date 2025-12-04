@@ -1,5 +1,9 @@
 export const AppRoutes = {
   MAIN: '/',
+  RESTAURANT: '/restaurant/:restaurantId',
+  DISH: '/restaurant/:restaurantId/dish/:dishId',
+  CART: '/cart',
+  CREATE_ORDER: '/create-order',
 
   SIGN_IN: '/auth/signIn',
   SIGN_UP: '/auth/signUp',
@@ -12,14 +16,12 @@ export const AppRoutes = {
   CHANGE_EMAIL: '/profile/confirm/change-email',
   CHANGE_PHONE: '/profile/confirm/change-phone',
 
-
-  RESTAURANT: '/restaurant/:id',
-  CREATE_ORDER: '/create-order',
   USER_DEACTIVATE: '/error/diactivate',
   USER_BLOCKED: '/error/blocked',
 
   ADMIN_DASHBOARD: '/admin',
   ADMIN_RESTAURANTS: '/admin/restaurants',
-  ADMIN_DISHES: '/admin/dishes',
+  ADMIN_RESTAURANT: '/admin/restaurants/:restaurantId',
+  ADMIN_DISH: '/admin/restaurants/:restaurantId/dishes/:dishId',
   ADMIN_ORDERS: '/admin/orders',
 } as const;

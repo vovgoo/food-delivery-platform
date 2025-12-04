@@ -10,7 +10,6 @@ import { AppRoutes } from "@/routes";
 import { createAddressSchema, type CreateAddressFormData } from "@/schemas";
 
 import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
 import { TextInput } from "@/components/input/TextInput";
 import { SpinnerButton } from "@/components/button/SpinnerButton";
 
@@ -28,6 +27,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { TextareaInput } from "@/components/input/TextareaInput";
 
 export const CreateAddressFormDialog: React.FC = () => {
   const navigate = useNavigate();
@@ -142,15 +142,15 @@ export const CreateAddressFormDialog: React.FC = () => {
           <FormField
             control={form.control}
             name="deliveryInstructions"
-            render={({ field }) => (
+            render={({}) => (
               <FormItem className="col-span-full">
                 <FormControl>
-                  <Textarea
-                    {...field}
-                    placeholder="Инструкция для курьера (необязательно)"
-                    className="resize-none"
-                    rows={3}
-                  />
+                    <TextareaInput
+                      name="deliveryInstructions"
+                      control={form.control}
+                      placeholder="Инструкция для курьера (необязательно)"
+                      error={form.formState.errors.deliveryInstructions?.message}
+                    />
                 </FormControl>
               </FormItem>
             )}
