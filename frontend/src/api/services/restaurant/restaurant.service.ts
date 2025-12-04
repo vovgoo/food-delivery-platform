@@ -1,4 +1,12 @@
-import type { PageParams, PageResponse, RestaurantCreateRequest, RestaurantResponse, RestaurantSearchRequest, RestaurantShortResponse, RestaurantUpdateRequest } from '@/api/types';
+import type {
+  PageParams,
+  PageResponse,
+  RestaurantCreateRequest,
+  RestaurantResponse,
+  RestaurantSearchRequest,
+  RestaurantShortResponse,
+  RestaurantUpdateRequest,
+} from '@/api/types';
 import { apiClient } from '../../core/api-client';
 
 export class RestaurantService {
@@ -20,16 +28,21 @@ export class RestaurantService {
     return apiClient.delete<void>(`${this.basePath}/${restaurantId}`);
   }
 
-  async list(search: RestaurantSearchRequest, page: PageParams): Promise<PageResponse<RestaurantShortResponse>> {
+  async list(
+    search: RestaurantSearchRequest,
+    page: PageParams,
+  ): Promise<PageResponse<RestaurantShortResponse>> {
     return apiClient.get<PageResponse<RestaurantShortResponse>>(this.basePath, {
       params: { ...search, ...page },
     });
   }
 
   async setProfileImage(restaurantId: string, file: File): Promise<void> {
-    const formData = new FormData()
-    formData.append('file', file)
-    await apiClient.put<void>(`${this.basePath}/${restaurantId}/images/profile`, formData, { headers: {'Content-Type': 'multipart/form-data',}})
+    const formData = new FormData();
+    formData.append('file', file);
+    await apiClient.put<void>(`${this.basePath}/${restaurantId}/images/profile`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   }
 
   async removeProfileImage(restaurantId: string): Promise<void> {
@@ -39,7 +52,9 @@ export class RestaurantService {
   async addImage(restaurantId: string, file: File): Promise<void> {
     const formData = new FormData();
     formData.append('file', file);
-    await apiClient.post<void>(`${this.basePath}/${restaurantId}/images`, formData, { headers: {'Content-Type': 'multipart/form-data',}});
+    await apiClient.post<void>(`${this.basePath}/${restaurantId}/images`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
   }
 
   async removeImage(restaurantId: string, imageId: string): Promise<void> {

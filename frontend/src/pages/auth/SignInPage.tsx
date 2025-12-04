@@ -1,9 +1,9 @@
-import { SignInForm } from "@/features/auth/SignInForm";
-import { AppRoutes } from "@/routes";
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { SignInForm } from '@/features';
+import { AppRoutes } from '@/routes';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const SignInPage: React.FC = () => {
+export const SignInPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,9 +15,7 @@ const SignInPage: React.FC = () => {
 
   return (
     <div className="flex w-full justify-center">
-      <SignInForm/>
+      <SignInForm />
     </div>
   );
 };
-
-export default SignInPage;

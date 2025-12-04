@@ -1,6 +1,5 @@
-import React from "react";
-import { CreateAddressFormDialog } from "@/features/address/CreateAddressFormDialog";
-import { AddressList } from "@/features/address/AddressList";
+import { AddressList, CreateAddressFormDialog } from '@/features';
+import React from 'react';
 
 export const ProfileAddressesPage: React.FC = () => {
   return (
@@ -14,5 +13,3 @@ export const ProfileAddressesPage: React.FC = () => {
     </div>
   );
 };
-
-export default ProfileAddressesPage;

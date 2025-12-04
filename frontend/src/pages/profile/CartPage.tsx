@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/store";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "@/routes";
-import CartRestaurantCard from "@/components/cart/CartRestaurantCard";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/store';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
+import { CartRestaurantCard } from '@/components';
 
-const CartPage: React.FC = () => {
+export const CartPage: React.FC = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem('accessToken');
 
   useEffect(() => {
     if (!token) {
@@ -17,7 +17,7 @@ const CartPage: React.FC = () => {
 
   const carts = useSelector((state: RootState) => state.cart.carts);
 
-  const hasItems = Object.values(carts).some(cart => cart.items.length > 0);
+  const hasItems = Object.values(carts).some((cart) => cart.items.length > 0);
 
   if (!hasItems) {
     return (
@@ -32,7 +32,7 @@ const CartPage: React.FC = () => {
     <div className="w-full my-10 flex flex-col gap-y-6 h-full">
       <h1 className="text-3xl font-bold">Корзина</h1>
 
-      {Object.values(carts).map(cart => (
+      {Object.values(carts).map((cart) => (
         <CartRestaurantCard
           key={cart.restaurantId}
           restaurantId={cart.restaurantId}
@@ -42,5 +42,3 @@ const CartPage: React.FC = () => {
     </div>
   );
 };
-
-export default CartPage;

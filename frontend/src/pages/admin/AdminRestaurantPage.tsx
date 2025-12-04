@@ -1,24 +1,30 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import { restaurantService } from "@/api/services/restaurant/restaurant.service";
-import type { RestaurantResponse } from "@/api";
-import { AppRoutes } from "@/routes";
-import { toast } from "sonner";
-import { UpdateRestaurantForm } from "@/features/restaurant/UpdateRestaurantForm";
-import { AdminRestaurantBreadcrumb } from "@/components/restaurant/AdminRestaurantBreadcrumb";
-import { UpdateRestaurantProfileImageForm } from "@/features/restaurant/UpdateRestaurantProfileImageForm";
-import { UpdateRestaurantImagesForm } from "@/features/restaurant/UpdateRestaurantImagesForm";
-import { AdminDishList } from "@/features/dish/AdminDishList";
-import { CreateDishFormDialog } from "@/features/dish/CreateDishFormDialog";
+import React, { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { restaurantService, type RestaurantResponse } from '@/api';
+import { AppRoutes } from '@/routes';
+import { toast } from 'sonner';
+import { AdminRestaurantBreadcrumb } from '@/components';
+import {
+  AdminDishList,
+  CreateDishFormDialog,
+  UpdateRestaurantForm,
+  UpdateRestaurantImagesForm,
+  UpdateRestaurantProfileImageForm,
+} from '@/features';
 
-const AdminRestaurantPage: React.FC = () => {
+export const AdminRestaurantPage: React.FC = () => {
   const { restaurantId } = useParams<{ restaurantId: string }>();
 
   const navigate = useNavigate();
 
-  const { data: restaurant, isPending, isError, error } = useQuery<RestaurantResponse>({
-    queryKey: ["admin-restaurant", restaurantId],
+  const {
+    data: restaurant,
+    isPending,
+    isError,
+    error,
+  } = useQuery<RestaurantResponse>({
+    queryKey: ['admin-restaurant', restaurantId],
     queryFn: () => restaurantService.get(restaurantId!),
     retry: (failureCount, err: any) => {
       if (err?.response?.status === 404) return false;
@@ -29,17 +35,17 @@ const AdminRestaurantPage: React.FC = () => {
   useEffect(() => {
     if (isError) {
       if ((error as any)?.response?.status === 404) {
-        toast.error("Ресторан не найден");
+        toast.error('Ресторан не найден');
         navigate(AppRoutes.ADMIN_RESTAURANTS);
       } else {
-        toast.error("Произошла ошибка при загрузке ресторана");
+        toast.error('Произошла ошибка при загрузке ресторана');
       }
     }
   }, [isError]);
 
   return (
     <>
-      <AdminRestaurantBreadcrumb restaurant={restaurant} isPending={isPending}/>
+      <AdminRestaurantBreadcrumb restaurant={restaurant} isPending={isPending} />
       <UpdateRestaurantForm restaurant={restaurant} isPending={isPending} />
       <UpdateRestaurantProfileImageForm restaurant={restaurant} isPending={isPending} />
       <UpdateRestaurantImagesForm restaurant={restaurant} isPending={isPending} />
@@ -47,9 +53,7 @@ const AdminRestaurantPage: React.FC = () => {
         <h1 className="text-3xl font-bold">Список блюд</h1>
         <CreateDishFormDialog restaurant={restaurant} isPending={isPending} />
       </div>
-      <AdminDishList restaurant={restaurant} isPending={isPending} pageSize={6}/>
+      <AdminDishList restaurant={restaurant} isPending={isPending} pageSize={6} />
     </>
   );
 };
-
-export default AdminRestaurantPage;

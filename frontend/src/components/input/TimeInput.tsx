@@ -1,7 +1,7 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Input } from "@/components/ui/input";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Input } from '@/components/ui/input';
 
 interface TimeInputProps {
   name: string;
@@ -13,7 +13,7 @@ interface TimeInputProps {
 export const TimeInput: React.FC<TimeInputProps> = ({
   name,
   control,
-  placeholder = "HH:mm",
+  placeholder = 'HH:mm',
   error,
 }) => (
   <div className="flex flex-col gap-1">

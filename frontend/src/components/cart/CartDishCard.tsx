@@ -1,10 +1,10 @@
-import React from "react";
-import { Button } from "@/components/ui/button";
-import { Plus, Minus, ImageIcon } from "lucide-react";
-import { useDispatch } from "react-redux";
-import { removeItem, updateQuantity } from "@/store/slices/cartSlice";
-import type { DishResponse } from "@/api";
-import { Badge } from "../ui/badge";
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import { Plus, Minus, ImageIcon } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { removeItem, updateQuantity } from '@/store/slices/cartSlice';
+import type { DishResponse } from '@/api';
+import { Badge } from '../ui/badge';
 
 interface CartDishCardProps {
   restaurantId: string;
@@ -12,16 +12,20 @@ interface CartDishCardProps {
   quantity: number;
 }
 
-const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantity }) => {
+export const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantity }) => {
   const dispatch = useDispatch();
 
-  const isAvailable = dish.status === "AVAILABLE";
+  const isAvailable = dish.status === 'AVAILABLE';
 
   return (
     <div className="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
       <div className="flex items-center gap-2">
         {dish.profileImage?.url ? (
-          <img src={dish.profileImage.url} alt={dish.name} className="w-12 h-12 object-cover rounded" />
+          <img
+            src={dish.profileImage.url}
+            alt={dish.name}
+            className="w-12 h-12 object-cover rounded"
+          />
         ) : (
           <div className="w-12 h-12 bg-gray-300 flex items-center justify-center rounded">
             <ImageIcon className="w-6 h-6 text-white" />
@@ -30,8 +34,8 @@ const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantit
         <div className="flex flex-col">
           <span className="font-medium">{dish.name}</span>
           <span className="text-sm text-gray-600">{dish.price} BYN</span>
-          <Badge className={isAvailable ? "bg-green-500 text-white" : "bg-red-500 text-white"}>
-            {isAvailable ? "Доступно" : "Временно не доступно"}
+          <Badge className={isAvailable ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}>
+            {isAvailable ? 'Доступно' : 'Временно не доступно'}
           </Badge>
         </div>
       </div>
@@ -56,7 +60,9 @@ const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantit
 
         <Button
           className="flex-1 max-w-10 bg-gray-500 hover:bg-gray-400 flex items-center justify-center p-2"
-          onClick={() => dispatch(updateQuantity({ restaurantId, dishId: dish.id, quantity: quantity + 1 }))}
+          onClick={() =>
+            dispatch(updateQuantity({ restaurantId, dishId: dish.id, quantity: quantity + 1 }))
+          }
         >
           <Plus className="w-4 h-4 text-white" />
         </Button>
@@ -64,5 +70,3 @@ const CartDishCard: React.FC<CartDishCardProps> = ({ restaurantId, dish, quantit
     </div>
   );
 };
-
-export default CartDishCard;

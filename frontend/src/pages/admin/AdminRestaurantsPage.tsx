@@ -1,8 +1,7 @@
-import { AdminRestaurantList } from "@/features/restaurant/AdminRestaurantList";
-import { CreateRestaurantFormDialog } from "@/features/restaurant/CreateRestaurantFormDialog";
-import React from "react";
+import { AdminRestaurantList, CreateRestaurantFormDialog } from '@/features';
+import React from 'react';
 
-const AdminRestaurantsPage: React.FC = () => {
+export const AdminRestaurantsPage: React.FC = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between items-center mb-6">
@@ -13,5 +12,3 @@ const AdminRestaurantsPage: React.FC = () => {
     </div>
   );
 };
-
-export default AdminRestaurantsPage;

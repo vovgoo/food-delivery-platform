@@ -1,35 +1,37 @@
-import React, { useEffect, useRef } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userService, type ConfirmChangeEmailRequest } from "@/api";
-import { AppRoutes } from "@/routes";
-import { Spinner } from "@/components/ui/spinner";
-import { toast } from "sonner";
+import React, { useEffect, useRef } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { userService, type ConfirmChangeEmailRequest } from '@/api';
+import { AppRoutes } from '@/routes';
+import { Spinner } from '@/components/ui/spinner';
+import { toast } from 'sonner';
 
-const ConfirmChangeEmailPage: React.FC = () => {
+export const ConfirmChangeEmailPage: React.FC = () => {
   const navigate = useNavigate();
   const hasMutated = useRef(false);
   const [searchParams] = useSearchParams();
-  const tokenFromUrl = searchParams.get("token") || "";
+  const tokenFromUrl = searchParams.get('token') || '';
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (payload: ConfirmChangeEmailRequest) => userService.confirmChangeEmail(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["me"] });
-      toast.success("Почта успешно изменена!");
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      toast.success('Почта успешно изменена!');
       navigate(AppRoutes.PROFILE_SETTINGS);
     },
     onError: (err: any) => {
       if (err.response?.data?.body?.errors) {
-        err.response.data.body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
-          toast.error(`${fieldError.field}: ${fieldError.messages.join(", ")}`);
-        });
+        err.response.data.body.errors.forEach(
+          (fieldError: { field: string; messages: string[] }) => {
+            toast.error(`${fieldError.field}: ${fieldError.messages.join(', ')}`);
+          },
+        );
       } else {
         const message =
-          typeof err.response?.data?.body === "string"
+          typeof err.response?.data?.body === 'string'
             ? err.response.data.body
-            : "Произошла ошибка при подтверждении почты";
+            : 'Произошла ошибка при подтверждении почты';
         toast.error(message);
       }
       navigate(AppRoutes.PROFILE_SETTINGS);
@@ -37,14 +39,14 @@ const ConfirmChangeEmailPage: React.FC = () => {
   });
 
   useEffect(() => {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       navigate(AppRoutes.MAIN, { replace: true });
       return;
     }
 
     if (!tokenFromUrl) {
-      toast.error("Токен не найден");
+      toast.error('Токен не найден');
       navigate(AppRoutes.PROFILE_SETTINGS);
       return;
     }
@@ -71,5 +73,3 @@ const ConfirmChangeEmailPage: React.FC = () => {
     </div>
   );
 };
-
-export default ConfirmChangeEmailPage;

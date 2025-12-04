@@ -1,17 +1,14 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-
-import { authService, type ConfirmSignUpRequest, type JwtResponse } from "../../api";
-import { AppRoutes } from "@/routes";
-import { confirmSignUpSchema, type ConfirmSignUpFormData } from "@/schemas/auth/confirm-sign-up.schema";
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { OtpInput } from "@/components/input/OtpInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-import { LinkButton } from "@/components/button/LinkButton";
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from '@tanstack/react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
+import { AppRoutes } from '@/routes';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { confirmSignUpSchema, type ConfirmSignUpFormData } from '@/schemas';
+import { authService, type ConfirmSignUpRequest, type JwtResponse } from '@/api';
+import { LinkButton, OtpInput, SpinnerButton } from '@/components';
 
 export const ConfirmSignUpForm: React.FC = () => {
   const navigate = useNavigate();
@@ -28,26 +25,31 @@ export const ConfirmSignUpForm: React.FC = () => {
 
   const form = useForm<ConfirmSignUpFormData>({
     resolver: zodResolver(confirmSignUpSchema),
-    defaultValues: { code: "", phone: phone || "" },
+    defaultValues: { code: '', phone: phone || '' },
   });
 
   const mutation = useMutation({
     mutationFn: (payload: ConfirmSignUpRequest) => authService.confirmSignUp(payload),
     onSuccess: (data: JwtResponse) => {
-      localStorage.setItem("accessToken", data.accessToken);
-      toast.success("Регистрация успешно подтверждена!");
+      localStorage.setItem('accessToken', data.accessToken);
+      toast.success('Регистрация успешно подтверждена!');
       navigate(AppRoutes.MAIN);
     },
     onError: (err: any) => {
       if (err.response?.data?.body?.errors) {
-        err.response.data.body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
-          form.setError(fieldError.field as keyof ConfirmSignUpFormData, {
-            type: "server",
-            message: fieldError.messages.join(", "),
-          });
-        });
+        err.response.data.body.errors.forEach(
+          (fieldError: { field: string; messages: string[] }) => {
+            form.setError(fieldError.field as keyof ConfirmSignUpFormData, {
+              type: 'server',
+              message: fieldError.messages.join(', '),
+            });
+          },
+        );
       } else {
-        const message = typeof err.response?.data?.body === "string" ? err.response.data.body : "Произошла ошибка";
+        const message =
+          typeof err.response?.data?.body === 'string'
+            ? err.response.data.body
+            : 'Произошла ошибка';
         toast.error(message);
       }
     },
@@ -66,10 +68,10 @@ export const ConfirmSignUpForm: React.FC = () => {
 
   function maskPhone(phone: string) {
     if (!phone || phone.length <= 5) return phone;
-    const start = phone.slice(0, 4); 
-    const end = phone.slice(-3);     
+    const start = phone.slice(0, 4);
+    const end = phone.slice(-3);
     const middleLength = phone.length - start.length - end.length;
-    const middle = "x".repeat(middleLength);
+    const middle = 'x'.repeat(middleLength);
     return `${start}${middle}${end}`;
   }
 
@@ -102,10 +104,7 @@ export const ConfirmSignUpForm: React.FC = () => {
             isLoading={mutation.isPending || form.formState.isSubmitting}
             onClick={form.handleSubmit(onSubmit)}
           />
-          <LinkButton
-            text="Обратно к регистрации"
-            to={AppRoutes.SIGN_UP}
-          />
+          <LinkButton text="Обратно к регистрации" to={AppRoutes.SIGN_UP} />
         </form>
       </Form>
     </div>

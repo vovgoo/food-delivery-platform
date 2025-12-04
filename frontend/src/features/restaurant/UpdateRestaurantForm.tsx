@@ -1,53 +1,48 @@
-import React, { useEffect } from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { type RestaurantUpdateRequest, type RestaurantResponse } from "@/api";
-import { restaurantUpdateSchema, type RestaurantUpdateFormData } from "@/schemas/restaurant/update-restaurant.schema";
-
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { TextInput } from "@/components/input/TextInput";
-import { TextareaInput } from "@/components/input/TextareaInput";
-import { PhoneInput } from "@/components/input/PhoneInput";
-import { CheckboxInput } from "@/components/input/CheckBoxInput";
-import { TimeInput } from "@/components/input/TimeInput";
-import { SelectInput } from "@/components/input/SelectInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-
+import React, { useEffect } from 'react';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type RestaurantUpdateRequest, type RestaurantResponse, restaurantService } from '@/api';
+import { restaurantUpdateSchema, type RestaurantUpdateFormData } from '@/schemas';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
-import { restaurantService } from "@/api/services/restaurant/restaurant.service";
-import { Skeleton } from "@/components/ui/skeleton";
+  CheckBoxInput,
+  PhoneInput,
+  SelectInput,
+  SpinnerButton,
+  TextareaInput,
+  TextInput,
+  TimeInput,
+} from '@/components';
 
 interface UpdateRestaurantFormProps {
   restaurant?: RestaurantResponse;
   isPending: boolean;
 }
 
-export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ restaurant, isPending }) => {
+export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({
+  restaurant,
+  isPending,
+}) => {
   const queryClient = useQueryClient();
 
   const form = useForm<RestaurantUpdateFormData>({
     resolver: zodResolver(restaurantUpdateSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      cuisine: "",
-      address: "",
-      website: "",
-      phone: "",
-      openingTime: "00:00",
-      closingTime: "00:00",
+      name: '',
+      description: '',
+      cuisine: '',
+      address: '',
+      website: '',
+      phone: '',
+      openingTime: '00:00',
+      closingTime: '00:00',
       deliveryAvailable: false,
       parkingAvailable: false,
-      status: "INACTIVE",
+      status: 'INACTIVE',
     },
   });
 
@@ -55,19 +50,19 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
     if (restaurant) {
       form.reset({
         name: restaurant.name,
-        description: restaurant.description || "",
+        description: restaurant.description || '',
         cuisine: restaurant.cuisine,
         address: restaurant.address,
-        website: restaurant.website || "",
+        website: restaurant.website || '',
         phone: restaurant.phone,
         openingTime: restaurant.openingTime,
         closingTime: restaurant.closingTime,
         deliveryAvailable: restaurant.deliveryAvailable,
         parkingAvailable: restaurant.parkingAvailable,
         status:
-          restaurant.status === "ACTIVE" || restaurant.status === "INACTIVE"
+          restaurant.status === 'ACTIVE' || restaurant.status === 'INACTIVE'
             ? restaurant.status
-            : "INACTIVE",
+            : 'INACTIVE',
       });
     }
   }, [restaurant, form]);
@@ -76,19 +71,19 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
     mutationFn: (payload: RestaurantUpdateRequest) =>
       restaurantService.update(restaurant!.id, payload),
     onSuccess: () => {
-      toast.success("Ресторан успешно обновлён!");
-      queryClient.invalidateQueries({ queryKey: ["admin-restaurant"] });
+      toast.success('Ресторан успешно обновлён!');
+      queryClient.invalidateQueries({ queryKey: ['admin-restaurant'] });
     },
     onError: (err: any) => {
       const { statusCode, body } = err.response?.data || {};
       if (statusCode === 400 && body?.errors) {
         body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
           form.setError(fieldError.field as keyof RestaurantUpdateFormData, {
-            message: fieldError.messages.join(", "),
+            message: fieldError.messages.join(', '),
           });
         });
       } else {
-        toast.error(typeof body === "string" ? body : "Произошла ошибка сервера");
+        toast.error(typeof body === 'string' ? body : 'Произошла ошибка сервера');
       }
     },
   });
@@ -114,9 +109,7 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
     <Card className="w-full max-w-[1300px]">
       <CardHeader>
         <CardTitle>Обновление ресторана</CardTitle>
-        <CardDescription>
-          Измените информацию о ресторане
-        </CardDescription>
+        <CardDescription>Измените информацию о ресторане</CardDescription>
       </CardHeader>
 
       <CardContent>
@@ -128,13 +121,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TextInput
                         name={field.name}
                         control={form.control}
                         placeholder="Название ресторана"
                         error={form.formState.errors.name?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -146,13 +142,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TextInput
                         name={field.name}
                         control={form.control}
                         placeholder="Кухня"
                         error={form.formState.errors.cuisine?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -164,13 +163,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TextInput
                         name={field.name}
                         control={form.control}
                         placeholder="Адрес"
                         error={form.formState.errors.address?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -182,13 +184,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TextInput
                         name={field.name}
                         control={form.control}
                         placeholder="Сайт (необязательно)"
                         error={form.formState.errors.website?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -200,12 +205,15 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <PhoneInput
                         name={field.name}
                         control={form.control}
                         error={form.formState.errors.phone?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -217,17 +225,20 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <SelectInput
                         name={field.name}
                         control={form.control}
                         options={[
-                          { value: "ACTIVE", label: "Активен" },
-                          { value: "INACTIVE", label: "Неактивен" },
+                          { value: 'ACTIVE', label: 'Активен' },
+                          { value: 'INACTIVE', label: 'Неактивен' },
                         ]}
                         placeholder="Статус"
                         error={form.formState.errors.status?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -239,14 +250,17 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem className="col-span-full">
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-24 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-24 w-full mb-4" />
+                    ) : (
                       <TextareaInput
                         name={field.name}
                         control={form.control}
                         placeholder="Описание ресторана"
                         rows={4}
                         error={form.formState.errors.description?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -258,13 +272,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TimeInput
                         name={field.name}
                         control={form.control}
                         placeholder="Время открытия"
                         error={form.formState.errors.openingTime?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -276,13 +293,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-10 w-full mb-4" /> :
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-10 w-full mb-4" />
+                    ) : (
                       <TimeInput
                         name={field.name}
                         control={form.control}
                         placeholder="Время закрытия"
                         error={form.formState.errors.closingTime?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -294,13 +314,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-6 w-32 mb-4" /> :
-                      <CheckboxInput
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-6 w-32 mb-4" />
+                    ) : (
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Доступна доставка"
                         error={form.formState.errors.deliveryAvailable?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}
@@ -312,13 +335,16 @@ export const UpdateRestaurantForm: React.FC<UpdateRestaurantFormProps> = ({ rest
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    {isPending ? <Skeleton className="bg-gray-400 h-6 w-24 mb-4" /> :
-                      <CheckboxInput
+                    {isPending ? (
+                      <Skeleton className="bg-gray-400 h-6 w-24 mb-4" />
+                    ) : (
+                      <CheckBoxInput
                         name={field.name}
                         control={form.control}
                         label="Есть парковка"
                         error={form.formState.errors.parkingAvailable?.message}
-                      />}
+                      />
+                    )}
                   </FormControl>
                 </FormItem>
               )}

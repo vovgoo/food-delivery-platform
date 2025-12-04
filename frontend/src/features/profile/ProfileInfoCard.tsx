@@ -1,42 +1,25 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import {
-  UserIcon,
-  MailIcon,
-  PhoneIcon,
-  CalendarIcon,
-  ClockIcon
-} from "lucide-react";
-import { type UserResponse } from "@/api";
+import React from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
+import { UserIcon, MailIcon, PhoneIcon, CalendarIcon, ClockIcon } from 'lucide-react';
+import { type UserResponse } from '@/api';
 
 interface ProfileInfoCardProps {
   user?: UserResponse;
   isPending: boolean;
 }
 
-export const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
-  user,
-  isPending,
-}) => {
-    const formatDate = (dateString?: string) => {
-        if (!dateString) return undefined;
+export const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({ user, isPending }) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return undefined;
 
-        return new Date(dateString).toLocaleDateString("ru-RU", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        });
-    };
-  const Field = ({
-    icon: Icon,
-    label,
-    value,
-  }: {
-    icon: any;
-    label: string;
-    value?: string;
-  }) => (
+    return new Date(dateString).toLocaleDateString('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+  const Field = ({ icon: Icon, label, value }: { icon: any; label: string; value?: string }) => (
     <div className="flex flex-col text-sm sm:flex-row sm:items-center sm:justify-between gap-1 sm:gap-3 p-2 rounded-lg ">
       <div className="flex items-center gap-2 text-gray-600 whitespace-nowrap">
         <Icon className="w-4 h-4" />
@@ -46,7 +29,7 @@ export const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
       {isPending ? (
         <Skeleton className="h-4 w-40 bg-gray-400 rounded-xs" />
       ) : (
-        <span className="text-black break-all">{value || "-"}</span>
+        <span className="text-black break-all">{value || '-'}</span>
       )}
     </div>
   );
@@ -65,11 +48,7 @@ export const ProfileInfoCard: React.FC<ProfileInfoCardProps> = ({
         <Field icon={MailIcon} label="Email" value={user?.email} />
 
         <Field icon={PhoneIcon} label="Телефон" value={user?.phone} />
-        <Field
-          icon={CalendarIcon}
-          label="Дата рождения"
-          value={formatDate(user?.birthDate)}
-        />
+        <Field icon={CalendarIcon} label="Дата рождения" value={formatDate(user?.birthDate)} />
 
         <Field
           icon={ClockIcon}

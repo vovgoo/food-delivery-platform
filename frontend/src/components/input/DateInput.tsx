@@ -1,12 +1,12 @@
-import React from "react";
-import type { Control } from "react-hook-form";
-import { Controller } from "react-hook-form";
-import { format } from "date-fns";
-import { ru } from "date-fns/locale";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { ChevronDown } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import type { Control } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
+import { format } from 'date-fns';
+import { ru } from 'date-fns/locale';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar } from '@/components/ui/calendar';
+import { ChevronDown } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface DateInputProps {
   name: string;
@@ -24,7 +24,7 @@ export const DateInput: React.FC<DateInputProps> = ({ name, control, placeholder
         defaultValue=""
         render={({ field }) => {
           const value = field.value ? new Date(field.value) : undefined;
-          const displayValue = value ? format(value, "d MMMM yyyy", { locale: ru }) : "";
+          const displayValue = value ? format(value, 'd MMMM yyyy', { locale: ru }) : '';
 
           return (
             <Popover>
@@ -44,7 +44,7 @@ export const DateInput: React.FC<DateInputProps> = ({ name, control, placeholder
                 <Calendar
                   mode="single"
                   selected={value}
-                  onSelect={(date) => field.onChange(date ? format(date, "yyyy-MM-dd") : "")}
+                  onSelect={(date) => field.onChange(date ? format(date, 'yyyy-MM-dd') : '')}
                   captionLayout="dropdown"
                   locale={ru}
                 />

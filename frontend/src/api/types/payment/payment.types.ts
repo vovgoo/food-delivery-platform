@@ -1,4 +1,4 @@
-export type PaymentMethod = 
+export type PaymentMethod =
   | 'CREDIT_CARD'
   | 'DEBIT_CARD'
   | 'PAYPAL'
@@ -7,7 +7,7 @@ export type PaymentMethod =
   | 'BANK_TRANSFER'
   | 'CASH_ON_DELIVERY';
 
-export type PaymentStatus = 
+export type PaymentStatus =
   | 'PENDING'
   | 'PROCESSING'
   | 'COMPLETED'

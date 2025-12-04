@@ -1,14 +1,14 @@
-import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import type { RestaurantShortResponse } from "@/api";
-import { Button } from "../ui/button";
-import { useNavigate } from "react-router-dom";
-import { AppRoutes } from "@/routes";
-import { Building2, Phone, Globe, Clock, Truck, Car, Trash2 } from "lucide-react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { restaurantService } from "@/api/services/restaurant/restaurant.service";
-import { toast } from "sonner";
+import React from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import type { RestaurantShortResponse } from '@/api';
+import { Button } from '../ui/button';
+import { useNavigate } from 'react-router-dom';
+import { AppRoutes } from '@/routes';
+import { Building2, Phone, Globe, Clock, Truck, Car, Trash2 } from 'lucide-react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { restaurantService } from '@/api/services/restaurant/restaurant.service';
+import { toast } from 'sonner';
 
 import {
   AlertDialog,
@@ -20,7 +20,7 @@ import {
   AlertDialogFooter,
   AlertDialogCancel,
   AlertDialogAction,
-} from "../ui/alert-dialog";
+} from '../ui/alert-dialog';
 
 interface RestaurantCardAdminProps {
   restaurant: RestaurantShortResponse;
@@ -29,16 +29,16 @@ interface RestaurantCardAdminProps {
 export const RestaurantCardAdmin: React.FC<RestaurantCardAdminProps> = ({ restaurant }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const isActive = restaurant.status === "ACTIVE";
+  const isActive = restaurant.status === 'ACTIVE';
 
   const deleteMutation = useMutation({
     mutationFn: () => restaurantService.delete(restaurant.id),
     onSuccess: () => {
-      toast.success("Ресторан удалён");
-      queryClient.invalidateQueries({ queryKey: ["admin-restaurants"] });
+      toast.success('Ресторан удалён');
+      queryClient.invalidateQueries({ queryKey: ['admin-restaurants'] });
     },
     onError: () => {
-      toast.error("Не удалось удалить ресторан");
+      toast.error('Не удалось удалить ресторан');
     },
   });
 
@@ -57,8 +57,10 @@ export const RestaurantCardAdmin: React.FC<RestaurantCardAdminProps> = ({ restau
       )}
 
       <CardContent className="flex flex-col p-4 gap-2">
-        <Badge className={`self-start ${isActive ? "bg-green-500 text-white" : "bg-orange-500 text-white"}`}>
-          {isActive ? "Активен" : "Временно не доступен"}
+        <Badge
+          className={`self-start ${isActive ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'}`}
+        >
+          {isActive ? 'Активен' : 'Временно не доступен'}
         </Badge>
 
         <h2 className="text-xl font-semibold">{restaurant.name}</h2>
@@ -80,7 +82,12 @@ export const RestaurantCardAdmin: React.FC<RestaurantCardAdminProps> = ({ restau
           {restaurant.website && (
             <div className="flex items-center gap-1">
               <Globe className="w-4 h-4" />
-              <a href={restaurant.website} target="_blank" rel="noopener noreferrer" className="underline">
+              <a
+                href={restaurant.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline"
+              >
                 Сайт
               </a>
             </div>
@@ -91,18 +98,20 @@ export const RestaurantCardAdmin: React.FC<RestaurantCardAdminProps> = ({ restau
           </div>
           <div className="flex items-center gap-1">
             <Truck className="w-4 h-4" />
-            {restaurant.deliveryAvailable ? "Доставка" : "Без доставки"}
+            {restaurant.deliveryAvailable ? 'Доставка' : 'Без доставки'}
           </div>
           <div className="flex items-center gap-1">
             <Car className="w-4 h-4" />
-            {restaurant.parkingAvailable ? "Парковка есть" : "Парковки нет"}
+            {restaurant.parkingAvailable ? 'Парковка есть' : 'Парковки нет'}
           </div>
         </div>
 
         <div className="flex flex-col gap-4 mt-4">
           <Button
             className="bg-amber-400 text-black hover:bg-amber-300"
-            onClick={() => navigate(AppRoutes.ADMIN_RESTAURANT.replace(":restaurantId", restaurant.id))}
+            onClick={() =>
+              navigate(AppRoutes.ADMIN_RESTAURANT.replace(':restaurantId', restaurant.id))
+            }
           >
             Редактировать
           </Button>
@@ -118,7 +127,8 @@ export const RestaurantCardAdmin: React.FC<RestaurantCardAdminProps> = ({ restau
               <AlertDialogHeader>
                 <AlertDialogTitle>Удалить ресторан?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Вы уверены, что хотите удалить ресторан "{restaurant.name}"? Это действие нельзя будет отменить.
+                  Вы уверены, что хотите удалить ресторан "{restaurant.name}"? Это действие нельзя
+                  будет отменить.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>

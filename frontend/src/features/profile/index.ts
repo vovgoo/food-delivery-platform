@@ -1,0 +1,9 @@
+export { ChangeEmailForm } from './ChangeEmailForm';
+export { ChangePasswordForm } from './ChangePasswordForm';
+export { ChangePhoneForm } from './ChangePhoneForm';
+export { ConfirmChangePhoneForm } from './ConfirmChangePhoneForm';
+export { DeactivateAccountForm } from './DeactivateAccountForm';
+export { ProfileInfoCard } from './ProfileInfoCard';
+export { ProfileLayout } from './ProfileLayout';
+export { ProfileSidebar } from './ProfileSidebar';
+export { UpdateUserProfileForm } from './UpdateUserProfileForm';

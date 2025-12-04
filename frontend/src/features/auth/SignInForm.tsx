@@ -1,63 +1,53 @@
-import React from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-
-import { authService, type SignInRequest } from "@/api";
-import { AppRoutes } from "@/routes";
-import { signInSchema, type SignInFormData } from "@/schemas";
-
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { PasswordInput } from "@/components/input/PasswordInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
-
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent
-} from "@/components/ui/card";
-import { LinkButton } from "@/components/button/LinkButton";
-import { PhoneInput } from "@/components/input/PhoneInput";
+import React from 'react';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
+import { authService, type SignInRequest } from '@/api';
+import { AppRoutes } from '@/routes';
+import { signInSchema, type SignInFormData } from '@/schemas';
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { LinkButton, PasswordInput, PhoneInput, SpinnerButton } from '@/components';
 
 export const SignInForm: React.FC = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      phone: "",
-      password: "",
+      phone: '',
+      password: '',
     },
   });
 
   const mutation = useMutation({
     mutationFn: (payload: SignInRequest) => authService.signIn(payload),
     onSuccess: (data) => {
-      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem('accessToken', data.accessToken);
       navigate(AppRoutes.MAIN);
-      toast.success("Вы успешно авторизовались!");
+      queryClient.invalidateQueries({ queryKey: ['me'] });
+      toast.success('Вы успешно авторизовались!');
     },
     onError: (err: any) => {
       const { statusCode, body } = err.response?.data || {};
       if (statusCode === 400 && body?.errors) {
         body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
           form.setError(fieldError.field as keyof SignInFormData, {
-            message: fieldError.messages.join(", "),
+            message: fieldError.messages.join(', '),
           });
         });
       } else {
-        toast.error(typeof body === "string" ? body : "Произошла ошибка сервера");
+        toast.error(typeof body === 'string' ? body : 'Произошла ошибка сервера');
       }
     },
   });
 
   const onSubmit = (data: SignInFormData) => {
     const payload: SignInRequest = {
-      phone: data.phone.replace(/[^\d+]/g, ""),
+      phone: data.phone.replace(/[^\d+]/g, ''),
       password: data.password,
     };
     mutation.mutate(payload);
@@ -114,10 +104,7 @@ export const SignInForm: React.FC = () => {
               onClick={form.handleSubmit(onSubmit)}
             />
 
-            <LinkButton
-              text="Нет аккаунта? Зарегистрироваться"
-              to={AppRoutes.SIGN_UP}
-            />
+            <LinkButton text="Нет аккаунта? Зарегистрироваться" to={AppRoutes.SIGN_UP} />
           </div>
         </Form>
       </CardContent>

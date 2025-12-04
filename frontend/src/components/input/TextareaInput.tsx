@@ -1,7 +1,7 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Textarea as UITextarea } from "@/components/ui/textarea";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Textarea as UITextarea } from '@/components/ui/textarea';
 
 interface TextareaInputProps {
   name: string;
@@ -14,7 +14,7 @@ interface TextareaInputProps {
 export const TextareaInput: React.FC<TextareaInputProps> = ({
   name,
   control,
-  placeholder = "",
+  placeholder = '',
   rows = 3,
   error,
 }) => (

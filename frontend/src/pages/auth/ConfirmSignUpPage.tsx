@@ -1,9 +1,9 @@
-import { ConfirmSignUpForm } from "@/features/auth/ConfirmSignUpForm";
-import { AppRoutes } from "@/routes";
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { ConfirmSignUpForm } from '@/features';
+import { AppRoutes } from '@/routes';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const ConfirmSignUpPage: React.FC = () => {
+export const ConfirmSignUpPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -15,9 +15,7 @@ const ConfirmSignUpPage: React.FC = () => {
 
   return (
     <div className="flex w-full justify-center">
-      <ConfirmSignUpForm/>
+      <ConfirmSignUpForm />
     </div>
   );
 };
-
-export default ConfirmSignUpPage;

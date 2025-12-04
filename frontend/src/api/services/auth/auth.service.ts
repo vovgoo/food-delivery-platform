@@ -17,7 +17,9 @@ export class AuthService {
   }
 
   async refresh(): Promise<JwtResponse> {
-    return await apiClient.post<JwtResponse>(`${this.basePath}/refresh`, undefined, { withCredentials: true });
+    return await apiClient.post<JwtResponse>(`${this.basePath}/refresh`, undefined, {
+      withCredentials: true,
+    });
   }
 }
 

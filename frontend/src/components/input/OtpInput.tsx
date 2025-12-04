@@ -1,7 +1,12 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 
 interface OtpInputProps {
   name: string;
@@ -17,7 +22,7 @@ export const OtpInput: React.FC<OtpInputProps> = ({ name, control, maxLength = 6
       name={name}
       defaultValue=""
       render={({ field }) => (
-        <InputOTP maxLength={maxLength} value={field.value || ""} onChange={field.onChange}>
+        <InputOTP maxLength={maxLength} value={field.value || ''} onChange={field.onChange}>
           <InputOTPGroup>
             {Array.from({ length: 3 }).map((_, i) => (
               <InputOTPSlot className="bg-white" key={i} index={i} />

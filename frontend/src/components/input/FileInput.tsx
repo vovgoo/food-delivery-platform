@@ -1,13 +1,13 @@
-import React from "react";
-import { Controller } from "react-hook-form";
-import type { Control } from "react-hook-form";
-import { Input as UIInput } from "@/components/ui/input";
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
+import { Input as UIInput } from '@/components/ui/input';
 
 interface FileInputProps {
   name: string;
   control: Control<any>;
-  multiple?: boolean; 
-  accept?: string; 
+  multiple?: boolean;
+  accept?: string;
   error?: string;
 }
 
@@ -39,4 +39,3 @@ export const FileInput: React.FC<FileInputProps> = ({
     <p className="text-red-500 h-4 text-sm">{error}</p>
   </div>
 );
-

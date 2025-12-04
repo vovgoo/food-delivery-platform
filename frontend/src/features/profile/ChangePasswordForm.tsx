@@ -1,26 +1,16 @@
-import React from "react";
-import { toast } from "sonner";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from 'react';
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { userService, type ChangePasswordRequest } from "@/api";
-import {
-  changePasswordSchema,
-  type ChangePasswordFormData,
-} from "@/schemas";
+import { userService, type ChangePasswordRequest } from '@/api';
+import { changePasswordSchema, type ChangePasswordFormData } from '@/schemas';
 
-import { Form, FormField, FormItem, FormControl } from "@/components/ui/form";
-import { PasswordInput } from "@/components/input/PasswordInput";
-import { SpinnerButton } from "@/components/button/SpinnerButton";
+import { Form, FormField, FormItem, FormControl } from '@/components/ui/form';
 
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { PasswordInput, SpinnerButton } from '@/components';
 
 export const ChangePasswordForm: React.FC = () => {
   const queryClient = useQueryClient();
@@ -28,19 +18,18 @@ export const ChangePasswordForm: React.FC = () => {
   const form = useForm<ChangePasswordFormData>({
     resolver: zodResolver(changePasswordSchema),
     defaultValues: {
-      oldPassword: "",
-      newPassword: "",
-      confirmPassword: "",
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
     },
   });
 
   const mutation = useMutation({
-    mutationFn: (payload: ChangePasswordRequest) =>
-      userService.changePassword(payload),
+    mutationFn: (payload: ChangePasswordRequest) => userService.changePassword(payload),
 
     onSuccess: () => {
-      toast.success("Пароль успешно изменён!");
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+      toast.success('Пароль успешно изменён!');
+      queryClient.invalidateQueries({ queryKey: ['me'] });
       form.reset();
     },
 
@@ -48,15 +37,13 @@ export const ChangePasswordForm: React.FC = () => {
       const { statusCode, body } = err.response?.data || {};
 
       if (statusCode === 400 && body?.errors) {
-        body.errors.forEach(
-          (fieldError: { field: string; messages: string[] }) => {
-            form.setError(fieldError.field as keyof ChangePasswordFormData, {
-              message: fieldError.messages.join(", "),
-            });
-          }
-        );
+        body.errors.forEach((fieldError: { field: string; messages: string[] }) => {
+          form.setError(fieldError.field as keyof ChangePasswordFormData, {
+            message: fieldError.messages.join(', '),
+          });
+        });
       } else {
-        toast.error(typeof body === "string" ? body : "Произошла ошибка сервера");
+        toast.error(typeof body === 'string' ? body : 'Произошла ошибка сервера');
       }
     },
   });
@@ -74,15 +61,12 @@ export const ChangePasswordForm: React.FC = () => {
     <Card className="w-full max-w-[1300px]">
       <CardHeader>
         <CardTitle>Изменение пароля</CardTitle>
-        <CardDescription>
-          Введите текущий пароль и новый пароль для обновления
-        </CardDescription>
+        <CardDescription>Введите текущий пароль и новый пароль для обновления</CardDescription>
       </CardHeader>
 
       <CardContent>
         <Form {...form}>
           <div className="flex flex-col gap-5">
-
             <FormField
               control={form.control}
               name="oldPassword"

@@ -1,4 +1,12 @@
-import type { ChangeEmailRequest, ChangePasswordRequest, ChangePhoneRequest, ConfirmChangeEmailRequest, ConfirmChangePhoneRequest, UpdateUserProfileRequest, UserResponse } from '@/api/types';
+import type {
+  ChangeEmailRequest,
+  ChangePasswordRequest,
+  ChangePhoneRequest,
+  ConfirmChangeEmailRequest,
+  ConfirmChangePhoneRequest,
+  UpdateUserProfileRequest,
+  UserResponse,
+} from '@/api/types';
 import { apiClient } from '../../core/api-client';
 
 export class UserService {

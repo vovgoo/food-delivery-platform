@@ -1,10 +1,10 @@
-import type { 
-  CreateOrderRequest, 
-  OrderResponse, 
-  OrderShortResponse, 
-  PageParams, 
-  PageResponse, 
-  UpdateOrderStatusRequest 
+import type {
+  CreateOrderRequest,
+  OrderResponse,
+  OrderShortResponse,
+  PageParams,
+  PageResponse,
+  UpdateOrderStatusRequest,
 } from '@/api/types';
 import { apiClient } from '@/api/core/api-client';
 
