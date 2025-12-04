@@ -1,10 +1,12 @@
 import React from "react";
+import { OrderList } from "@/features/order/OrderList";
 
 const ProfileOrdersPage: React.FC = () => {
   return (
-    <div>
-      <h1>Main Page2</h1>
-      <p>Добро пожаловать! Это защищённая страница.</p>
+    <div className="w-full flex flex-col gap-y-6">
+      <h1 className="text-3xl font-bold">Мои заказы</h1>
+
+      <OrderList pageSize={5}/>
     </div>
   );
 };
